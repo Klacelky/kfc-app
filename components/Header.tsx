@@ -18,7 +18,7 @@ function BurgerButton({
     return (
         <button
             type="button"
-            className="text-6xl kfc-shadow"
+            className="text-6xl kfc-shadow bg-teal p-6"
             onClick={onClick}
             aria-label="Navigation Toggle"
         >
@@ -108,7 +108,7 @@ export default function Header({
                     )}
                 >
                     {fixed ? (
-                        <div className="m-6 md:hidden">
+                        <div className="md:hidden">
                             <BurgerButton
                                 open={menuOpen}
                                 onClick={() => setMenuOpen(!menuOpen)}
