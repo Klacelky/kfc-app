@@ -13,11 +13,13 @@ body {
     .kfc-shadow {
         color: theme('colors.beige');
         -webkit-text-stroke: 0.05em theme('colors.blue');
+        @apply uppercase;
     }
 
     .kfc-shadow__dark {
         color: theme('colors.blue');
         -webkit-text-stroke: 0.05em theme('colors.beige');
+        @apply uppercase;
     }
 }
 
@@ -27,6 +29,7 @@ body {
     h3 {
         @apply font-display;
         @apply translate-y-3;
+        @apply uppercase;
     }
 
     h1 {

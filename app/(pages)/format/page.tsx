@@ -43,12 +43,13 @@ export default function FormatPage() {
                     zápasov. Dátumy a časy zápasov si tímy dohodnú individuálne
                     so svojimi skupinovými súpermi. Kalčeto máme len jedno,
                     preto ak sa dohodnete na nejakom čase a termíne spravte si
-                    prosím na zápas rezervačku v tomto zdieľanom kalendári
-                    (TODO), aby ostatné tými vedeli kedy je stôl obsadený. Okrem
-                    termínu si vybavte na zápas ambasadora (niekoho, kto bude
-                    zapisovateľ, v prípade potreby rozhodca a odovzdá výsledky
-                    organizátorom). Prázdny záznam o stretnutí nájdete tu (TODO)
-                    alebo vytlačený v spoločenskej miestnosti.
+                    prosím na zápas rezervačku v tomto zdieľanom kalendári,
+                    ktorý po zlosovaní nájdete na tejto stránke, aby ostatné
+                    tými vedeli kedy je stôl obsadený. Okrem termínu si vybavte
+                    na zápas ambasadora (niekoho, kto bude zapisovateľ, v
+                    prípade potreby rozhodca a odovzdá výsledky organizátorom).
+                    Prázdny záznam o stretnutí nájdete vytlačený v spoločenskej
+                    miestnosti a po zlosovaní aj na tejto stránke.
                 </p>
             </section>
             <section>

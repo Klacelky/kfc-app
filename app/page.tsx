@@ -7,7 +7,7 @@ export default function Home() {
     return (
         <main className="bg-teal w-screen h-screen overflow-hidden min-h-screen">
             <Image
-                className="max-h-[calc(100vh-5em)]"
+                className="max-h-[calc(100vh-5em)] mx-auto"
                 src={bannerImg}
                 alt="Klácelky Foosball Cup Banner"
             />
