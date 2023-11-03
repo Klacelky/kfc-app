@@ -8,8 +8,8 @@ const config: Config = {
     ],
     theme: {
         fontFamily: {
-            sans: ['var(--font-nunito)'],
-            display: ['var(--font-rushford)'],
+            sans: ['var(--font-nunito)', 'sans-serif'],
+            display: ['var(--font-rushford)', 'sans-serif'],
         },
         colors: {
             inherit: 'inherit',
