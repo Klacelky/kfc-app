@@ -2,26 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+@import url('https://fonts.cdnfonts.com/css/rushford-clean');
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    font-size: 16px;
+}
+
+@layer components {
+    .kfc-shadow {
+        color: theme('colors.beige');
+        -webkit-text-stroke: 0.05em theme('colors.blue');
+    }
+
+    .kfc-shadow__dark {
+        color: theme('colors.blue');
+        -webkit-text-stroke: 0.05em theme('colors.beige');
+    }
+}
+
+@layer base {
+    h1,
+    h2,
+    h3 {
+        @apply font-display;
+        @apply translate-y-3;
+    }
+
+    h1 {
+        @apply text-5xl;
+        @apply mb-4;
+        @apply mt-6;
+    }
+
+    h2 {
+        @apply text-4xl;
+        @apply mb-3;
+        @apply mt-5;
+    }
+
+    h3 {
+        @apply text-3xl;
+        @apply my-1;
+    }
+
+    p {
+        @apply my-3;
+    }
+
+    .link {
+        @apply text-red;
+        @apply dark:text-teal;
+        @apply underline;
+        @apply hover:opacity-50;
+        @apply transition-opacity;
+    }
 }
