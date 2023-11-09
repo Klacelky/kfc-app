@@ -36,18 +36,18 @@ export default function RulesPage() {
                         stranu, ktorá skórovala.
                         <ul className="list-disc ml-5">
                             <li>
-                                <em>Príklad 1</em>: Červení strelia vyskočený
+                                <em>Príklad 1</em>: Bieli strelia vyskočený
                                 gól, hrá sa ďalej, modrí strelia gól = skóre sa
                                 nemení.
                             </li>
                             <li>
-                                <em>Príklad 2</em>: Červení strelia dva
-                                vyskočené góly po sebe, červení strelia gól =
+                                <em>Príklad 2</em>: Bieli strelia dva
+                                vyskočené góly po sebe, bieli strelia gól =
                                 červený +1, modrý -2.
                             </li>
                             <li>
-                                <em>Príklad 3</em>: Červení a po nich modrí,
-                                strelia vyskočený gól, červení strelia gól =
+                                <em>Príklad 3</em>: Bieli a po nich modrí,
+                                strelia vyskočený gól, bieli strelia gól =
                                 modrí -1.
                             </li>
                         </ul>
