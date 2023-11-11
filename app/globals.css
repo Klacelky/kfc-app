@@ -42,7 +42,7 @@ body {
     }
 
     h3 {
-        @apply text-3xl;
+        @apply text-2xl;
         @apply my-1;
     }
 
