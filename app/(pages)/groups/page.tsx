@@ -133,7 +133,7 @@ const groups: GroupData[] = [
     },
 ];
 
-export function GroupCard({ name, teams }: GroupData) {
+function GroupCard({ name, teams }: GroupData) {
     return (
         <div className="w-96 max-w-full" key={name}>
             <h2 className="bg-teal w-10 h-10 rounded-full text-center kfc-shadow ">
