@@ -1,12 +1,20 @@
 'use client';
 
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { LangContext } from './LangContext';
 
 const langOrder = [/^cs/, /^sk/, /^en/, /^.*/];
 
 export function LangProvider({ children }: { children: ReactNode }) {
     const [lang, setLang] = useState('en_US');
+
+    const setCurrentLang = useCallback(
+        (lang: string) => {
+            window.localStorage.setItem('lang', lang);
+            setLang(lang);
+        },
+        [setLang],
+    );
 
     useEffect(() => {
         const savedLang = window.localStorage.getItem('lang');
@@ -27,8 +35,8 @@ export function LangProvider({ children }: { children: ReactNode }) {
     return (
         <LangContext.Provider
             value={{
-                lang,
-                setLang,
+                currentLang: lang,
+                setCurrentLang,
                 langsAvailable: [
                     { lang: 'sk', emoji: '🇸🇰' },
                     { lang: 'en', emoji: '🇬🇧' },

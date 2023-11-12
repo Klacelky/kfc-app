@@ -13,11 +13,11 @@ const langs: { [lang in Lang]: RegExp } = {
 };
 
 export default function T(translations: Translations): ReactNode {
-    const { lang } = useContext(LangContext);
+    const { currentLang } = useContext(LangContext);
 
-    const currentLang = (Object.keys(langs) as Lang[]).find((k) => langs[k].test(lang));
-    return currentLang && translations[currentLang] ? (
-        translations[currentLang]
+    const userLang = (Object.keys(langs) as Lang[]).find((k) => langs[k].test(currentLang));
+    return userLang && translations[userLang] ? (
+        translations[userLang]
     ) : (
         <span className="bg-red text-beige">Could not find translation!</span>
     );

@@ -12,12 +12,7 @@ import T from '@/utils/i18n/t';
 
 function BurgerButton({ open, onClick }: { open: boolean; onClick: () => void }) {
     return (
-        <button
-            type="button"
-            className="text-6xl kfc-shadow p-6"
-            onClick={onClick}
-            aria-label="Navigation Toggle"
-        >
+        <button type="button" className="text-6xl kfc-shadow p-6" onClick={onClick} aria-label="Navigation Toggle">
             <span
                 className={classNames('block h-1 m-1 w-6 bg-blue rounded transition-transform', {
                     'rotate-45 scale-x-[1.41] translate-y-[.5rem]': open,
@@ -49,7 +44,7 @@ function NavBarItem({ href, children }: { href: string; children: ReactNode }) {
 
 export default function Header({ logo }: { logo: boolean }) {
     const [menuOpen, setMenuOpen] = useState(false);
-    const { setLang, langsAvailable } = useContext(LangContext);
+    const { setCurrentLang, langsAvailable } = useContext(LangContext);
     const pathName = usePathname();
     useEffect(() => setMenuOpen(false), [pathName, setMenuOpen]);
     return (
@@ -76,7 +71,7 @@ export default function Header({ logo }: { logo: boolean }) {
                 >
                     <BurgerButton open={menuOpen} onClick={() => setMenuOpen(!menuOpen)} />
                 </div>
-                <div className='absolute top-0 bottom-0 -right-5 left-0 bg-teal z-40' />
+                <div className="absolute top-0 bottom-0 -right-5 left-0 bg-teal z-40" />
                 <nav
                     className={classNames(
                         'absolute top-0 right-6 w-96 max-w-full',
@@ -87,7 +82,7 @@ export default function Header({ logo }: { logo: boolean }) {
                         // 'lg:p-0 lg:static lg:w-auto lg:translate-x-0',
                     )}
                 >
-                    <div className='bg-inherit rotate-45 w-6 h-6 absolute -top-3 right-7' />
+                    <div className="bg-inherit rotate-45 w-6 h-6 absolute -top-3 right-7" />
                     <ul
                         className={classNames(
                             'flex flex-col gap-6 items-start flex-grow',
@@ -115,7 +110,7 @@ export default function Header({ logo }: { logo: boolean }) {
                         {langsAvailable.map(({ lang: langAvailable, emoji }) => (
                             <li
                                 key={langAvailable}
-                                onClick={() => setLang(langAvailable)}
+                                onClick={() => setCurrentLang(langAvailable)}
                                 className="cursor-pointer"
                                 aria-label={`Language: ${langsAvailable}`}
                                 role="button"
