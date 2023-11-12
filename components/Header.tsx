@@ -12,7 +12,7 @@ import T from '@/utils/i18n/t';
 
 function BurgerButton({ open, onClick }: { open: boolean; onClick: () => void }) {
     return (
-        <button type="button" className="text-6xl text-blue p-6" onClick={onClick} aria-label="Navigation Toggle">
+        <button type="button" className="text-6xl text-blue p-4" onClick={onClick} aria-label="Navigation Toggle">
             <span
                 className={classNames('block h-1 m-1 w-6 bg-blue rounded transition-transform', {
                     'rotate-45 scale-x-[1.41] translate-y-[.5rem]': open,
@@ -56,7 +56,7 @@ export default function Header({ logo }: { logo: boolean }) {
             )}
         >
             <div
-                className={classNames('flex lg:container h-full m-auto p-6 items-center relative', {
+                className={classNames('flex lg:container h-full m-auto pl-4 items-center relative', {
                     'justify-between': logo,
                     'justify-end': !logo,
                 })}
@@ -74,7 +74,7 @@ export default function Header({ logo }: { logo: boolean }) {
                 <div className="absolute top-0 bottom-0 -right-5 left-0 bg-teal z-40" />
                 <nav
                     className={classNames(
-                        'absolute top-0 right-6 w-96 max-w-full',
+                        'absolute top-0 right-4 w-96 max-w-full',
                         'flex flex-col justify-between p-10 gap-10',
                         'transition-transform bg-teal shadow',
                         { '-translate-y-full': !menuOpen },
@@ -82,7 +82,7 @@ export default function Header({ logo }: { logo: boolean }) {
                         // 'lg:p-0 lg:static lg:w-auto lg:translate-x-0',
                     )}
                 >
-                    <div className="bg-inherit rotate-45 w-6 h-6 absolute -top-3 right-7" />
+                    <div className="bg-inherit rotate-45 w-[1.24rem] h-[1.24rem] absolute -top-[0.62rem] right-[0.26rem]" />
                     <ul
                         className={classNames(
                             'flex flex-col gap-6 items-start flex-grow',
@@ -102,9 +102,6 @@ export default function Header({ logo }: { logo: boolean }) {
                             <T sk="Skupiny" en="Groups" />
                         </NavBarItem>
                         <NavBarItem href="/play-off">Play-off</NavBarItem>
-                        <NavBarItem href="/spectators">
-                            <T sk="Pre divákov" en="Spectators" />
-                        </NavBarItem>
                     </ul>
                     <ul className="flex flex-row text-4xl gap-2">
                         {langsAvailable.map(({ lang: langAvailable, emoji }) => (
