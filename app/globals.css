@@ -6,20 +6,6 @@ body {
     font-size: 16px;
 }
 
-@layer components {
-    .kfc-shadow {
-        color: theme('colors.beige');
-        -webkit-text-stroke: 0.05em theme('colors.blue');
-        @apply uppercase;
-    }
-
-    .kfc-shadow__dark {
-        color: theme('colors.blue');
-        -webkit-text-stroke: 0.05em theme('colors.beige');
-        @apply uppercase;
-    }
-}
-
 @layer base {
     h1,
     h2,

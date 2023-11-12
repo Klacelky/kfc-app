@@ -12,7 +12,7 @@ import T from '@/utils/i18n/t';
 
 function BurgerButton({ open, onClick }: { open: boolean; onClick: () => void }) {
     return (
-        <button type="button" className="text-6xl kfc-shadow p-6" onClick={onClick} aria-label="Navigation Toggle">
+        <button type="button" className="text-6xl text-blue p-6" onClick={onClick} aria-label="Navigation Toggle">
             <span
                 className={classNames('block h-1 m-1 w-6 bg-blue rounded transition-transform', {
                     'rotate-45 scale-x-[1.41] translate-y-[.5rem]': open,
@@ -36,7 +36,7 @@ function BurgerButton({ open, onClick }: { open: boolean; onClick: () => void })
 
 function NavBarItem({ href, children }: { href: string; children: ReactNode }) {
     return (
-        <li className="text-beige kfc-shadow text-4xl leading-none font-display translate-y-2">
+        <li className="text-blue text-4xl leading-none font-display translate-y-2">
             <Link href={href}>{children}</Link>
         </li>
     );
