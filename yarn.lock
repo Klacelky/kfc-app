@@ -1730,6 +1730,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"flag-icons@npm:^6.15.0":
+  version: 6.15.0
+  resolution: "flag-icons@npm:6.15.0"
+  checksum: 28ffa4f21314fd2beb2ea34dd242f116da9f154389b5a11e80dbb33a99b1f250a36074255fd265349d5764d2e1a7469d39c6471fb3f43e016f2966ecaba543cb
+  languageName: node
+  linkType: hard
+
 "flat-cache@npm:^3.0.4":
   version: 3.1.1
   resolution: "flat-cache@npm:3.1.1"
@@ -2581,6 +2588,7 @@ __metadata:
     classnames: "npm:^2.3.2"
     eslint: "npm:^8"
     eslint-config-next: "npm:14.0.1"
+    flag-icons: "npm:^6.15.0"
     next: "npm:14.0.1"
     postcss: "npm:^8"
     react: "npm:^18"

@@ -38,8 +38,8 @@ export function LangProvider({ children }: { children: ReactNode }) {
                 currentLang: lang,
                 setCurrentLang,
                 langsAvailable: [
-                    { lang: 'sk', emoji: '🇸🇰' },
-                    { lang: 'en', emoji: '🇬🇧' },
+                    { lang: 'sk', emoji: <span className="fi fi-sk"></span> },
+                    { lang: 'en', emoji: <span className="fi fi-gb"></span> },
                 ],
             }}
         >
