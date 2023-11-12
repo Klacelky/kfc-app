@@ -115,7 +115,7 @@ export default function FormatPage() {
                             <>
                                 Po rozlosovaní skupín (9.11. 20.00) majú tímy týždeň (10.11. - 17.11.) na to, aby
                                 odohrali svoje skupinové zápasy. V skupine hrá každý s každým BO3, teda najlepší z troch
-                                zápasov. Dátumy a časy zápasov si tímy dohodnú individuálne so svojimi skupinovými
+                                hier. Dátumy a časy zápasov si tímy dohodnú individuálne so svojimi skupinovými
                                 súpermi. Každej skupine spravíme na dohadovanie messenger skupinu v ktorej budeme aj my
                                 aby sme na to dohliadli a vyriešili prípadné problémy.
                             </>
@@ -124,7 +124,7 @@ export default function FormatPage() {
                             <>
                                 After the groups are drawn (9.11. 20.00), teams have one week (10.11.-17.11.) to play
                                 their group matches. In the groups, teams play each other BO3, i.e. best of three
-                                matches. The teams will arrange the dates and times of the matches individually with
+                                games. The teams will arrange the dates and times of the matches individually with
                                 their group opponents. We will make a messenger group for each group to arrange this,
                                 and we will be in it to supervise and solve any problems.
                             </>
