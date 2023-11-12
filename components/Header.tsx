@@ -36,9 +36,9 @@ function BurgerButton({ open, onClick }: { open: boolean; onClick: () => void })
 
 function NavBarItem({ href, children }: { href: string; children: ReactNode }) {
     return (
-        <Link href={href}>
-            <li className="text-beige kfc-shadow text-4xl leading-none font-display translate-y-2">{children}</li>
-        </Link>
+        <li className="text-beige kfc-shadow text-4xl leading-none font-display translate-y-2">
+            <Link href={href}>{children}</Link>
+        </li>
     );
 }
 
@@ -108,14 +108,15 @@ export default function Header({ logo }: { logo: boolean }) {
                     </ul>
                     <ul className="flex flex-row text-4xl gap-2">
                         {langsAvailable.map(({ lang: langAvailable, emoji }) => (
-                            <li
-                                key={langAvailable}
-                                onClick={() => setCurrentLang(langAvailable)}
-                                className="cursor-pointer"
-                                aria-label={`Language: ${langsAvailable}`}
-                                role="button"
-                            >
-                                {emoji}
+                            <li key={langAvailable}>
+                                <button
+                                    onClick={() => setCurrentLang(langAvailable)}
+                                    className="cursor-pointer"
+                                    type="button"
+                                    aria-label={`Language: ${langAvailable}`}
+                                >
+                                    {emoji}
+                                </button>
                             </li>
                         ))}
                     </ul>
