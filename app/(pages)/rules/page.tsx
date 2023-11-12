@@ -66,13 +66,13 @@ export default function RulesPage() {
                         <T
                             sk={
                                 <>
-                                    , vhoďte novú, ak lopta zastala medzi červenými a modrými hráčmi. Inak si ju obranca
+                                    , vhoďte novú, ak lopta zastala medzi bielimia modrými hráčmi. Inak si ju obranca
                                     môže posunúť.
                                 </>
                             }
                             en={
                                 <>
-                                    , throw in a new ball if the ball is stuck between the red and blue players.
+                                    , throw in a new ball if the ball is stuck between the white and blue players.
                                     Otherwise the defender can give it a touch to move it slightly.
                                 </>
                             }
@@ -128,13 +128,13 @@ export default function RulesPage() {
                                 <T
                                     sk={
                                         <>
-                                            Bieli strelia dva vyskočené góly po sebe, bieli strelia gól = červený +1,
+                                            Bieli strelia dva vyskočené góly po sebe, bieli strelia gól = bieli +1,
                                             modrý -2.
                                         </>
                                     }
                                     en={
                                         <>
-                                            White scores two pop-up goals in a row, Red scores a goal = White +1, Blue
+                                            White scores two pop-up goals in a row, White scores a goal = White +1, Blue
                                             -2
                                         </>
                                     }
