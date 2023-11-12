@@ -5,8 +5,7 @@ import Image from 'next/image';
 import classNames from 'classnames';
 
 import logoImg from '@/public/logo_web_100.png';
-import { ReactNode, useContext, useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { ReactNode, useContext, useState } from 'react';
 import { LangContext } from '@/utils/i18n/LangContext';
 import T from '@/utils/i18n/t';
 
@@ -45,8 +44,6 @@ function NavBarItem({ href, children }: { href: string; children: ReactNode }) {
 export default function Header({ logo }: { logo: boolean }) {
     const [menuOpen, setMenuOpen] = useState(false);
     const { setCurrentLang, langsAvailable } = useContext(LangContext);
-    const pathName = usePathname();
-    useEffect(() => setMenuOpen(false), [pathName, setMenuOpen]);
     return (
         <header
             className={classNames(
@@ -81,6 +78,7 @@ export default function Header({ logo }: { logo: boolean }) {
                         { 'translate-y-24': menuOpen },
                         // 'lg:p-0 lg:static lg:w-auto lg:translate-x-0',
                     )}
+                    onClick={() => setMenuOpen(false)}
                 >
                     <div className="bg-inherit rotate-45 w-[1.24rem] h-[1.24rem] absolute -top-[0.62rem] right-[0.26rem]" />
                     <ul

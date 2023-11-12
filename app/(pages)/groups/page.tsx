@@ -1,6 +1,7 @@
 import T from '@/utils/i18n/t';
 import { RESERVATION_EN, RESERVATION_SK } from '@/utils/links';
 import Link from 'next/link';
+import { Fragment } from 'react';
 
 interface TeamData {
     name: string;
@@ -50,7 +51,7 @@ const groups: GroupData[] = [
             {
                 name: 'Organizátorská zložka',
                 abbrev: 'ORG',
-                points: 0,
+                points: 3,
                 players: [{ name: 'Alexej Šaňo Eliáš' }, { name: 'Karol Kováč' }],
             },
             {
@@ -79,7 +80,7 @@ const groups: GroupData[] = [
             {
                 name: 'Krámy Yetiho mamy',
                 abbrev: 'KYM',
-                points: 0,
+                points: 2,
                 players: [{ name: 'Adam Majzlík' }, { name: 'Zuzana Sepešiová' }],
             },
             {
@@ -133,6 +134,78 @@ const groups: GroupData[] = [
     },
 ];
 
+interface MatchData {
+    homeTeam: string;
+    visitingTeam: string;
+    results: [number, number][];
+}
+
+interface GroupMatchesData {
+    group: string;
+    matches: MatchData[];
+}
+
+const matches: GroupMatchesData[] = [
+    {
+        group: 'A',
+        matches: [],
+    },
+    {
+        group: 'B',
+        matches: [
+            {
+                homeTeam: 'ORG',
+                visitingTeam: 'KKT',
+                results: [
+                    [10, 4],
+                    [10, 0],
+                ],
+            },
+            {
+                homeTeam: 'ORG',
+                visitingTeam: 'ZMK',
+                results: [
+                    [10, 1],
+                    [10, 2],
+                ],
+            },
+            {
+                homeTeam: 'ORG',
+                visitingTeam: 'MEP',
+                results: [
+                    [10, 2],
+                    [10, 3],
+                ],
+            },
+        ],
+    },
+    {
+        group: 'C',
+        matches: [
+            {
+                homeTeam: 'KYM',
+                visitingTeam: 'MID',
+                results: [
+                    [10, 6],
+                    [10, 4],
+                ],
+            },
+            {
+                homeTeam: 'KYM',
+                visitingTeam: 'PRC',
+                results: [
+                    [10, 1],
+                    [10, 0],
+                ],
+            },
+        ],
+    },
+    {
+        group: 'D',
+        matches: [],
+    },
+];
+
 function GroupCard({ name, teams }: GroupData) {
     return (
         <div className="w-96 max-w-full" key={name}>
@@ -143,16 +216,12 @@ function GroupCard({ name, teams }: GroupData) {
                 {teams.map(({ name, abbrev, points, players }) => (
                     <div key={name}>
                         <div className="flex flex-row items-center gap-3">
-                            <h3>
-                                {abbrev}
-                            </h3>
-                            <h3>
-                                {name}
-                            </h3>
-                            <div className='flex-grow text-right'>
+                            <h3>{abbrev}</h3>
+                            <h3>{name}</h3>
+                            <h3 className="flex-grow text-right">
                                 {points}
                                 <T sk="b" en="pts" />
-                            </div>
+                            </h3>
                         </div>
                         <div>
                             {players.map(({ name }) => (
@@ -160,6 +229,32 @@ function GroupCard({ name, teams }: GroupData) {
                             ))}
                         </div>
                     </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function getTeamName(group: string, abbrev: string) {
+    return groups.find(({ name }) => name === group)?.teams.find(({ abbrev: a }) => abbrev === a)?.name;
+}
+
+function GroupMatchesCard({ group, matches }: GroupMatchesData) {
+    return (
+        <div className="" key={group}>
+            <h2 className="bg-teal w-10 h-10 rounded-full text-center text-blue">
+                <span className="align-sub">{group}</span>
+            </h2>
+            <div className="grid grid-cols-9 sm:grid-cols-12 items-center mt-10 gap-2">
+                {matches.map(({ homeTeam, visitingTeam, results }) => (
+                    <Fragment key={`${homeTeam}-${visitingTeam}`}>
+                        <div className="col-span-4 text-right font-bold">{getTeamName(group, homeTeam)}</div>
+                        <div className="text-center">-</div>
+                        <div className="col-span-4">{getTeamName(group, visitingTeam)}</div>
+                        <div className="col-span-9 text-center sm:col-span-3 sm:text-left">
+                            {results.map((goals) => goals.join(':')).join(', ')}
+                        </div>
+                    </Fragment>
                 ))}
             </div>
         </div>
@@ -219,6 +314,14 @@ export default function GroupsPage() {
             <div className="md:grid gap-10 md:grid-cols-2 2xl:grid-cols-4 justify-items-center">
                 {groups.map((group) => GroupCard(group))}
             </div>
+            <section>
+                <h2>
+                    <T sk="Skupinové zápasy" en="Group matches" />
+                </h2>
+                <div className="lg:grid gap-10 lg:grid-cols-2">
+                    {matches.map((group) => GroupMatchesCard(group))}
+                </div>
+            </section>
         </>
     );
 }
