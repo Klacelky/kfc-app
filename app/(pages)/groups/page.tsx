@@ -245,15 +245,18 @@ function GroupMatchesCard({ group, matches }: GroupMatchesData) {
             <h2 className="bg-teal w-10 h-10 rounded-full text-center text-blue">
                 <span className="align-sub">{group}</span>
             </h2>
-            <div className="grid grid-cols-9 sm:grid-cols-12 items-center mt-10 gap-2">
+            <div className="grid grid-cols-5 items-center mt-10 gap-2">
                 {matches.map(({ homeTeam, visitingTeam, results }) => (
                     <Fragment key={`${homeTeam}-${visitingTeam}`}>
-                        <div className="col-span-4 text-right font-bold">{getTeamName(group, homeTeam)}</div>
-                        <div className="text-center">-</div>
-                        <div className="col-span-4">{getTeamName(group, visitingTeam)}</div>
-                        <div className="col-span-9 text-center sm:col-span-3 sm:text-left">
-                            {results.map((goals) => goals.join(':')).join(', ')}
-                        </div>
+                        <div className="text-right font-bold">{homeTeam}</div>
+                        <div className="col-span-3 text-center">{results.map((goals) => goals.join(':')).join(', ')}</div>
+                        <div>{visitingTeam}</div>
+                        {/* <div className="col-span-4 text-right font-bold">{getTeamName(group, homeTeam)}</div> */}
+                        {/* <div className="text-center">-</div> */}
+                        {/* <div className="col-span-4">{getTeamName(group, visitingTeam)}</div> */}
+                        {/* <div className="col-span-9 text-center sm:col-span-3 sm:text-left"> */}
+                        {/*     {results.map((goals) => goals.join(':')).join(', ')} */}
+                        {/* </div> */}
                     </Fragment>
                 ))}
             </div>
@@ -318,9 +321,7 @@ export default function GroupsPage() {
                 <h2>
                     <T sk="Skupinové zápasy" en="Group matches" />
                 </h2>
-                <div className="lg:grid gap-10 lg:grid-cols-2">
-                    {matches.map((group) => GroupMatchesCard(group))}
-                </div>
+                <div className="grid gap-10 grid-cols-2 lg:grid-cols-4">{matches.map((group) => GroupMatchesCard(group))}</div>
             </section>
         </>
     );
