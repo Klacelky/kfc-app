@@ -98,7 +98,7 @@ const groups: GroupData[] = [
             {
                 name: 'jg diff',
                 abbrev: 'DIF',
-                points: 0,
+                points: 1,
                 players: [{ name: 'Richard Truben' }, { name: 'Patrik Szoboszlai' }],
             },
         ],
@@ -109,7 +109,7 @@ const groups: GroupData[] = [
             {
                 name: 'Paprice',
                 abbrev: 'PAC',
-                points: 0,
+                points: 1,
                 players: [{ name: 'Barbora Tušilová' }, { name: 'Berta Papulová' }],
             },
             {
@@ -198,11 +198,28 @@ const matches: GroupMatchesData[] = [
                     [10, 0],
                 ],
             },
+            {
+                homeTeam: 'DIF',
+                visitingTeam: 'PRC',
+                results: [
+                    [10, 8],
+                    [10, 2],
+                ],
+            },
         ],
     },
     {
         group: 'D',
-        matches: [],
+        matches: [
+            {
+                homeTeam: 'PAC',
+                visitingTeam: 'OCO',
+                results: [
+                    [10, 3],
+                    [10, 3],
+                ],
+            },
+        ],
     },
 ];
 
@@ -249,7 +266,9 @@ function GroupMatchesCard({ group, matches }: GroupMatchesData) {
                 {matches.map(({ homeTeam, visitingTeam, results }) => (
                     <Fragment key={`${homeTeam}-${visitingTeam}`}>
                         <div className="text-right font-bold">{homeTeam}</div>
-                        <div className="col-span-3 text-center">{results.map((goals) => goals.join(':')).join(', ')}</div>
+                        <div className="col-span-3 text-center">
+                            {results.map((goals) => goals.join(':')).join(', ')}
+                        </div>
                         <div>{visitingTeam}</div>
                         {/* <div className="col-span-4 text-right font-bold">{getTeamName(group, homeTeam)}</div> */}
                         {/* <div className="text-center">-</div> */}
@@ -321,7 +340,9 @@ export default function GroupsPage() {
                 <h2>
                     <T sk="Skupinové zápasy" en="Group matches" />
                 </h2>
-                <div className="grid gap-10 grid-cols-2 lg:grid-cols-4">{matches.map((group) => GroupMatchesCard(group))}</div>
+                <div className="grid gap-10 grid-cols-2 lg:grid-cols-4">
+                    {matches.map((group) => GroupMatchesCard(group))}
+                </div>
             </section>
         </>
     );
