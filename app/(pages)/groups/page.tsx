@@ -28,7 +28,7 @@ const groups: GroupData[] = [
             {
                 name: 'Nepredvídateľní',
                 abbrev: 'NPV',
-                points: 0,
+                points: 2,
                 players: [{ name: 'Timotej Šváby' }, { name: 'Dominika Dolinová' }],
             },
             {
@@ -99,7 +99,7 @@ const groups: GroupData[] = [
                 name: 'jg diff',
                 abbrev: 'DIF',
                 points: 1,
-                players: [{ name: 'Richard Truben' }, { name: 'Patrik Szoboszlai' }],
+                players: [{ name: 'Richard Truben' }, { name: 'Patrik Szabó' }],
             },
         ],
     },
@@ -109,7 +109,7 @@ const groups: GroupData[] = [
             {
                 name: 'Paprice',
                 abbrev: 'PAC',
-                points: 2,
+                points: 3,
                 players: [{ name: 'Barbora Tušilová' }, { name: 'Berta Papulová' }],
             },
             {
@@ -121,7 +121,7 @@ const groups: GroupData[] = [
             {
                 name: 'Mal si branic',
                 abbrev: 'MSB',
-                points: 0,
+                points: 2,
                 players: [{ name: 'Danny Cepr' }, { name: 'Kristián Latinák' }],
             },
             {
@@ -148,7 +148,24 @@ interface GroupMatchesData {
 const matches: GroupMatchesData[] = [
     {
         group: 'A',
-        matches: [],
+        matches: [
+            {
+                homeTeam: 'NPV',
+                visitingTeam: 'PIN',
+                results: [
+                    [10, 0],
+                    [10, 0],
+                ],
+            },
+            {
+                homeTeam: 'NPV',
+                visitingTeam: 'TAP',
+                results: [
+                    [10, 3],
+                    [10, 4],
+                ],
+            },
+        ],
     },
     {
         group: 'B',
@@ -253,12 +270,36 @@ const matches: GroupMatchesData[] = [
                 ],
             },
             {
+                homeTeam: 'MSB',
+                visitingTeam: 'VID',
+                results: [
+                    [10, 0],
+                    [10, 3],
+                ],
+            },
+            {
                 homeTeam: 'PAC',
                 visitingTeam: 'MSB',
                 results: [
                     [10, 4],
                     [9, 10],
                     [10, 6],
+                ],
+            },
+            {
+                homeTeam: 'PAC',
+                visitingTeam: 'VID',
+                results: [
+                    [10, 0],
+                    [10, 1],
+                ],
+            },
+            {
+                homeTeam: 'MSB',
+                visitingTeam: 'OCO',
+                results: [
+                    [10, 9],
+                    [10, 8],
                 ],
             },
         ],
