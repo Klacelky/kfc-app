@@ -57,13 +57,13 @@ const groups: GroupData[] = [
             {
                 name: 'Klácelkovský korporátny team',
                 abbrev: 'KKT',
-                points: 0,
+                points: 2,
                 players: [{ name: 'Peter Dao' }, { name: 'Oliver Svetlík (Diana)' }],
             },
             {
                 name: 'Zedz mi kár',
                 abbrev: 'ZMK',
-                points: 0,
+                points: 1,
                 players: [{ name: 'Bubo Vlha' }, { name: 'Mališ Adam' }],
             },
             {
@@ -80,7 +80,7 @@ const groups: GroupData[] = [
             {
                 name: 'Krámy Yetiho mamy',
                 abbrev: 'KYM',
-                points: 2,
+                points: 3,
                 players: [{ name: 'Adam Majzlík' }, { name: 'Zuzana Sepešiová' }],
             },
             {
@@ -109,7 +109,7 @@ const groups: GroupData[] = [
             {
                 name: 'Paprice',
                 abbrev: 'PAC',
-                points: 1,
+                points: 2,
                 players: [{ name: 'Barbora Tušilová' }, { name: 'Berta Papulová' }],
             },
             {
@@ -162,6 +162,15 @@ const matches: GroupMatchesData[] = [
                 ],
             },
             {
+                homeTeam: 'ZMK',
+                visitingTeam: 'MEP',
+                results: [
+                    [6, 10],
+                    [10, 4],
+                    [10, 4],
+                ],
+            },
+            {
                 homeTeam: 'ORG',
                 visitingTeam: 'ZMK',
                 results: [
@@ -170,11 +179,27 @@ const matches: GroupMatchesData[] = [
                 ],
             },
             {
+                homeTeam: 'KKT',
+                visitingTeam: 'MEP',
+                results: [
+                    [10, 4],
+                    [10, 9],
+                ],
+            },
+            {
                 homeTeam: 'ORG',
                 visitingTeam: 'MEP',
                 results: [
                     [10, 2],
                     [10, 3],
+                ],
+            },
+            {
+                homeTeam: 'KKT',
+                visitingTeam: 'ZMK',
+                results: [
+                    [10, 7],
+                    [10, 4],
                 ],
             },
         ],
@@ -191,6 +216,14 @@ const matches: GroupMatchesData[] = [
                 ],
             },
             {
+                homeTeam: 'DIF',
+                visitingTeam: 'PRC',
+                results: [
+                    [10, 8],
+                    [10, 2],
+                ],
+            },
+            {
                 homeTeam: 'KYM',
                 visitingTeam: 'PRC',
                 results: [
@@ -199,11 +232,11 @@ const matches: GroupMatchesData[] = [
                 ],
             },
             {
-                homeTeam: 'DIF',
-                visitingTeam: 'PRC',
+                homeTeam: 'KYM',
+                visitingTeam: 'DIF',
                 results: [
-                    [10, 8],
-                    [10, 2],
+                    [10, 0],
+                    [10, 4],
                 ],
             },
         ],
@@ -217,6 +250,15 @@ const matches: GroupMatchesData[] = [
                 results: [
                     [10, 3],
                     [10, 3],
+                ],
+            },
+            {
+                homeTeam: 'PAC',
+                visitingTeam: 'MSB',
+                results: [
+                    [10, 4],
+                    [9, 10],
+                    [10, 6],
                 ],
             },
         ],
