@@ -12,15 +12,15 @@ interface ScheduleData {
 
 function Schedule({ matches }: ScheduleData) {
     return (
-        <div className="grid gap-x-4 gap-y-2 grid-cols-1 sm:grid-cols-12 max-w-2xl">
+        <div className="grid gap-x-4 gap-y-2 grid-cols-1 sm:grid-cols-12 max-w-5xl">
             {matches.map(({ name, time, home, visiting }) => (
                 <Fragment key={name?.toString()}>
-                    <div className="sm:col-span-3 flex flex-row gap-x-1 sm:justify-between">
+                    <div className="sm:col-span-6 flex flex-row gap-x-1 sm:justify-between">
                         <div>{name}</div>
                         <div>{time.toLocaleTimeString()}</div>
                     </div>
-                    <div className="sm:col-span-4">{home}</div>
-                    <div className="sm:col-span-4">{visiting}</div>
+                    <div className="sm:col-span-3">{home}</div>
+                    <div className="sm:col-span-3">{visiting}</div>
                 </Fragment>
             ))}
         </div>
@@ -40,14 +40,14 @@ export default function PlayOffPage() {
                 </h2>
                 <Schedule
                     matches={[
-                        { name: 'Br I', time: new Date(2023, 11, 18, 13, 15, 0), home: 'A2', visiting: 'D3' },
-                        { name: 'Br II', time: new Date(2023, 11, 18, 13, 45, 0), home: 'B2', visiting: 'C3' },
-                        { name: 'Br III', time: new Date(2023, 11, 18, 14, 15, 0), home: 'C2', visiting: 'B3' },
-                        { name: 'Br IV', time: new Date(2023, 11, 18, 14, 45, 0), home: 'D2', visiting: 'A3' },
+                        { name: 'Br I', time: new Date(2023, 11, 18, 12, 0, 0), home: 'NPV', visiting: 'OCO' },
+                        { name: 'Br II', time: new Date(2023, 11, 18, 12, 30, 0), home: 'KKT', visiting: 'DIF' },
+                        { name: 'Br III', time: new Date(2023, 11, 18, 13, 0, 0), home: 'MID', visiting: 'ZMK' },
+                        { name: 'Br IV', time: new Date(2023, 11, 18, 13, 30, 0), home: 'MSB', visiting: 'TAP' },
                     ]}
                 />
                 <p>
-                    <T sk="(15 min. prestávka na dobehnutie)" en="(15 min. catch-up break)" />
+                    <T sk="(30 min. prestávka na dobehnutie)" en="(30 min. catch-up break)" />
                 </p>
             </section>
             <section>
@@ -56,14 +56,14 @@ export default function PlayOffPage() {
                 </h2>
                 <Schedule
                     matches={[
-                        { name: 'Qf I', time: new Date(2023, 11, 18, 15, 30, 0), home: 'A1', visiting: 'Br II' },
-                        { name: 'Qf II', time: new Date(2023, 11, 18, 16, 0, 0), home: 'B1', visiting: 'Br I' },
-                        { name: 'Qf III', time: new Date(2023, 11, 18, 16, 30, 0), home: 'C1', visiting: 'Br IV' },
-                        { name: 'Qf IV', time: new Date(2023, 11, 18, 17, 0, 0), home: 'D1', visiting: 'Br III' },
+                        { name: 'Qf I', time: new Date(2023, 11, 18, 14, 30, 0), home: 'BBH', visiting: 'Br II' },
+                        { name: 'Qf II', time: new Date(2023, 11, 18, 15, 0, 0), home: 'ORG', visiting: 'Br I' },
+                        { name: 'Qf III', time: new Date(2023, 11, 18, 15, 30, 0), home: 'KYM', visiting: 'Br IV' },
+                        { name: 'Qf IV', time: new Date(2023, 11, 18, 16, 0, 0), home: 'PAC', visiting: 'Br III' },
                     ]}
                 />
                 <p>
-                    <T sk="(15 min. prestávka na dobehnutie)" en="(15 min. catch-up break)" />
+                    <T sk="(30 min. prestávka na dobehnutie)" en="(30 min. catch-up break)" />
                 </p>
             </section>
             <section>
@@ -72,12 +72,12 @@ export default function PlayOffPage() {
                 </h2>
                 <Schedule
                     matches={[
-                        { name: 'Sf I', time: new Date(2023, 11, 18, 17, 45, 0), home: 'Qf I', visiting: 'Qf IV' },
-                        { name: 'Sf II', time: new Date(2023, 11, 18, 13, 45, 0), home: 'Qf II', visiting: 'Qf III' },
+                        { name: 'Sf I', time: new Date(2023, 11, 18, 17, 0, 0), home: 'Qf I', visiting: 'Qf IV' },
+                        { name: 'Sf II', time: new Date(2023, 11, 18, 17, 30, 0), home: 'Qf II', visiting: 'Qf III' },
                     ]}
                 />
                 <p>
-                    <T sk="(15 min. prestávka na dobehnutie)" en="(15 min. catch-up break)" />
+                    <T sk="(30 min. prestávka na dobehnutie)" en="(30 min. catch-up break)" />
                 </p>
             </section>
             <section>
@@ -86,6 +86,12 @@ export default function PlayOffPage() {
                 </h2>
                 <Schedule
                     matches={[
+                        {
+                            name: <T sk="Cena Bc. Petra Burdu" en="Bc. Peter Burda award" />,
+                            time: new Date(2023, 11, 18, 18, 30, 0),
+                            home: 'PIN',
+                            visiting: 'VID',
+                        },
                         {
                             name: <T sk="3. miesto" en="3rd place" />,
                             time: new Date(2023, 11, 18, 19, 0, 0),
@@ -100,6 +106,12 @@ export default function PlayOffPage() {
                         },
                     ]}
                 />
+            </section>
+            <section>
+                <h2>
+                    <T sk="Vyhodnotenie" en="Award Ceremony" />
+                </h2>
+                <p>{new Date(2023, 11, 18, 20, 0, 0).toLocaleTimeString()}</p>
             </section>
         </>
     );
