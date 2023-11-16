@@ -22,7 +22,7 @@ const groups: GroupData[] = [
             {
                 name: 'Mäkčeň a Vokáň',
                 abbrev: 'BBH',
-                points: 0,
+                points: 3,
                 players: [{ name: 'Matúš Kapičák' }, { name: 'Michal Sokolík' }],
             },
             {
@@ -86,7 +86,7 @@ const groups: GroupData[] = [
             {
                 name: 'Michal David',
                 abbrev: 'MID',
-                points: 0,
+                points: 2,
                 players: [{ name: 'Dávid Fejczo' }, { name: 'Michal Fridrich' }],
             },
             {
@@ -115,7 +115,7 @@ const groups: GroupData[] = [
             {
                 name: 'Onspiruk sa ostatnymi',
                 abbrev: 'OCO',
-                points: 0,
+                points: 1,
                 players: [{ name: 'Jitka Viceníková' }, { name: 'Adam Balušeskul' }],
             },
             {
@@ -150,11 +150,35 @@ const matches: GroupMatchesData[] = [
         group: 'A',
         matches: [
             {
+                homeTeam: 'BBH',
+                visitingTeam: 'NPV',
+                results: [
+                    [10, 7],
+                    [10, 8],
+                ],
+            },
+            {
+                homeTeam: 'BBH',
+                visitingTeam: 'TAP',
+                results: [
+                    [10, 6],
+                    [10, 6],
+                ],
+            },
+            {
                 homeTeam: 'NPV',
                 visitingTeam: 'PIN',
                 results: [
                     [10, 0],
                     [10, 0],
+                ],
+            },
+            {
+                homeTeam: 'BBH',
+                visitingTeam: 'PIN',
+                results: [
+                    [10, 1],
+                    [10, 1],
                 ],
             },
             {
@@ -249,10 +273,27 @@ const matches: GroupMatchesData[] = [
                 ],
             },
             {
+                homeTeam: 'MID',
+                visitingTeam: 'DIF',
+                results: [
+                    [10, 5],
+                    [10, 5],
+                ],
+            },
+            {
                 homeTeam: 'KYM',
                 visitingTeam: 'DIF',
                 results: [
                     [10, 0],
+                    [10, 4],
+                ],
+            },
+            {
+                homeTeam: 'MID',
+                visitingTeam: 'PRC',
+                results: [
+                    [10, 3],
+                    [3, 10],
                     [10, 4],
                 ],
             },
@@ -284,6 +325,14 @@ const matches: GroupMatchesData[] = [
                     [10, 4],
                     [9, 10],
                     [10, 6],
+                ],
+            },
+            {
+                homeTeam: 'OCO',
+                visitingTeam: 'VID',
+                results: [
+                    [10, 0],
+                    [10, 1],
                 ],
             },
             {
