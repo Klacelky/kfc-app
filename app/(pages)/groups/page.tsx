@@ -1,5 +1,6 @@
 import T from '@/utils/i18n/t';
 import { RESERVATION_EN, RESERVATION_SK } from '@/utils/links';
+import classNames from 'classnames';
 import Link from 'next/link';
 import { Fragment } from 'react';
 
@@ -34,7 +35,7 @@ const groups: GroupData[] = [
             {
                 name: 'Timon a pumba',
                 abbrev: 'TAP',
-                points: 0,
+                points: 1,
                 players: [{ name: 'Jozef Tadian' }, { name: 'Timotej Martykán' }],
             },
             {
@@ -155,6 +156,14 @@ const matches: GroupMatchesData[] = [
                 results: [
                     [10, 7],
                     [10, 8],
+                ],
+            },
+            {
+                homeTeam: 'TAP',
+                visitingTeam: 'PIN',
+                results: [
+                    [10, 3],
+                    [10, 0],
                 ],
             },
             {
@@ -362,23 +371,35 @@ function GroupCard({ name, teams }: GroupData) {
                 <span className="align-sub">{name}</span>
             </h2>
             <div className="flex flex-col gap-3">
-                {teams.map(({ name, abbrev, points, players }) => (
-                    <div key={name}>
-                        <div className="flex flex-row items-center gap-3">
-                            <h3>{abbrev}</h3>
-                            <h3>{name}</h3>
-                            <h3 className="flex-grow text-right">
-                                {points}
-                                <T sk="b" en="pts" />
-                            </h3>
+                {teams
+                    .sort((a, b) => b.points - a.points)
+                    .map(({ name, abbrev, points, players }, index) => (
+                        <div key={name}>
+                            <div className="flex flex-row items-center gap-3">
+                                <h3
+                                    className={classNames(
+                                        'translate-y-2 w-6 h-6 text-center rounded-full',
+                                        { 'text-beige bg-red': index == 3 },
+                                        { 'dark:text-blue text-beige dark:bg-beige bg-blue': index == 1 || index == 2},
+                                        { 'text-blue bg-teal': index == 0 },
+                                    )}
+                                >
+                                    {index + 1}
+                                </h3>
+                                <h3>{abbrev}</h3>
+                                <h3>{name}</h3>
+                                <h3 className="flex-grow text-right">
+                                    {points}
+                                    <T sk="b" en="pts" />
+                                </h3>
+                            </div>
+                            <div>
+                                {players.map(({ name }) => (
+                                    <div key={name}>{name}</div>
+                                ))}
+                            </div>
                         </div>
-                        <div>
-                            {players.map(({ name }) => (
-                                <div key={name}>{name}</div>
-                            ))}
-                        </div>
-                    </div>
-                ))}
+                    ))}
             </div>
         </div>
     );
