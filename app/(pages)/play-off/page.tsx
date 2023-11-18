@@ -239,6 +239,11 @@ export default function PlayOffPage() {
                             time: new Date(2023, 11, 18, 19, 30, 0),
                             home: 'PAC',
                             visiting: 'KYM',
+                            results: [
+                                [9, 10],
+                                [3, 10],
+                                [6, 10],
+                            ],
                         },
                     ]}
                 />
