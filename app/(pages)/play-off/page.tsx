@@ -229,7 +229,7 @@ export default function PlayOffPage() {
                             visiting: 'NPV',
                             results: [
                                 [6, 10],
-                                [10, 5],
+                                [10, 4],
                                 [10, 2],
                                 [10, 3],
                             ],
