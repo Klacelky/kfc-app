@@ -227,6 +227,12 @@ export default function PlayOffPage() {
                             time: new Date(2023, 11, 18, 19, 0, 0),
                             home: 'BBH',
                             visiting: 'NPV',
+                            results: [
+                                [6, 10],
+                                [10, 5],
+                                [10, 2],
+                                [10, 3],
+                            ],
                         },
                         {
                             name: <T sk="Finále" en="Finals" />,
