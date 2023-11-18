@@ -226,13 +226,13 @@ export default function PlayOffPage() {
                             name: <T sk="3. miesto" en="3rd place" />,
                             time: new Date(2023, 11, 18, 19, 0, 0),
                             home: 'BBH',
-                            visiting: 'Sf II L',
+                            visiting: 'NPV',
                         },
                         {
                             name: <T sk="Finále" en="Finals" />,
                             time: new Date(2023, 11, 18, 19, 30, 0),
                             home: 'PAC',
-                            visiting: 'Sf II W',
+                            visiting: 'KYM',
                         },
                     ]}
                 />
