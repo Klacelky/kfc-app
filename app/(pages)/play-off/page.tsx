@@ -1,4 +1,5 @@
 import T from '@/utils/i18n/t';
+import { useLiveWS } from '@/utils/useLive';
 import classNames from 'classnames';
 import { Fragment, ReactNode } from 'react';
 
@@ -46,6 +47,8 @@ function Schedule({ matches }: ScheduleData) {
 }
 
 export default function PlayOffPage() {
+    const { gameData } = useLiveWS();
+
     return (
         <>
             <h1>Play-off</h1>
@@ -171,7 +174,18 @@ export default function PlayOffPage() {
                 </h2>
                 <Schedule
                     matches={[
-                        { name: 'Sf I', time: new Date(2023, 11, 18, 17, 0, 0), home: 'BBH', visiting: 'PAC' },
+                        {
+                            name: 'Sf I',
+                            time: new Date(2023, 11, 18, 17, 0, 0),
+                            home: 'BBH',
+                            visiting: 'PAC',
+                            results: [
+                                [9, 10],
+                                [7, 10],
+                                [10, 7],
+                                [9, 10],
+                            ],
+                        },
                         { name: 'Sf II', time: new Date(2023, 11, 18, 17, 30, 0), home: 'NPV', visiting: 'KYM' },
                     ]}
                 />
@@ -194,13 +208,13 @@ export default function PlayOffPage() {
                         {
                             name: <T sk="3. miesto" en="3rd place" />,
                             time: new Date(2023, 11, 18, 19, 0, 0),
-                            home: 'Sf I L',
+                            home: 'BBH',
                             visiting: 'Sf II L',
                         },
                         {
                             name: <T sk="Finále" en="Finals" />,
                             time: new Date(2023, 11, 18, 19, 30, 0),
-                            home: 'Sf I W',
+                            home: 'PAC',
                             visiting: 'Sf II W',
                         },
                     ]}
