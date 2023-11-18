@@ -47,8 +47,6 @@ function Schedule({ matches }: ScheduleData) {
 }
 
 export default function PlayOffPage() {
-    const { gameData } = useLiveWS();
-
     return (
         <>
             <h1>Play-off</h1>
