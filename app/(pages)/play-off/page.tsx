@@ -10,13 +10,14 @@ interface ScheduleData {
         home: string;
         visiting: string;
         results?: [number, number][];
+        win?: number;
     }[];
 }
 
 function Schedule({ matches }: ScheduleData) {
     return (
         <div className="grid gap-x-4 gap-y-2 grid-cols-1 sm:grid-cols-12 max-w-5xl">
-            {matches.map(({ name, time, home, visiting, results }) => (
+            {matches.map(({ name, time, home, visiting, results, win }) => (
                 <Fragment key={name?.toString()}>
                     <div className="sm:col-span-6 flex flex-row gap-x-1 sm:justify-between">
                         <div>{name}</div>
@@ -24,7 +25,8 @@ function Schedule({ matches }: ScheduleData) {
                     </div>
                     <div
                         className={classNames('col-span-1 sm:text-right', {
-                            'font-bold': (results?.filter(([homeScore, _]) => homeScore == 10).length || 0) >= 3,
+                            'font-bold':
+                                (results?.filter(([homeScore, _]) => homeScore == 10).length || 0) >= (win || 3),
                         })}
                     >
                         {home}
@@ -35,7 +37,8 @@ function Schedule({ matches }: ScheduleData) {
                     <div
                         className={classNames('sm:col-span-1', {
                             'font-bold':
-                                (results?.filter(([_, visitingScore]) => visitingScore == 10).length || 0) >= 3,
+                                (results?.filter(([_, visitingScore]) => visitingScore == 10).length || 0) >=
+                                (win || 3),
                         })}
                     >
                         {visiting}
@@ -184,7 +187,17 @@ export default function PlayOffPage() {
                                 [9, 10],
                             ],
                         },
-                        { name: 'Sf II', time: new Date(2023, 11, 18, 17, 30, 0), home: 'NPV', visiting: 'KYM' },
+                        {
+                            name: 'Sf II',
+                            time: new Date(2023, 11, 18, 17, 30, 0),
+                            home: 'NPV',
+                            visiting: 'KYM',
+                            results: [
+                                [6, 10],
+                                [5, 10],
+                                [9, 10],
+                            ],
+                        },
                     ]}
                 />
                 <p>
@@ -202,6 +215,12 @@ export default function PlayOffPage() {
                             time: new Date(2023, 11, 18, 18, 30, 0),
                             home: 'PIN',
                             visiting: 'VID',
+                            results: [
+                                [10, 7],
+                                [3, 10],
+                                [8, 10],
+                            ],
+                            win: 2,
                         },
                         {
                             name: <T sk="3. miesto" en="3rd place" />,
