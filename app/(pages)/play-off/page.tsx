@@ -171,8 +171,8 @@ export default function PlayOffPage() {
                 </h2>
                 <Schedule
                     matches={[
-                        { name: 'Sf I', time: new Date(2023, 11, 18, 17, 0, 0), home: 'Qf I', visiting: 'Qf IV' },
-                        { name: 'Sf II', time: new Date(2023, 11, 18, 17, 30, 0), home: 'Qf II', visiting: 'Qf III' },
+                        { name: 'Sf I', time: new Date(2023, 11, 18, 17, 0, 0), home: 'BBH', visiting: 'PAC' },
+                        { name: 'Sf II', time: new Date(2023, 11, 18, 17, 30, 0), home: 'NPV', visiting: 'KYM' },
                     ]}
                 />
                 <p>
