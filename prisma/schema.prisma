@@ -12,3 +12,25 @@ datasource db {
     provider = "postgresql"
     url      = env("APP_DATABASE_URL")
 }
+
+// Tournaments
+
+enum StatsPublished {
+    NOW
+    AFTER
+    NEVER
+}
+
+model Tournament {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name           String
+    slug           String         @unique
+    startDate      DateTime
+    endDate        DateTime
+    description    String
+    publishedAt    DateTime?
+    statsPublished StatsPublished
+}
