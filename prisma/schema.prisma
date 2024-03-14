@@ -34,3 +34,16 @@ model Tournament {
     publishedAt    DateTime?
     statsPublished StatsPublished
 }
+
+
+// Players
+
+model Player {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name String
+    description String @default("")
+    photo String?
+}
