@@ -1,11 +1,9 @@
-import { NotFoundError, PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { NextRequest, NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 
-export function handle<TContext>(
-    fn: (request: Request | NextRequest, context: TContext) => Promise<Response | NextResponse>,
-) {
-    return async (request: Request | NextRequest, context: TContext) => {
+export function handle<TContext>(fn: (request: NextRequest, context: TContext) => Promise<Response | NextResponse>) {
+    return async (request: NextRequest, context: TContext) => {
         try {
             return await fn(request, context);
         } catch (error) {
@@ -15,6 +13,15 @@ export function handle<TContext>(
                         {
                             error: 'Not Found',
                             message: 'Requested entity was not found or is not accessible',
+                        },
+                        { status: 404 },
+                    );
+                }
+                if (error.code == 'P2018') {
+                    return Response.json(
+                        {
+                            error: 'Not Found',
+                            message: 'Requested child entity was not found or is not accessible',
                         },
                         { status: 404 },
                     );
