@@ -34,7 +34,8 @@ model Tournament {
     publishedAt    DateTime?
     statsPublished StatsPublished
 
-    teams Team[]
+    teams  Team[]
+    groups Group[]
 }
 
 // Players
@@ -65,4 +66,34 @@ model Team {
     tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Restrict)
     tournamentId String
     players      Player[]
+    group        GroupTeam?
+}
+
+// Groups
+
+model Group {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name        String
+    slug        String
+    description String @default("")
+
+    tournament   Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Restrict)
+    tournamentId String
+    teams        GroupTeam[]
+}
+
+model GroupTeam {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    standing Int?
+
+    group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+    groupId String
+    team    Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+    teamId  String @unique
 }
