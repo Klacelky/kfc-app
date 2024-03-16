@@ -6,3 +6,9 @@ export const BaseDtoSchema = z.object({
     updatedAt: z.coerce.date(),
 });
 export type BaseGetDto = z.infer<typeof BaseDtoSchema>;
+
+export function slug() {
+    return z
+        .string()
+        .regex(/^[a-z0-9_-]{3,32}/, 'Slug must be 3 to 32 lowercase letters, numbers, underscore or hyphen');
+}
