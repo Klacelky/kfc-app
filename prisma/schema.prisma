@@ -60,13 +60,15 @@ model Team {
     updatedAt DateTime @updatedAt
 
     name        String
-    abbrev      String @unique
+    abbrev      String
     description String @default("")
 
     tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Restrict)
     tournamentId String
     players      Player[]
     group        GroupTeam?
+
+    @@unique([abbrev, tournamentId])
 }
 
 // Groups
@@ -83,6 +85,8 @@ model Group {
     tournament   Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Restrict)
     tournamentId String
     teams        GroupTeam[]
+
+    @@unique([slug, tournamentId])
 }
 
 model GroupTeam {

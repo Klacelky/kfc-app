@@ -11,8 +11,8 @@ export interface RouteContext {
     params: RouteParams;
 }
 
-export const GET = handle(async (_: Request, { params: { idOrAbbrev } }: RouteContext) => {
-    return Response.json(await getTeam(idOrAbbrev));
+export const GET = handle(async (_: Request, { params: { idOrAbbrev, idOrSlug } }: RouteContext) => {
+    return Response.json(await getTeam(idOrSlug, idOrAbbrev));
 });
 
 export const PUT = handle(async (request: Request, { params: { idOrAbbrev } }: RouteContext) => {
