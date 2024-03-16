@@ -1,6 +1,9 @@
-import { createTournament, listTournaments } from '@/services/tournaments';
-import { handle } from '../errors';
 import { TournamentCreateDtoSchema } from '@/dtos/tournament';
+import { createTournament, listTournaments } from '@/services/tournaments';
+import { handle } from '@/utils/api';
+import { RouteParams as ParentRouteParams } from '../route';
+
+export interface RouteParams extends ParentRouteParams {}
 
 export const GET = handle(async () => {
     return Response.json(await listTournaments());

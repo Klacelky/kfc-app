@@ -47,3 +47,7 @@ export function handle<TContext>(fn: (request: NextRequest, context: TContext) =
         }
     };
 }
+
+export type RouteContext<TParams> = {
+    params: TParams;
+};

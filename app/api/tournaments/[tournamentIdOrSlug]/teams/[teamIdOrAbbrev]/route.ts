@@ -1,26 +1,24 @@
 import { TeamUpdateDtoSchema } from '@/dtos/team';
 import { deleteTeam, getTeam, updateTeam } from '@/services/teams';
-import { handle } from '../../../../errors';
-import { RouteParams as TournamentRouteParams } from '../../route';
+import { RouteContext, handle } from '@/utils/api';
+import { RouteParams as ParentRouteParams } from '../route';
 
-export interface RouteParams extends TournamentRouteParams {
+export interface RouteParams extends ParentRouteParams {
     teamIdOrAbbrev: string;
 }
 
-export interface RouteContext {
-    params: RouteParams;
-}
+export const GET = handle(
+    async (_: Request, { params: { tournamentIdOrSlug, teamIdOrAbbrev } }: RouteContext<RouteParams>) => {
+        return Response.json(await getTeam(tournamentIdOrSlug, teamIdOrAbbrev));
+    },
+);
 
-export const GET = handle(async (_: Request, { params: { tournamentIdOrSlug, teamIdOrAbbrev } }: RouteContext) => {
-    return Response.json(await getTeam(tournamentIdOrSlug, teamIdOrAbbrev));
-});
-
-export const PUT = handle(async (request: Request, { params: { teamIdOrAbbrev } }: RouteContext) => {
+export const PUT = handle(async (request: Request, { params: { teamIdOrAbbrev } }: RouteContext<RouteParams>) => {
     const data = await TeamUpdateDtoSchema.parseAsync(await request.json());
     return Response.json(await updateTeam(teamIdOrAbbrev, data));
 });
 
-export const DELETE = handle(async (_: Request, { params: { teamIdOrAbbrev } }: RouteContext) => {
+export const DELETE = handle(async (_: Request, { params: { teamIdOrAbbrev } }: RouteContext<RouteParams>) => {
     await deleteTeam(teamIdOrAbbrev);
     return new Response(null, { status: 204 });
 });

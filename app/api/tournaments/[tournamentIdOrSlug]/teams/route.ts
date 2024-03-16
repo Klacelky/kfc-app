@@ -2,21 +2,19 @@ import { NextRequest } from 'next/server';
 import { TeamCreateDtoSchema, TeamQueryDtoSchema } from '@/dtos/team';
 import { createTeam, listTeams } from '@/services/teams';
 import { getQueryObject } from '@/utils/query';
-import { handle } from '../../../errors';
-import { RouteParams as TournamentRouteParams } from '../route';
+import { RouteContext, handle } from '@/utils/api';
+import { RouteParams as ParentRouteParams } from '../route';
 
-export interface RouteParams extends TournamentRouteParams {}
+export interface RouteParams extends ParentRouteParams {}
 
-export interface RouteContext {
-    params: RouteParams;
-}
+export const GET = handle(
+    async (request: NextRequest, { params: { tournamentIdOrSlug } }: RouteContext<RouteParams>) => {
+        const query = await TeamQueryDtoSchema.parseAsync(getQueryObject(request));
+        return Response.json(await listTeams(tournamentIdOrSlug, query));
+    },
+);
 
-export const GET = handle(async (request: NextRequest, { params: { tournamentIdOrSlug } }: RouteContext) => {
-    const query = await TeamQueryDtoSchema.parseAsync(getQueryObject(request));
-    return Response.json(await listTeams(tournamentIdOrSlug, query));
-});
-
-export const POST = handle(async (request: Request, { params: { tournamentIdOrSlug } }: RouteContext) => {
+export const POST = handle(async (request: Request, { params: { tournamentIdOrSlug } }: RouteContext<RouteParams>) => {
     const data = await TeamCreateDtoSchema.parseAsync(await request.json());
     return Response.json(await createTeam(tournamentIdOrSlug, data), { status: 201 });
 });
