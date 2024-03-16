@@ -11,12 +11,12 @@ export interface RouteContext {
     params: RouteParams;
 }
 
-export const GET = handle(async (request: NextRequest, { params: { idOrSlug } }: RouteContext) => {
+export const GET = handle(async (request: NextRequest, { params: { tournamentIdOrSlug } }: RouteContext) => {
     const query = await TeamQueryDtoSchema.parseAsync(getQueryObject(request));
-    return Response.json(await listTeams(idOrSlug, query));
+    return Response.json(await listTeams(tournamentIdOrSlug, query));
 });
 
-export const POST = handle(async (request: Request, { params: { idOrSlug } }: RouteContext) => {
+export const POST = handle(async (request: Request, { params: { tournamentIdOrSlug } }: RouteContext) => {
     const data = await TeamCreateDtoSchema.parseAsync(await request.json());
-    return Response.json(await createTeam(idOrSlug, data), { status: 201 });
+    return Response.json(await createTeam(tournamentIdOrSlug, data), { status: 201 });
 });
