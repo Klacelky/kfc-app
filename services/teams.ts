@@ -20,8 +20,8 @@ export async function listTeams(tournamentId: string, { search }: TeamQueryDto):
 }
 
 export async function getTeam(tournamentId: string, idOrAbbrev: string): Promise<TeamGetDto> {
-    return await prisma.team.findUniqueOrThrow({
-        where: { id: idOrAbbrev, OR: [{ abbrev: idOrAbbrev, tournamentId }] },
+    return await prisma.team.findFirstOrThrow({
+        where: { OR: [{ id: idOrAbbrev }, { abbrev: idOrAbbrev, tournamentId }] },
         include: { players: true },
     });
 }
