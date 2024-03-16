@@ -100,4 +100,6 @@ model GroupTeam {
     groupId String
     team    Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
     teamId  String @unique
+
+    @@unique([groupId, standing])
 }
