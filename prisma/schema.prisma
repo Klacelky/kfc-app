@@ -49,7 +49,9 @@ model Player {
     description String  @default("")
     photo       String?
 
-    teams Team[]
+    teams           Team[]
+    playerPositions PlayerPosition[]
+    goals           Goal[]
 }
 
 // Teams
@@ -63,10 +65,11 @@ model Team {
     abbrev      String
     description String @default("")
 
-    tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Restrict)
+    tournament   Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Restrict)
     tournamentId String
     players      Player[]
     group        GroupTeam?
+    macthes      MatchTeam[]
 
     @@unique([abbrev, tournamentId])
 }
@@ -102,4 +105,87 @@ model GroupTeam {
     teamId  String @unique
 
     @@unique([groupId, standing])
+}
+
+// Matches
+
+model Match {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name          String?
+    expectedStart DateTime?
+    playfoffLayer Int?
+
+    teams MatchTeam[]
+    games MatchGame[]
+}
+
+enum MatchTeamType {
+    HOME
+    VISITING
+}
+
+model MatchTeam {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    type MatchTeamType
+
+    team    Team   @relation(fields: [teamId], references: [id])
+    teamId  String
+    match   Match  @relation(fields: [matchId], references: [id])
+    matchId String
+}
+
+enum TeamColor {
+    BLUE
+    WHITE
+}
+
+model MatchGame {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    startedAt     DateTime  @default(now())
+    finishedAt    DateTime?
+    homeTeamColor TeamColor
+
+    match           Match            @relation(fields: [matchId], references: [id])
+    matchId         String
+    playerPositions PlayerPosition[]
+}
+
+model Goal {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    timestamp DateTime @default(now())
+    own       Boolean
+
+    player   Player @relation(fields: [playerId], references: [id])
+    playerId String
+}
+
+enum PlayerPositionType {
+    STRIKER
+    DEFENDER
+}
+
+model PlayerPosition {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    type      PlayerPositionType
+    timestamp DateTime           @default(now())
+
+    player      Player    @relation(fields: [playerId], references: [id])
+    playerId    String
+    game        MatchGame @relation(fields: [matchGameId], references: [id])
+    matchGameId String
 }
