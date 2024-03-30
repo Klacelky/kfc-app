@@ -8,6 +8,7 @@ import logoImg from '@/public/logo_web_100.png';
 import { ReactNode, useContext, useState } from 'react';
 import { LangContext } from '@/utils/i18n/LangContext';
 import T from '@/utils/i18n/t';
+import { usePathname } from 'next/navigation';
 
 function BurgerButton({ open, onClick }: { open: boolean; onClick: () => void }) {
     return (
@@ -37,6 +38,53 @@ function NavBarItem({ href, children }: { href: string; children: ReactNode }) {
     return (
         <li className="text-blue text-4xl leading-none font-display translate-y-2">
             <Link href={href}>{children}</Link>
+        </li>
+    );
+}
+
+function NavBarSubMenu({ href, title, children }: { href?: string; title: ReactNode; children: ReactNode }) {
+    const pathname = usePathname();
+    const [menuOpen, setMenuOpen] = useState(href && pathname.startsWith(href));
+    return (
+        <li className="text-blue text-4xl leading-none font-display translate-y-2">
+            <button
+                onClick={(event) => {
+                    setMenuOpen(!menuOpen);
+                    event.stopPropagation();
+                }}
+                className="flex gap-4 items-center"
+            >
+                <span>{title}</span>
+                <span className="relative">
+                    <span
+                        className={classNames(
+                            'absolute block bg-blue w-5 h-1 transition-transform translate-x-1 translate-y-[-0.5rem]',
+                            { 'rotate-[-45deg] ': !menuOpen, 'rotate-45': menuOpen },
+                        )}
+                    >
+                        {' '}
+                    </span>
+                    <span
+                        className={classNames(
+                            'absolute block bg-blue w-5 h-1 transition-transform translate-x-[-0.5rem] translate-y-[-0.5rem]',
+                            { 'rotate-[-45deg] ': menuOpen, 'rotate-45': !menuOpen },
+                        )}
+                    >
+                        {' '}
+                    </span>
+                </span>
+            </button>
+            {menuOpen ? (
+                <ul
+                    className={classNames(
+                        'flex flex-col gap-6 items-start flex-grow pl-6 overflow-hidden',
+                        // 'lg:flex-row',
+                    )}
+                    onClick={() => setMenuOpen(false)}
+                >
+                    {children}
+                </ul>
+            ) : null}
         </li>
     );
 }
@@ -100,6 +148,11 @@ export default function Header({ logo }: { logo: boolean }) {
                             <T sk="Skupiny" en="Groups" />
                         </NavBarItem>
                         <NavBarItem href="/play-off">Play-off</NavBarItem>
+                        <NavBarSubMenu href="/archive" title={<T sk="Archív" en="Archive" />}>
+                            <NavBarItem href="/archive/podzim2023">
+                                <T sk="Podzim 2023" en="Autumn 2023" />
+                            </NavBarItem>
+                        </NavBarSubMenu>
                     </ul>
                     <ul className="flex flex-row text-4xl gap-2">
                         {langsAvailable.map(({ lang: langAvailable, emoji }) => (
