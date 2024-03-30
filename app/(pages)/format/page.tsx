@@ -36,13 +36,13 @@ export default function FormatPage() {
                     <T
                         sk={
                             <>
-                                Štartovné na osobu je 50 Kč teda 100 Kč za tím. Štartovné pošlite na účet
+                                Štartovné na osobu je 100 Kč teda 200 Kč za tím. Štartovné pošlite na účet
                                 123-8341390277/0100 (CZ1301000001238341390277) alebo prineste na izbu 315.
                             </>
                         }
                         en={
                             <>
-                                Entry fee per person is 50 CZK, so 100 CZK per team. Please send it to
+                                Entry fee per person is 100 CZK, so 200 CZK per team. Please send it to
                                 123-8341390277/0100 (CZ1301000001238341390277) or bring it to the room 315.
                             </>
                         }
@@ -73,14 +73,14 @@ export default function FormatPage() {
                     <T
                         sk={
                             <>
-                                Žrebovanie skupín prebehne 9.11. o 20.00 v spoločenskej miestnosti. Prihlásené tímy sú
+                                Žrebovanie skupín prebehne 5.4. o 20.00 v spoločenskej miestnosti. Prihlásené tímy sú
                                 rozdelené do štyroch košov (I-IV). Do každej zo štyroch skupín (A-D) bude vyžrebovaný
                                 jeden tím z každého koša.
                             </>
                         }
                         en={
                             <>
-                                Group drawings will be held on Nov. 9 at 8 p.m. in the TV Room. Registered teams are
+                                Group drawings will be held on Apr. 5 at 8 p.m. in the TV Room. Registered teams are
                                 divided into four baskets (I-IV). One team from each basket will be drawn into each of
                                 the four groups (A-D).
                             </>
@@ -113,7 +113,7 @@ export default function FormatPage() {
                     <T
                         sk={
                             <>
-                                Po rozlosovaní skupín (9.11. 20.00) majú tímy týždeň (10.11. - 17.11.) na to, aby
+                                Po rozlosovaní skupín majú tímy týždeň (6.4. - 12.4.) na to, aby
                                 odohrali svoje skupinové zápasy. V skupine hrá každý s každým BO3, teda najlepší z troch
                                 hier. Dátumy a časy zápasov si tímy dohodnú individuálne so svojimi skupinovými
                                 súpermi. Každej skupine spravíme na dohadovanie messenger skupinu v ktorej budeme aj my
@@ -122,7 +122,7 @@ export default function FormatPage() {
                         }
                         en={
                             <>
-                                After the groups are drawn (9.11. 20.00), teams have one week (10.11.-17.11.) to play
+                                After the groups are drawn, teams have one week (Apr. 6 - Apr. 12) to play
                                 their group matches. In the groups, teams play each other BO3, i.e. best of three
                                 games. The teams will arrange the dates and times of the matches individually with
                                 their group opponents. We will make a messenger group for each group to arrange this,
@@ -222,13 +222,13 @@ export default function FormatPage() {
                     <T
                         sk={
                             <>
-                                Vyraďovacie zápasy sa odohrajú 18.11. (sobota). Na rozdiel od skupín si v play-off
+                                Vyraďovacie zápasy sa odohrajú 13.4. (sobota). Na rozdiel od skupín si v play-off
                                 zahráte BO5 teda najlepší z piatich zápasov. Harmonogram zápasov nájdeš
                             </>
                         }
                         en={
                             <>
-                                Play-off games will be played on 18.11. (Saturday). Unlike the groups, the play-off will
+                                Play-off games will be played on Apr. 13 (Saturday). Unlike the groups, the play-off will
                                 be played BO5, i.e. best of five games. You can find the schedule
                             </>
                         }
