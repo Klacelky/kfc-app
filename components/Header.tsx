@@ -54,11 +54,11 @@ function NavBarSubMenu({ href, title, children }: { href?: string; title: ReactN
                 }}
                 className="flex gap-4 items-center"
             >
-                <span>{title}</span>
-                <span className="relative">
+                <div>{title}</div>
+                <div className="relative block h-9 w-9">
                     <span
                         className={classNames(
-                            'absolute block bg-blue w-5 h-1 transition-transform translate-x-1 translate-y-[-0.5rem]',
+                            'absolute block bg-blue w-5 h-1 transition-transform top-1/4 translate-x-[0.4rem]',
                             { 'rotate-[-45deg] ': !menuOpen, 'rotate-45': menuOpen },
                         )}
                     >
@@ -66,31 +66,29 @@ function NavBarSubMenu({ href, title, children }: { href?: string; title: ReactN
                     </span>
                     <span
                         className={classNames(
-                            'absolute block bg-blue w-5 h-1 transition-transform translate-x-[-0.5rem] translate-y-[-0.5rem]',
+                            'absolute block bg-blue w-5 h-1 transition-transform top-1/4 translate-x-[-0.4rem]',
                             { 'rotate-[-45deg] ': menuOpen, 'rotate-45': !menuOpen },
                         )}
                     >
                         {' '}
                     </span>
-                </span>
+                </div>
             </button>
-            {menuOpen ? (
-                <ul
-                    className={classNames(
-                        'flex flex-col gap-6 items-start flex-grow pl-6 overflow-hidden',
-                        // 'lg:flex-row',
-                    )}
-                    onClick={() => setMenuOpen(false)}
-                >
-                    {children}
-                </ul>
-            ) : null}
+            <ul
+                className={classNames(
+                    'flex flex-col gap-4 items-start flex-grow pl-6 overflow-hidden transition-all',
+                    { 'max-h-20': menuOpen, 'max-h-0': !menuOpen },
+                )}
+                onClick={() => setMenuOpen(false)}
+            >
+                {children}
+            </ul>
         </li>
     );
 }
 
 export default function Header({ logo }: { logo: boolean }) {
-    const [menuOpen, setMenuOpen] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(true);
     const { setCurrentLang, langsAvailable } = useContext(LangContext);
     return (
         <header
