@@ -85,9 +85,10 @@ model Group {
     slug        String
     description String @default("")
 
-    tournament   Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Restrict)
-    tournamentId String
-    teams        GroupTeam[]
+    tournament        Tournament   @relation(fields: [tournamentId], references: [id], onDelete: Restrict)
+    tournamentId      String
+    teams             GroupTeam[]
+    successiveMatches TeamSource[]
 
     @@unique([slug, tournamentId])
 }
@@ -116,15 +117,36 @@ model Match {
 
     name          String?
     expectedStart DateTime?
-    playfoffLayer Int?
+    playoffLayer  Int?
 
-    teams MatchTeam[]
-    games MatchGame[]
+    teams             MatchTeam[]
+    games             MatchGame[]
+    successiveMatches TeamSource[] @relation(name: "successiveMatches")
+    teamSources       TeamSource[] @relation(name: "teamSources")
 }
 
 enum MatchTeamType {
     HOME
     VISITING
+}
+
+model TeamSource {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    type     MatchTeamType
+    standing Int?
+    winner   Boolean?
+
+    sourceGroup   Group?  @relation(fields: [sourceGroupId], references: [id], onDelete: Cascade)
+    sourceGroupId String?
+    sourceMatch   Match?  @relation(name: "successiveMatches", fields: [sourceMatchId], references: [id], onDelete: Cascade)
+    sourceMatchId String?
+    match         Match   @relation(name: "teamSources", fields: [matchId], references: [id], onDelete: Cascade)
+    matchId       String
+
+    @@unique([matchId, type])
 }
 
 model MatchTeam {
@@ -134,10 +156,13 @@ model MatchTeam {
 
     type MatchTeamType
 
-    team    Team   @relation(fields: [teamId], references: [id])
+    team    Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
     teamId  String
-    match   Match  @relation(fields: [matchId], references: [id])
+    match   Match  @relation(fields: [matchId], references: [id], onDelete: Cascade)
     matchId String
+
+    @@unique([type, matchId])
+    @@unique([teamId, matchId])
 }
 
 enum TeamColor {
@@ -154,9 +179,10 @@ model MatchGame {
     finishedAt    DateTime?
     homeTeamColor TeamColor
 
-    match           Match            @relation(fields: [matchId], references: [id])
+    match           Match             @relation(fields: [matchId], references: [id], onDelete: Cascade)
     matchId         String
-    playerPositions PlayerPosition[]
+    playerPositions PlayerPositions[]
+    goals           Goal[]
 }
 
 model Goal {
@@ -166,9 +192,25 @@ model Goal {
 
     timestamp DateTime @default(now())
     own       Boolean
+    photo     Boolean
+    out       Boolean
 
-    player   Player @relation(fields: [playerId], references: [id])
+    game     MatchGame @relation(fields: [gameId], references: [id], onDelete: Cascade)
+    gameId   String
+    player   Player    @relation(fields: [playerId], references: [id], onDelete: Restrict)
     playerId String
+}
+
+model PlayerPositions {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    timestamp DateTime @default(now())
+
+    game    MatchGame        @relation(fields: [gameId], references: [id], onDelete: Cascade)
+    gameId  String
+    players PlayerPosition[]
 }
 
 enum PlayerPositionType {
@@ -181,11 +223,12 @@ model PlayerPosition {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    type      PlayerPositionType
-    timestamp DateTime           @default(now())
+    type PlayerPositionType
 
-    player      Player    @relation(fields: [playerId], references: [id])
-    playerId    String
-    game        MatchGame @relation(fields: [matchGameId], references: [id])
-    matchGameId String
+    player            Player          @relation(fields: [playerId], references: [id], onDelete: Restrict)
+    playerId          String
+    playerPositions   PlayerPositions @relation(fields: [playerPositionsId], references: [id], onDelete: Cascade)
+    playerPositionsId String
+
+    @@unique([playerPositionsId, playerId])
 }

@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { BaseDtoSchema, slug } from './base';
 
 export const StatsPublishedSchema = z.enum(['NOW', 'AFTER', 'NEVER']);
-export type StatsPublished = z.infer<typeof StatsPublishedSchema>;
+export type StatsPublishedEnum = z.infer<typeof StatsPublishedSchema>;
 
 const TournamentBaseDtoSchema = z.object({
     name: z.string(),

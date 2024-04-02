@@ -18,5 +18,5 @@ export const PUT = handle(async (request: Request, { params: { tournamentIdOrSlu
 
 export const DELETE = handle(async (_: Request, { params: { tournamentIdOrSlug } }: RouteContext<RouteParams>) => {
     await deleteTournament(tournamentIdOrSlug);
-    return new Response('', { status: 204 });
+    return new Response(null, { status: 204 });
 });
