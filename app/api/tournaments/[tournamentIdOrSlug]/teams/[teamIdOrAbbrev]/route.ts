@@ -1,6 +1,6 @@
 import { TeamUpdateDtoSchema } from '@/dtos/team';
 import { deleteTeam, getTeam, updateTeam } from '@/services/teams';
-import { RouteContext, handle } from '@/utils/api';
+import { RouteContext, handle } from '@/utils/server/api';
 import { RouteParams as ParentRouteParams } from '../route';
 
 export interface RouteParams extends ParentRouteParams {

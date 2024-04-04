@@ -1,6 +1,6 @@
 import { Group, GroupTeam, Player, Team } from '@prisma/client';
 import { GroupCreateDto, GroupDetailedGetDto, GroupGetDto, GroupResultsSetDto, GroupUpdateDto } from '@/dtos/group';
-import prisma from '@/utils/db';
+import prisma from '@/utils/server/db';
 
 type GroupTeamWithTeamAndPlayers = GroupTeam & { team: Team & { players: Player[] } };
 

@@ -1,4 +1,4 @@
-import T from '@/utils/i18n/t';
+import T from '@/utils/client/i18n/t';
 import classNames from 'classnames';
 import { Fragment, ReactNode } from 'react';
 

@@ -1,6 +1,6 @@
 import { PlayerUpdateDtoSchema } from '@/dtos/player';
 import { deletePlayer, getPlayer, updatePlayer } from '@/services/players';
-import { RouteContext, handle } from '@/utils/api';
+import { RouteContext, handle } from '@/utils/server/api';
 import { RouteParams as ParentRouteParams } from '../route';
 
 export interface RouteParams extends ParentRouteParams {

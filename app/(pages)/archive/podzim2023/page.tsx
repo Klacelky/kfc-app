@@ -1,4 +1,4 @@
-import T from '@/utils/i18n/t';
+import T from '@/utils/client/i18n/t';
 import GroupsPage from './groupsPage';
 import PlayOffPage from './playoffPage';
 

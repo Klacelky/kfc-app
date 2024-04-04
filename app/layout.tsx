@@ -5,7 +5,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import 'flag-icons/css/flag-icons.min.css';
 import classNames from 'classnames';
-import { LangProvider } from '@/utils/i18n/LangProvider';
+import { LangProvider } from '@/utils/client/i18n/LangProvider';
 
 const nunito = Nunito({
     subsets: ['latin'],

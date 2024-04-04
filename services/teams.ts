@@ -1,5 +1,5 @@
 import { TeamCreateDto, TeamGetDto, TeamQueryDto, TeamUpdateDto } from '@/dtos/team';
-import prisma from '@/utils/db';
+import prisma from '@/utils/server/db';
 
 export async function listTeams(tournamentId: string, { search }: TeamQueryDto): Promise<TeamGetDto[]> {
     return await prisma.team.findMany({

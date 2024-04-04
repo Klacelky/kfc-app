@@ -1,4 +1,4 @@
-import T from '@/utils/i18n/t';
+import T from '@/utils/client/i18n/t';
 import { RESERVATION_EN, RESERVATION_SK } from '@/utils/links';
 import classNames from 'classnames';
 import Link from 'next/link';

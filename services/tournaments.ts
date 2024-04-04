@@ -1,5 +1,5 @@
 import { TournamentCreateDto, TournamentGetDto, TournamentUpdateDto } from '@/dtos/tournament';
-import prisma from '@/utils/db';
+import prisma from '@/utils/server/db';
 
 export async function listTournaments(): Promise<TournamentGetDto[]> {
     return await prisma.tournament.findMany({ orderBy: { createdAt: 'asc' } });

@@ -1,6 +1,6 @@
 import { PlayerCreateDtoSchema } from '@/dtos/player';
 import { createPlayer, listPlayers } from '@/services/players';
-import { handle } from '@/utils/api';
+import { handle } from '@/utils/server/api';
 import { RouteParams as ParentRouteParams } from '../route';
 
 export interface RouteParams extends ParentRouteParams {}

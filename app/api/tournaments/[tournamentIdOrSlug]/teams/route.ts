@@ -1,8 +1,8 @@
 import { NextRequest } from 'next/server';
 import { TeamCreateDtoSchema, TeamQueryDtoSchema } from '@/dtos/team';
 import { createTeam, listTeams } from '@/services/teams';
-import { getQueryObject } from '@/utils/query';
-import { RouteContext, handle } from '@/utils/api';
+import { RouteContext, handle } from '@/utils/server/api';
+import { getQueryObject } from '@/utils/server/query';
 import { RouteParams as ParentRouteParams } from '../route';
 
 export interface RouteParams extends ParentRouteParams {}

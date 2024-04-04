@@ -1,5 +1,5 @@
 import { PlayerCreateDto, PlayerGetDto, PlayerUpdateDto } from '@/dtos/player';
-import prisma from '@/utils/db';
+import prisma from '@/utils/server/db';
 
 export async function listPlayers(): Promise<PlayerGetDto[]> {
     return await prisma.player.findMany({ orderBy: { createdAt: 'asc' } });

@@ -1,4 +1,4 @@
-import T from '@/utils/i18n/t';
+import T from '@/utils/client/i18n/t';
 import { FB_EVENT, RESERVATION_EN, RESERVATION_SK } from '@/utils/links';
 import Link from 'next/link';
 
