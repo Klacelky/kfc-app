@@ -1,5 +1,5 @@
 import T from '@/utils/i18n/t';
-import { RESERVATION_EN, RESERVATION_SK } from '@/utils/links';
+import { RESERVATION } from '@/utils/links';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { Fragment } from 'react';
@@ -132,7 +132,7 @@ export default function GroupsPage() {
                     sk={
                         <>
                             Obsadenosť stola nájdeš{' '}
-                            <Link className="link" href={RESERVATION_SK} target="_blank">
+                            <Link className="link" href={RESERVATION} target="_blank">
                                 tu
                             </Link>
                             . Ak si dohodneš so súpermi zápas, hoď si tam rezervačku.
@@ -141,7 +141,7 @@ export default function GroupsPage() {
                     en={
                         <>
                             You can find the availability of the foosball table{' '}
-                            <Link className="link" href={RESERVATION_EN} target="_blank">
+                            <Link className="link" href={RESERVATION} target="_blank">
                                 here
                             </Link>
                             . Please, make a reservation when you agree on a match.
