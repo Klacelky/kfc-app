@@ -12,6 +12,7 @@ export const AdminCreateDtoSchema = z
         username: z.string(),
         password: z.string().min(8),
         passwordRepeat: z.string(),
+        su: z.boolean(),
     })
     .refine(
         ({ password, passwordRepeat }) => password === passwordRepeat,
