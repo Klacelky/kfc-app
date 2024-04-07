@@ -7,9 +7,11 @@ export interface RouteParams extends ParentRouteParams {
     adminId: string;
 }
 
-export const GET = handle(async (_: Request, { params: { adminId } }: RouteContext<RouteParams>) => {
-    return Response.json(await getAdmin(adminId));
-});
+export const GET = handle(
+    auth({}, async (_: Request, { params: { adminId } }: RouteContext<RouteParams>) => {
+        return Response.json(await getAdmin(adminId));
+    }),
+);
 
 export const PUT = handle(
     auth({}, async (request: Request, { params: { adminId } }: RouteContext<RouteParams>) => {
