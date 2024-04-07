@@ -44,7 +44,7 @@ function NavBarItem({ href, children }: { href: string; children: ReactNode }) {
 
 function NavBarSubMenu({ href, title, children }: { href?: string; title: ReactNode; children: ReactNode }) {
     const pathname = usePathname();
-    const [menuOpen, setMenuOpen] = useState(href && pathname.startsWith(href));
+    const [menuOpen, setMenuOpen] = useState(!!(href && pathname.startsWith(href)));
     return (
         <li className="text-blue text-4xl leading-none font-display translate-y-2">
             <button
@@ -88,7 +88,7 @@ function NavBarSubMenu({ href, title, children }: { href?: string; title: ReactN
 }
 
 export default function Header({ logo }: { logo: boolean }) {
-    const [menuOpen, setMenuOpen] = useState(true);
+    const [menuOpen, setMenuOpen] = useState(false);
     const { setCurrentLang, langsAvailable } = useContext(LangContext);
     return (
         <header
