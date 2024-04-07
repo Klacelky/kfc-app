@@ -9,7 +9,7 @@ import {
     MatchGameUpdateDto,
     PlayerPositionsCreateDto,
 } from '@/dtos/match';
-import prisma from '@/utils/db';
+import prisma from '@/utils/server/db';
 import {
     Goal,
     Group,
