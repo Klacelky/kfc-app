@@ -1,5 +1,5 @@
 import T from '@/utils/i18n/t';
-import { FB_EVENT, RESERVATION_EN, RESERVATION_SK } from '@/utils/links';
+import { FB_EVENT, RESERVATION } from '@/utils/links';
 import Link from 'next/link';
 
 export default function FormatPage() {
@@ -137,7 +137,7 @@ export default function FormatPage() {
                             <>
                                 Kalčeto máme len jedno, preto ak sa dohodnete na nejakom čase a termíne spravte si
                                 prosím na zápas rezervačku{' '}
-                                <Link className="link" href={RESERVATION_SK} target="_blank">
+                                <Link className="link" href={RESERVATION} target="_blank">
                                     v tomto zdieľanom kalendári
                                 </Link>
                                 , aby ostatné tými vedeli kedy je stôl obsadený.
@@ -147,7 +147,7 @@ export default function FormatPage() {
                             <>
                                 We only have one table and there are quite a few matches. If you agree on a time and
                                 date please make a reservation for a match{' '}
-                                <Link className="link" href={RESERVATION_EN} target="_blank">
+                                <Link className="link" href={RESERVATION} target="_blank">
                                     in this shared calendar
                                 </Link>
                                 , so that other teams know when the table is occupied.
