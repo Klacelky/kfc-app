@@ -1,6 +1,6 @@
 'use client';
 
-import { useLiveWS } from '@/utils/useLive';
+import { useLiveWS } from '@/utils/client/useLive';
 
 export default function LiveSvg() {
     const { gameData } = useLiveWS();

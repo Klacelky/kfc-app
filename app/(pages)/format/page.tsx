@@ -1,4 +1,4 @@
-import T from '@/utils/i18n/t';
+import T from '@/utils/client/i18n/t';
 import { FB_EVENT, RESERVATION } from '@/utils/links';
 import Link from 'next/link';
 
@@ -113,20 +113,20 @@ export default function FormatPage() {
                     <T
                         sk={
                             <>
-                                Po rozlosovaní skupín majú tímy týždeň (6.4. - 12.4.) na to, aby
-                                odohrali svoje skupinové zápasy. V skupine hrá každý s každým BO3, teda najlepší z troch
-                                hier. Dátumy a časy zápasov si tímy dohodnú individuálne so svojimi skupinovými
-                                súpermi. Každej skupine spravíme na dohadovanie messenger skupinu v ktorej budeme aj my
-                                aby sme na to dohliadli a vyriešili prípadné problémy.
+                                Po rozlosovaní skupín majú tímy týždeň (6.4. - 12.4.) na to, aby odohrali svoje
+                                skupinové zápasy. V skupine hrá každý s každým BO3, teda najlepší z troch hier. Dátumy a
+                                časy zápasov si tímy dohodnú individuálne so svojimi skupinovými súpermi. Každej skupine
+                                spravíme na dohadovanie messenger skupinu v ktorej budeme aj my aby sme na to dohliadli
+                                a vyriešili prípadné problémy.
                             </>
                         }
                         en={
                             <>
-                                After the groups are drawn, teams have one week (Apr. 6 - Apr. 12) to play
-                                their group matches. In the groups, teams play each other BO3, i.e. best of three
-                                games. The teams will arrange the dates and times of the matches individually with
-                                their group opponents. We will make a messenger group for each group to arrange this,
-                                and we will be in it to supervise and solve any problems.
+                                After the groups are drawn, teams have one week (Apr. 6 - Apr. 12) to play their group
+                                matches. In the groups, teams play each other BO3, i.e. best of three games. The teams
+                                will arrange the dates and times of the matches individually with their group opponents.
+                                We will make a messenger group for each group to arrange this, and we will be in it to
+                                supervise and solve any problems.
                             </>
                         }
                     />
@@ -228,8 +228,8 @@ export default function FormatPage() {
                         }
                         en={
                             <>
-                                Play-off games will be played on Apr. 13 (Saturday). Unlike the groups, the play-off will
-                                be played BO5, i.e. best of five games. You can find the schedule
+                                Play-off games will be played on Apr. 13 (Saturday). Unlike the groups, the play-off
+                                will be played BO5, i.e. best of five games. You can find the schedule
                             </>
                         }
                     />{' '}

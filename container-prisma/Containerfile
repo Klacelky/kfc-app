@@ -1,0 +1,12 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY .yarnrc.yml ./
+COPY .yarn ./.yarn
+COPY container-prisma/package.json ./
+COPY container-prisma/yarn.lock ./
+
+RUN yarn --immutable
+
+COPY prisma ./prisma
