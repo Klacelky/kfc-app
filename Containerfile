@@ -8,6 +8,7 @@ WORKDIR /app
 COPY .yarnrc.yml ./
 COPY .yarn ./.yarn
 COPY package.json yarn.lock ./
+COPY prisma ./prisma
 
 RUN yarn --immutable
 
