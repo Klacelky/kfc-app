@@ -37,8 +37,8 @@ body {
     }
 
     .link {
-        @apply text-red;
-        @apply dark:text-teal;
+        @apply text-kfc-red;
+        @apply dark:text-kfc-teal;
         @apply underline;
         @apply hover:opacity-50;
         @apply transition-opacity;

@@ -12,19 +12,19 @@ import { usePathname } from 'next/navigation';
 
 function BurgerButton({ open, onClick }: { open: boolean; onClick: () => void }) {
     return (
-        <button type="button" className="text-6xl text-blue p-4" onClick={onClick} aria-label="Navigation Toggle">
+        <button type="button" className="text-6xl text-kfc-blue p-4" onClick={onClick} aria-label="Navigation Toggle">
             <span
-                className={classNames('block h-1 m-1 w-6 bg-blue rounded transition-transform', {
+                className={classNames('block h-1 m-1 w-6 bg-kfc-blue rounded transition-transform', {
                     'rotate-45 scale-x-[1.41] translate-y-[.5rem]': open,
                 })}
             >
                 {' '}
             </span>
-            <span className={classNames('block h-1 m-1 w-6 bg-blue rounded transition-opacity', { 'opacity-0': open })}>
+            <span className={classNames('block h-1 m-1 w-6 bg-kfc-blue rounded transition-opacity', { 'opacity-0': open })}>
                 {' '}
             </span>
             <span
-                className={classNames('block h-1 m-1 w-6 bg-blue rounded transition-transform', {
+                className={classNames('block h-1 m-1 w-6 bg-kfc-blue rounded transition-transform', {
                     'rotate-[-45deg] scale-x-[1.41] translate-y-[-.5rem]': open,
                 })}
             >
@@ -36,7 +36,7 @@ function BurgerButton({ open, onClick }: { open: boolean; onClick: () => void })
 
 function NavBarItem({ href, children }: { href: string; children: ReactNode }) {
     return (
-        <li className="text-blue text-4xl leading-none font-display translate-y-2">
+        <li className="text-kfc-blue text-4xl leading-none font-display translate-y-2">
             <Link href={href}>{children}</Link>
         </li>
     );
@@ -46,7 +46,7 @@ function NavBarSubMenu({ href, title, children }: { href?: string; title: ReactN
     const pathname = usePathname();
     const [menuOpen, setMenuOpen] = useState(href && pathname.startsWith(href));
     return (
-        <li className="text-blue text-4xl leading-none font-display translate-y-2">
+        <li className="text-kfc-blue text-4xl leading-none font-display translate-y-2">
             <button
                 onClick={(event) => {
                     setMenuOpen(!menuOpen);
@@ -58,7 +58,7 @@ function NavBarSubMenu({ href, title, children }: { href?: string; title: ReactN
                 <div className="relative block h-9 w-9">
                     <span
                         className={classNames(
-                            'absolute block bg-blue w-5 h-1 transition-transform top-1/4 translate-x-[0.4rem]',
+                            'absolute block bg-kfc-blue w-5 h-1 transition-transform top-1/4 translate-x-[0.4rem]',
                             { 'rotate-[-45deg] ': !menuOpen, 'rotate-45': menuOpen },
                         )}
                     >
@@ -66,7 +66,7 @@ function NavBarSubMenu({ href, title, children }: { href?: string; title: ReactN
                     </span>
                     <span
                         className={classNames(
-                            'absolute block bg-blue w-5 h-1 transition-transform top-1/4 translate-x-[-0.4rem]',
+                            'absolute block bg-kfc-blue w-5 h-1 transition-transform top-1/4 translate-x-[-0.4rem]',
                             { 'rotate-[-45deg] ': menuOpen, 'rotate-45': !menuOpen },
                         )}
                     >
@@ -93,7 +93,7 @@ export default function Header({ logo }: { logo: boolean }) {
     return (
         <header
             className={classNames(
-                'fixed top-0 left-0 right-0 z-50 bg-teal h-20',
+                'fixed top-0 left-0 right-0 z-50 bg-kfc-teal h-20',
                 { shadow: logo },
                 // 'lg:h-20',
             )}
@@ -114,12 +114,12 @@ export default function Header({ logo }: { logo: boolean }) {
                 >
                     <BurgerButton open={menuOpen} onClick={() => setMenuOpen(!menuOpen)} />
                 </div>
-                <div className="absolute top-0 bottom-0 -right-5 left-0 bg-teal z-40" />
+                <div className="absolute top-0 bottom-0 -right-5 left-0 bg-kfc-teal z-40" />
                 <nav
                     className={classNames(
                         'absolute top-0 right-4 w-96 max-w-full',
                         'flex flex-col justify-between p-10 gap-10',
-                        'transition-transform bg-teal shadow',
+                        'transition-transform bg-kfc-teal shadow',
                         { '-translate-y-full': !menuOpen },
                         { 'translate-y-24': menuOpen },
                         // 'lg:p-0 lg:static lg:w-auto lg:translate-x-0',

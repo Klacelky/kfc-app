@@ -7,7 +7,7 @@ import classNames from 'classnames';
 function GroupCard({ name, teams }: GroupDetailedGetDto) {
     return (
         <div className="w-96 max-w-full" key={name}>
-            <h2 className="bg-teal w-10 h-10 rounded-full text-center text-blue">
+            <h2 className="bg-kfc-teal w-10 h-10 rounded-full text-center text-kfc-blue">
                 <span className="align-sub">{name}</span>
             </h2>
             <div className="flex flex-col gap-3">
@@ -20,12 +20,12 @@ function GroupCard({ name, teams }: GroupDetailedGetDto) {
                                     <h3
                                         className={classNames(
                                             'translate-y-2 w-6 h-6 text-center rounded-full',
-                                            { 'text-beige bg-red': standing === 4 },
+                                            { 'text-kfc-beige bg-kfc-red': standing === 4 },
                                             {
-                                                'dark:text-blue text-beige dark:bg-beige bg-blue':
+                                                'dark:text-kfc-blue text-kfc-beige dark:bg-kfc-beige bg-kfc-blue':
                                                     standing !== 4 && standing !== 1,
                                             },
-                                            { 'text-blue bg-teal': standing === 1 },
+                                            { 'text-kfc-blue bg-kfc-teal': standing === 1 },
                                         )}
                                     >
                                         {standing}
@@ -68,6 +68,6 @@ export default async function Groups({ tournament }: GroupsProps) {
     } catch (error) {
         console.error(error);
 
-        return <div className="bg-red text-beige">Failed to load groups!</div>;
+        return <div className="bg-kfc-red text-kfc-beige">Failed to load groups!</div>;
     }
 }

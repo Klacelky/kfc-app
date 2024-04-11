@@ -12,12 +12,14 @@ const config: Config = {
             sans: ['var(--font-nunito)', 'sans-serif'],
             display: ['var(--font-rushford)', 'sans-serif'],
         },
-        colors: {
-            inherit: 'inherit',
-            teal: '#83b59a',
-            red: '#ad2c40',
-            blue: '#1a2943',
-            beige: '#fffcd7',
+        extend: {
+            colors: {
+                inherit: 'inherit',
+                'kfc-teal': '#83b59a',
+                'kfc-red': '#ad2c40',
+                'kfc-blue': '#1a2943',
+                'kfc-beige': '#fffcd7',
+            },
         },
     },
     plugins: [],
