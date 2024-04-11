@@ -194,7 +194,7 @@ export const GameFinishDtoSchema = z.object({});
 
 export const MatchQueryDtoSchema = z.object({
     groupId: GroupGetDtoSchema.shape.id.optional(),
-    playoff: z.boolean().optional(),
+    playoff: z.coerce.boolean().optional(),
     teamId: TeamGetDtoSchema.shape.id.optional(),
     teamType: MatchTeamTypeSchema.optional(),
 });
