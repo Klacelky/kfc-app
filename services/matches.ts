@@ -58,7 +58,7 @@ function countGameScore(
     const homePlayerIds = homeTeam?.players.map(({ id }) => id) || [];
     const visitingPlayerIds = visitingTeam?.players.map(({ id }) => id) || [];
     return goals
-        .toSorted(({ timestamp: ta }, { timestamp: tb }) => ta.getTime() - tb.getTime())
+        .sort(({ timestamp: ta }, { timestamp: tb }) => ta.getTime() - tb.getTime())
         .reduce(
             (
                 [[homeScore, homeOut], [visitingScore, visitingOut]]: GameScore,
