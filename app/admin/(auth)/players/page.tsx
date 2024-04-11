@@ -1,4 +1,4 @@
-import Table from '@/components/Table';
+import Table from '@/components/admin/Table';
 import Alert from '@/components/admin/Alert';
 import { listPlayers } from '@/services/players';
 import { handleError } from '@/utils/server/common';

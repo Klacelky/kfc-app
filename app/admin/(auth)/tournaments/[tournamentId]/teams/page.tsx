@@ -4,7 +4,7 @@ import { listTeams } from '@/services/teams';
 import { PageParams } from '@/utils/server/pages';
 import { TeamQueryDtoSchema } from '@/dtos/team';
 import Alert from '@/components/admin/Alert';
-import Table from '@/components/Table';
+import Table from '@/components/admin/Table';
 import Link from 'next/link';
 import { PencilSquareIcon } from '@heroicons/react/16/solid';
 
