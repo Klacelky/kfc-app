@@ -1,5 +1,4 @@
 import { GroupDetailedGetDto } from '@/dtos/group';
-import T from '@/utils/client/i18n/t';
 import classNames from 'classnames';
 
 function GroupCard({ name, teams }: GroupDetailedGetDto) {
@@ -10,8 +9,8 @@ function GroupCard({ name, teams }: GroupDetailedGetDto) {
             </h2>
             <div className="flex flex-col gap-3">
                 {teams
-                    .sort((a, b) => b.points - a.points)
-                    .map(({ name, abbrev, points, players, standing }) => (
+                    .sort((a, b) => (a.standing && b.standing ? a.standing - b.standing : b.points - a.points))
+                    .map(({ name, abbrev, players, standing }) => (
                         <div key={name}>
                             <div className="flex flex-row items-center gap-3">
                                 {standing !== null ? (
@@ -31,10 +30,10 @@ function GroupCard({ name, teams }: GroupDetailedGetDto) {
                                 ) : null}
                                 <h3>{abbrev}</h3>
                                 <h3>{name}</h3>
-                                <h3 className="flex-grow text-right">
-                                    {points}
-                                    <T sk="b" en="pts" />
-                                </h3>
+                                {/* <h3 className="flex-grow text-right"> */}
+                                {/*     {points} */}
+                                {/*     <T sk="b" en="pts" /> */}
+                                {/* </h3> */}
                             </div>
                             <div>
                                 {players.map(({ name }) => (
