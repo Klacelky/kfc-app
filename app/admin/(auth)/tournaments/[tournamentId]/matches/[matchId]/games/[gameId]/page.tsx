@@ -28,7 +28,7 @@ export default function MatchGameEditPage({ params: { tournamentId, matchId, gam
         formState: { errors, isValid },
         handleSubmit,
         setError,
-    } = useForm<MatchGameUpdateDto>({
+    } = useForm<Omit<MatchGameUpdateDto, 'startedAt' | 'finishedAt'> & { startedAt?: string; finishedAt?: string }>({
         mode: 'all',
         resolver: zodResolver(MatchGameUpdateDtoSchema),
         defaultValues: {

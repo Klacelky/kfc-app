@@ -75,7 +75,7 @@ export default function MatchEditForm({ tournamentId, values, matchId }: MatchEd
         handleSubmit,
         formState: { isValid, errors },
         setError,
-    } = useForm<MatchCreateDto | MatchUpdateDto>({
+    } = useForm<Omit<MatchCreateDto | MatchUpdateDto, 'expectedStart'> & { expectedStart?: string }>({
         mode: 'all',
         resolver: zodResolver(matchId ? MatchUpdateDtoSchema : MatchCreateDtoSchema),
         defaultValues: {

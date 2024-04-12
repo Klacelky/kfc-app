@@ -10,6 +10,8 @@ import { handleError, handleErrorChain } from '@/utils/server/common';
 import classNames from 'classnames';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 interface GroupMatches {
     group: GroupDetailedGetDto;
     matches: MatchDetailedGetDto[];

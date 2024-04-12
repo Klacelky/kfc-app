@@ -5,7 +5,7 @@ import { RouteParams as ParentRouteParams } from '../route';
 
 export interface RouteParams extends ParentRouteParams {}
 
-export const GET = handle(async () => {
+export const GET = handle(async (_: Request) => {
     return Response.json(await listTournaments());
 });
 
