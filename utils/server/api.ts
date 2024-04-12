@@ -1,52 +1,15 @@
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { NextRequest, NextResponse } from 'next/server';
-import { ZodError } from 'zod';
 import { AuthAdmin } from '@/dtos/auth';
 import { verifyAdmin } from '@/services/auth';
+import { handleError } from './common';
 
 export function handle<TContext>(fn: (request: NextRequest, context: TContext) => Promise<Response | NextResponse>) {
     return async (request: NextRequest, context: TContext) => {
-        try {
-            return await fn(request, context);
-        } catch (error) {
-            if (error instanceof PrismaClientKnownRequestError) {
-                if (error.code === 'P2025') {
-                    return Response.json(
-                        {
-                            error: 'Not Found',
-                            message: 'Requested entity was not found or is not accessible',
-                        },
-                        { status: 404 },
-                    );
-                }
-                if (error.code == 'P2018') {
-                    return Response.json(
-                        {
-                            error: 'Not Found',
-                            message: 'Requested child entity was not found or is not accessible',
-                        },
-                        { status: 404 },
-                    );
-                }
-                if (error.code == 'P2002') {
-                    return Response.json(
-                        { error: 'Conflict', message: 'Requested value already exists', target: error.meta?.target },
-                        { status: 409 },
-                    );
-                }
-            }
-            if (error instanceof SyntaxError) {
-                return Response.json({ error: 'Bad Request', message: error.message }, { status: 400 });
-            }
-            if (error instanceof ZodError) {
-                return Response.json(
-                    { error: 'Bad Request', message: 'Request body is invalid', issues: error.issues },
-                    { status: 400 },
-                );
-            }
-            console.error(error);
-            return Response.json({ error: 'Internal Server Error' }, { status: 500 });
+        const { data, error } = await handleError(async () => await fn(request, context));
+        if (error) {
+            return Response.json(error, { status: error.status });
         }
+        return data;
     };
 }
 

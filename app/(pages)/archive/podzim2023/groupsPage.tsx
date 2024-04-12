@@ -365,7 +365,7 @@ const matches: GroupMatchesData[] = [
 function GroupCard({ name, teams }: GroupData) {
     return (
         <div className="w-96 max-w-full" key={name}>
-            <h2 className="bg-teal w-10 h-10 rounded-full text-center text-blue">
+            <h2 className="bg-kfc-teal w-10 h-10 rounded-full text-center text-kfc-blue">
                 <span className="align-sub">{name}</span>
             </h2>
             <div className="flex flex-col gap-3">
@@ -377,9 +377,9 @@ function GroupCard({ name, teams }: GroupData) {
                                 <h3
                                     className={classNames(
                                         'translate-y-2 w-6 h-6 text-center rounded-full',
-                                        { 'text-beige bg-red': index == 3 },
-                                        { 'dark:text-blue text-beige dark:bg-beige bg-blue': index == 1 || index == 2},
-                                        { 'text-blue bg-teal': index == 0 },
+                                        { 'text-kfc-beige bg-kfc-red': index == 3 },
+                                        { 'dark:text-kfc-blue text-kfc-beige dark:bg-kfc-beige bg-kfc-blue': index == 1 || index == 2},
+                                        { 'text-kfc-blue bg-kfc-teal': index == 0 },
                                     )}
                                 >
                                     {index + 1}
@@ -410,7 +410,7 @@ function getTeamName(group: string, abbrev: string) {
 function GroupMatchesCard({ group, matches }: GroupMatchesData) {
     return (
         <div className="" key={group}>
-            <h2 className="bg-teal w-10 h-10 rounded-full text-center text-blue">
+            <h2 className="bg-kfc-teal w-10 h-10 rounded-full text-center text-kfc-blue">
                 <span className="align-sub">{group}</span>
             </h2>
             <div className="grid grid-cols-5 items-center mt-10 gap-2">

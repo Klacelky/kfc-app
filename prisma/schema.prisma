@@ -46,8 +46,9 @@ model Tournament {
     publishedAt    DateTime?
     statsPublished StatsPublished
 
-    teams  Team[]
-    groups Group[]
+    teams   Team[]
+    groups  Group[]
+    matches Match[]
 }
 
 // Players
@@ -81,7 +82,7 @@ model Team {
     tournamentId String
     players      Player[]
     group        GroupTeam?
-    macthes      MatchTeam[]
+    matches      MatchTeam[]
 
     @@unique([abbrev, tournamentId])
 }
@@ -131,6 +132,8 @@ model Match {
     expectedStart DateTime?
     playoffLayer  Int?
 
+    tournament        Tournament   @relation(fields: [tournamentId], references: [id])
+    tournamentId      String
     teams             MatchTeam[]
     games             MatchGame[]
     successiveMatches TeamSource[] @relation(name: "successiveMatches")
@@ -243,4 +246,5 @@ model PlayerPosition {
     playerPositionsId String
 
     @@unique([playerPositionsId, playerId])
+    @@unique([playerPositionsId, type])
 }

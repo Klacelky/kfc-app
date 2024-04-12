@@ -23,6 +23,6 @@ export const PUT = handle(
 export const DELETE = handle(
     auth({}, async (_: Request, { params: { adminId } }: RouteContext<RouteParams>) => {
         await deleteAdmin(adminId);
-        return Response.json(null, { status: 204 });
+        return new Response(null, { status: 204 });
     }),
 );

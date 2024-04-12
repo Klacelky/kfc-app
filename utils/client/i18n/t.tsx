@@ -43,6 +43,6 @@ export default function T({ children, ...rest }: { children?: string } & Transla
     return userLang && translations[userLang] ? (
         translations[userLang]
     ) : (
-        <span className="bg-red text-beige">Could not find translation!</span>
+        <span className="bg-kfc-red text-kfc-beige">Could not find translation!</span>
     );
 }
