@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { ForwardRefRenderFunction, InputHTMLAttributes, ReactNode, Ref, SelectHTMLAttributes, forwardRef } from 'react';
 
 interface BaseControlProps {
-    name: string;
+    name?: string;
     label?: ReactNode;
     error?: string;
     issues?: ErrorResponse;
@@ -17,11 +17,11 @@ function BaseControl<TControl, TControlProps extends BaseControlProps, T>(
         const { issues, label, error, name, className } = props;
         const zodError = issues as ZodErrorResponse<T>;
         return (
-            <div className={classNames("flex gap-2 flex-col", className)}>
+            <div className={classNames('flex gap-2 flex-col', className)}>
                 {label ? <label>{label}</label> : null}
                 {Control(props, ref)}
-                {error || zodError?.issues[name] ? (
-                    <span className="text-admin-danger text-sm">{error || zodError?.issues[name]}</span>
+                {error || (name && zodError?.issues[name]) ? (
+                    <span className="text-admin-danger text-sm">{error || (name && zodError?.issues[name])}</span>
                 ) : null}
             </div>
         );
@@ -30,7 +30,7 @@ function BaseControl<TControl, TControlProps extends BaseControlProps, T>(
     return component;
 }
 
-export interface InputProps extends BaseControlProps, Omit<InputHTMLAttributes<HTMLInputElement>, 'name'> {
+export interface InputProps extends BaseControlProps, InputHTMLAttributes<HTMLInputElement> {
     placeholder?: string;
 }
 
@@ -46,7 +46,7 @@ export const Input = BaseControl(function ({ name, error, ...rest }: InputProps,
 });
 Input.displayName = 'Input';
 
-export interface SelectProps extends BaseControlProps, Omit<SelectHTMLAttributes<HTMLSelectElement>, 'name'> {}
+export interface SelectProps extends BaseControlProps, SelectHTMLAttributes<HTMLSelectElement> {}
 
 export const Select = BaseControl(function ({ error, children, ...rest }: SelectProps, ref: Ref<HTMLSelectElement>) {
     return (
@@ -56,3 +56,22 @@ export const Select = BaseControl(function ({ error, children, ...rest }: Select
     );
 });
 Select.displayName = 'Select';
+
+export const Checkbox = forwardRef(function <T>(
+    { className, label, error, issues, name, ...rest }: InputProps,
+    ref: Ref<HTMLInputElement>,
+) {
+    const zodError = issues as ZodErrorResponse<T>;
+    return (
+        <div className={classNames('flex gap-2 flex-col', className)}>
+            <label className="flex flex-row gap-2 items-center">
+                <input {...rest} type="checkbox" name={name} ref={ref} className="w-7 h-7" />
+                {label}
+            </label>
+            {error || (name && zodError?.issues[name]) ? (
+                <span className="text-admin-danger text-sm">{error || (name && zodError?.issues[name])}</span>
+            ) : null}
+        </div>
+    );
+});
+Checkbox.displayName = 'Checkbox';

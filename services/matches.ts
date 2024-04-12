@@ -8,6 +8,7 @@ import {
     MatchGameCreateDto,
     MatchGameUpdateDto,
     PlayerPositionsCreateDto,
+    MatchItemCreatedDto,
 } from '@/dtos/match';
 import prisma from '@/utils/server/db';
 import {
@@ -119,17 +120,15 @@ function expandMatchDetails({
     const homeTeam = findTeamType(teams, MatchTeamType.HOME)?.team || null;
     const visitingTeam = findTeamType(teams, MatchTeamType.VISITING)?.team || null;
 
-    const scoredGames = games
-        .sort(({ startedAt: sa }, { startedAt: sb }) => sa.getTime() - sb.getTime())
-        .map(({ playerPositions, goals, ...gameRest }) => ({
-            ...gameRest,
-            playerPositions: playerPositions.map(({ players, ...playerPositionsRest }) => ({
-                ...playerPositionsRest,
-                players: players.map(({ type, player }) => ({ ...player, type })),
-            })),
-            goals: goals,
-            score: countGameScore(homeTeam, visitingTeam, goals),
-        }));
+    const scoredGames = games.map(({ playerPositions, goals, ...gameRest }) => ({
+        ...gameRest,
+        playerPositions: playerPositions.map(({ players, ...playerPositionsRest }) => ({
+            ...playerPositionsRest,
+            players: players.map(({ type, player }) => ({ ...player, type })),
+        })),
+        goals: goals,
+        score: countGameScore(homeTeam, visitingTeam, goals),
+    }));
 
     const mappedTeamSources = teamSources.map(({ standing, sourceGroup, winner, sourceMatch, ...rest }) => ({
         ...rest,
@@ -183,12 +182,21 @@ const include = {
                         },
                     },
                 },
+                orderBy: {
+                    timestamp: 'asc' as const,
+                },
             },
             goals: {
                 include: {
                     player: true,
                 },
+                orderBy: {
+                    timestamp: 'asc' as const,
+                },
             },
+        },
+        orderBy: {
+            startedAt: 'asc' as const,
         },
     },
     teamSources: {
@@ -345,148 +353,60 @@ export async function deleteMatch(id: string): Promise<void> {
     await prisma.match.delete({ where: { id } });
 }
 
-export async function createGame(matchId: string, data: MatchGameCreateDto): Promise<MatchDetailedGetDto> {
-    return expandMatchDetails(
-        await prisma.match.update({
-            where: { id: matchId },
-            data: {
-                games: {
-                    create: data,
-                },
-            },
-            include,
-        }),
-    );
+export async function createGame(matchId: string, data: MatchGameCreateDto): Promise<MatchItemCreatedDto> {
+    return await prisma.matchGame.create({
+        data: {
+            ...data,
+            matchId,
+        },
+    });
 }
 
-export async function updateGame(
-    matchId: string,
-    gameId: string,
-    data: MatchGameUpdateDto,
-): Promise<MatchDetailedGetDto> {
-    return expandMatchDetails(
-        await prisma.match.update({
-            where: { id: matchId },
-            data: {
-                games: {
-                    update: {
-                        where: { id: gameId },
-                        data,
-                    },
-                },
-            },
-            include,
-        }),
-    );
+export async function updateGame(gameId: string, data: MatchGameUpdateDto): Promise<MatchItemCreatedDto> {
+    return await prisma.matchGame.update({
+        where: { id: gameId },
+        data,
+    });
 }
 
-export async function deleteGame(matchId: string, gameId: string): Promise<MatchDetailedGetDto> {
-    return expandMatchDetails(
-        await prisma.match.update({
-            where: { id: matchId },
-            data: {
-                games: {
-                    delete: { id: gameId },
-                },
-            },
-            include,
-        }),
-    );
+export async function deleteGame(gameId: string): Promise<void> {
+    await prisma.matchGame.delete({
+        where: { id: gameId },
+    });
 }
 
-export async function createGoal(matchId: string, gameId: string, data: GoalCreateDto): Promise<MatchDetailedGetDto> {
-    return expandMatchDetails(
-        await prisma.match.update({
-            where: { id: matchId },
-            data: {
-                games: {
-                    update: {
-                        where: { id: gameId },
-                        data: {
-                            goals: {
-                                create: data,
-                            },
-                        },
-                    },
-                },
-            },
-            include,
-        }),
-    );
+export async function createGoal(gameId: string, data: GoalCreateDto): Promise<MatchItemCreatedDto> {
+    return await prisma.goal.create({
+        data: {
+            ...data,
+            gameId,
+        },
+    });
 }
 
-export async function deleteGoal(matchId: string, gameId: string, goalId: string): Promise<MatchDetailedGetDto> {
-    return expandMatchDetails(
-        await prisma.match.update({
-            where: { id: matchId },
-            data: {
-                games: {
-                    update: {
-                        where: { id: gameId },
-                        data: {
-                            goals: {
-                                delete: { id: goalId },
-                            },
-                        },
-                    },
-                },
-            },
-            include,
-        }),
-    );
+export async function deleteGoal(goalId: string): Promise<void> {
+    await prisma.goal.delete({
+        where: { id: goalId },
+    });
 }
 
 export async function createPlayerPositions(
-    matchId: string,
     gameId: string,
     { players, ...data }: PlayerPositionsCreateDto,
-): Promise<MatchDetailedGetDto> {
-    return expandMatchDetails(
-        await prisma.match.update({
-            where: { id: matchId },
-            data: {
-                games: {
-                    update: {
-                        where: { id: gameId },
-                        data: {
-                            playerPositions: {
-                                create: {
-                                    ...data,
-                                    players: {
-                                        create: players,
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
+): Promise<MatchItemCreatedDto> {
+    return prisma.playerPositions.create({
+        data: {
+            ...data,
+            players: {
+                create: players,
             },
-            include,
-        }),
-    );
+            gameId,
+        },
+    });
 }
 
-export async function deletePlayerPositions(
-    matchId: string,
-    gameId: string,
-    playerPositionsId: string,
-): Promise<MatchDetailedGetDto> {
-    return expandMatchDetails(
-        await prisma.match.update({
-            where: { id: matchId },
-            data: {
-                games: {
-                    update: {
-                        where: { id: gameId },
-                        data: {
-                            playerPositions: {
-                                delete: { id: playerPositionsId },
-                            },
-                        },
-                    },
-                },
-            },
-            include,
-        }),
-    );
+export async function deletePlayerPositions(playerPositionsId: string): Promise<void> {
+    await prisma.playerPositions.delete({
+        where: { id: playerPositionsId },
+    });
 }

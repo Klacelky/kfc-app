@@ -36,35 +36,36 @@ export const TeamSourceGetDtoSchema = z.object({
 });
 export type TeamSourceGetDto = z.infer<typeof TeamSourceGetDtoSchema>;
 
+export const MatchGameGetDtoSchema = BaseDtoSchema.extend({
+    startedAt: z.coerce.date(),
+    finishedAt: z.coerce.date().nullable(),
+    homeTeamColor: TeamColorSchema,
+    playerPositions: z.array(
+        BaseDtoSchema.extend({
+            timestamp: z.coerce.date(),
+            players: z.array(
+                PlayerGetDtoSchema.extend({
+                    type: PlayerPositionTypeSchema,
+                }),
+            ),
+        }),
+    ),
+    goals: z.array(
+        BaseDtoSchema.extend({
+            timestamp: z.coerce.date(),
+            own: z.boolean(),
+            photo: z.boolean(),
+            player: PlayerGetDtoSchema,
+        }),
+    ),
+    score: GameScoreSchema,
+});
+export type MatchGameGetDto = z.infer<typeof MatchGameGetDtoSchema>;
+
 export const MatchDetailedGetDtoSchema = MatchGetDtoSchema.extend({
     homeTeam: TeamGetDtoSchema.nullable(),
     visitingTeam: TeamGetDtoSchema.nullable(),
-    games: z.array(
-        BaseDtoSchema.extend({
-            startedAt: z.coerce.date(),
-            finishedAt: z.coerce.date().nullable(),
-            homeTeamColor: TeamColorSchema,
-            playerPositions: z.array(
-                BaseDtoSchema.extend({
-                    timestamp: z.coerce.date(),
-                    players: z.array(
-                        PlayerGetDtoSchema.extend({
-                            type: PlayerPositionTypeSchema,
-                        }),
-                    ),
-                }),
-            ),
-            goals: z.array(
-                BaseDtoSchema.extend({
-                    timestamp: z.coerce.date(),
-                    own: z.boolean(),
-                    photo: z.boolean(),
-                    player: PlayerGetDtoSchema,
-                }),
-            ),
-            score: GameScoreSchema,
-        }),
-    ),
+    games: z.array(MatchGameGetDtoSchema),
     homeTeamSource: TeamSourceGetDtoSchema.nullable(),
     visitingTeamSource: TeamSourceGetDtoSchema.nullable(),
     score: z.tuple([z.number(), z.number()]),
@@ -125,17 +126,18 @@ export type MatchGameCreateDto = z.infer<typeof MatchGameCreateDtoSchema>;
 
 export const MatchGameUpdateDtoSchema = z.object({
     startedAt: z.coerce.date().optional(),
-    finishedAt: z.coerce.date().optional(),
+    finishedAt: z.coerce.date().nullable().optional(),
     homeTeamColor: TeamColorSchema.optional(),
 });
 export type MatchGameUpdateDto = z.infer<typeof MatchGameUpdateDtoSchema>;
 
 export const GoalCreateDtoSchema = z.object({
-    timestmap: z.coerce.date().optional(),
+    timestamp: z.coerce.date().optional(),
     own: z.boolean(),
     photo: z.boolean(),
     out: z.boolean(),
     playerId: PlayerGetDtoSchema.shape.id,
+    notifyLive: z.boolean().optional(),
 });
 export type GoalCreateDto = z.infer<typeof GoalCreateDtoSchema>;
 
@@ -158,3 +160,8 @@ export const MatchQueryDtoSchema = z.object({
     teamId: TeamGetDtoSchema.shape.id.optional(),
 });
 export type MatchQueryDto = z.infer<typeof MatchQueryDtoSchema>;
+
+export const MatchItemCreatedDtoSchema = z.object({
+    id: z.string().uuid(),
+})
+export type MatchItemCreatedDto = z.infer<typeof MatchItemCreatedDtoSchema>;

@@ -2,12 +2,11 @@
 
 import { PageParams } from '@/utils/server/pages';
 import { RouteParams as ParentRouteParams } from '../page';
-import { MatchDetailedGetDto } from '@/dtos/match';
+import { MatchDetailedGetDtoSchema } from '@/dtos/match';
 import MatchEditForm from '@/components/admin/forms/MatchEditForm';
 import Alert from '@/components/admin/Alert';
-import useSWR from 'swr';
-import { AxiosError } from 'axios';
-import { apiFetch, getErrorMessage } from '@/utils/client/api';
+import { getErrorMessage, useSWRSchema } from '@/utils/client/api';
+import Loading from '@/components/Loading';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,13 +24,17 @@ function NewMatch({ tournamentId }: RouteParams) {
 }
 
 function EditMatch({ tournamentId, matchId }: RouteParams) {
-    const { data, error } = useSWR<MatchDetailedGetDto, AxiosError>(
+    const { data, error, isLoading } = useSWRSchema(
         `/api/tournament/${tournamentId}/match/${matchId}`,
-        apiFetch,
+        MatchDetailedGetDtoSchema,
     );
 
     if (error) {
         return <Alert>{getErrorMessage(error)}</Alert>;
+    }
+
+    if (isLoading) {
+        return <Loading />;
     }
 
     return (

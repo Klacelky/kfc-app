@@ -13,14 +13,15 @@ import Button from '../Button';
 import { useForm } from 'react-hook-form';
 import { TeamGetDto } from '@/dtos/team';
 import { Input, Select, SelectProps } from '../Input';
-import { Ref, forwardRef, useState } from 'react';
+import { Ref, forwardRef } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Alert from '../Alert';
-import { api, apiFetch, getErrorMessage, handleApiCall } from '@/utils/client/api';
+import { api, apiFetch, convertDate, getErrorMessage, handleApiCall } from '@/utils/client/api';
 import { useRouter } from 'next/navigation';
 import useSWR from 'swr';
 import { AxiosError } from 'axios';
 import { mutate } from 'swr';
+import Loading from '@/components/Loading';
 
 function mapTeamSource({ group, match }: TeamSourceGetDto): TeamSourceCreateDto {
     return {
@@ -64,20 +65,22 @@ TeamSelect.displayName = 'TeamSelect';
 
 export default function MatchEditForm({ tournamentId, values, matchId }: MatchEditFormProps) {
     const { replace } = useRouter();
-    const { data: teams, error: teamsError } = useSWR<TeamGetDto[], AxiosError>(
-        `/api/tournament/${tournamentId}/team`,
-        apiFetch,
-    );
-    const [error, setError] = useState<string>('');
+    const {
+        data: teams,
+        error: teamsError,
+        isLoading: teamsLoading,
+    } = useSWR<TeamGetDto[], AxiosError>(`/api/tournament/${tournamentId}/team`, apiFetch);
     const {
         register,
         handleSubmit,
         formState: { isValid, errors },
+        setError,
     } = useForm<MatchCreateDto | MatchUpdateDto>({
         mode: 'all',
         resolver: zodResolver(matchId ? MatchUpdateDtoSchema : MatchCreateDtoSchema),
         defaultValues: {
             ...values,
+            expectedStart: convertDate(values?.expectedStart),
             homeTeamId: values?.homeTeam?.id,
             visitingTeamId: values?.visitingTeam?.id,
             homeTeamSource: values?.homeTeamSource ? mapTeamSource(values.homeTeamSource) : null,
@@ -88,30 +91,26 @@ export default function MatchEditForm({ tournamentId, values, matchId }: MatchEd
     return (
         <form
             onSubmit={handleSubmit(async (formData) => {
-                const { response, error } = await handleApiCall<MatchDetailedGetDto>(() =>
-                    matchId
-                        ? api.patch(`/api/tournament/${tournamentId}/match/${matchId}`, formData)
-                        : api.post(`/api/tournament/${tournamentId}/match`, formData),
-                );
-                if (error) {
-                    setError(error.message || error.error || 'Unknown error');
-                } else {
-                    setError('');
+                try {
+                    const response = await (matchId
+                        ? api.patch<MatchDetailedGetDto>(`/api/tournament/${tournamentId}/match/${matchId}`, formData)
+                        : api.post<MatchDetailedGetDto>(`/api/tournament/${tournamentId}/match`, formData));
                     mutate(`/api/tournament/${tournamentId}/match`);
                     if (!matchId) {
-                        replace(response!.data.id);
+                        replace(response.data.id);
                     } else {
                         mutate(`/api/tournament/${tournamentId}/match/${matchId}`);
                     }
+                } catch (error) {
+                    setError('root', { message: getErrorMessage(error) });
                 }
             })}
         >
-            {error && <Alert>{error}</Alert>}
+            {errors?.root && <Alert>{errors.root.message}</Alert>}
             <div className="flex flex-col  gap-4">
                 <Input {...register('name')} label="Name" error={errors.name?.message} />
                 <Input
                     {...register('expectedStart', { setValueAs: (v) => v || null })}
-                    label="Expected Start"
                     type="datetime-local"
                     error={errors.expectedStart?.message}
                 />
@@ -120,31 +119,29 @@ export default function MatchEditForm({ tournamentId, values, matchId }: MatchEd
                     label="Play-off Level"
                     error={errors.playoffLayer?.message}
                 />
-                <div className="flex flex-row gap-4 flex-grow">
-                    {teamsError ? (
-                        <Alert>{getErrorMessage(teamsError)}</Alert>
-                    ) : (
-                        teams && (
-                            <>
-                                <TeamSelect
-                                    {...register('homeTeamId', { setValueAs: (v) => v || null })}
-                                    teams={teams}
-                                    label="Home Team"
-                                    className="flex-grow"
-                                    error={errors.homeTeamId?.message}
-                                />
-                                <TeamSelect
-                                    {...register('visitingTeamId', { setValueAs: (v) => v || null })}
-                                    teams={teams}
-                                    label="Visiting Team"
-                                    className="flex-grow"
-                                    error={errors.visitingTeamId?.message}
-                                />
-                            </>
-                        )
+                <div className="flex lg:flex-row flex-col gap-4 flex-grow">
+                    {teamsError && <Alert>{getErrorMessage(teamsError)}</Alert>}
+                    {teamsLoading && <Loading />}
+                    {teams && (
+                        <>
+                            <TeamSelect
+                                {...register('homeTeamId', { setValueAs: (v) => v || null })}
+                                teams={teams}
+                                label="Home Team"
+                                className="flex-grow"
+                                error={errors.homeTeamId?.message}
+                            />
+                            <TeamSelect
+                                {...register('visitingTeamId', { setValueAs: (v) => v || null })}
+                                teams={teams}
+                                label="Visiting Team"
+                                className="flex-grow"
+                                error={errors.visitingTeamId?.message}
+                            />
+                        </>
                     )}
                 </div>
-                <div className="flex flex-row gap-4">
+                <div className="flex flex-col sm:flex-row gap-4">
                     <Button color="primary" disabled={!isValid} className="flex-grow">
                         {matchId ? 'Update Match' : 'Create Match'}
                     </Button>
@@ -158,7 +155,7 @@ export default function MatchEditForm({ tournamentId, values, matchId }: MatchEd
                                     api.delete(`/api/tournament/${tournamentId}/match/${matchId}`),
                                 );
                                 if (error) {
-                                    setError(error.message || error.error || 'Unknown error');
+                                    setError('root', { message: getErrorMessage(error) });
                                 } else {
                                     mutate(`/api/tournament/${tournamentId}/match`);
                                     replace('./');

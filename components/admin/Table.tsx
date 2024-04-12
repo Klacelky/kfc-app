@@ -1,14 +1,13 @@
-import classNames from 'classnames';
 import { ReactNode } from 'react';
 
 export interface TableProps<T extends { id: string }> {
     columnNames: ([string, ReactNode] | string)[];
     getCols: (row: T) => ReactNode[];
     data?: T[];
-    actions?: ((row: T) => ReactNode)[];
+    actions?: (row: T) => ReactNode;
 }
 
-export default function table<T extends { id: string }>({ columnNames, getCols, data, actions }: TableProps<T>) {
+export default function Table<T extends { id: string }>({ columnNames, getCols, data, actions }: TableProps<T>) {
     const columnKeys: string[] = columnNames.map((colName) => (Array.isArray(colName) ? colName[0] : colName));
     return (
         <table className="table-auto w-full">
@@ -29,16 +28,13 @@ export default function table<T extends { id: string }>({ columnNames, getCols, 
                 {data?.map((row) => (
                     <tr key={row.id}>
                         {getCols(row).map((col, colIndex) => (
-                            <td
-                                className={classNames('p-2 border-admin-gray border-b-2')}
-                                key={`${row.id}-${columnKeys[colIndex]}`}
-                            >
+                            <td className="p-2 border-admin-gray border-b-2" key={`${row.id}-${columnKeys[colIndex]}`}>
                                 {col}
                             </td>
                         ))}
                         {actions ? (
-                            <td className="p-2 border-admin-gray border-b-2 flex flex-row'">
-                                {actions?.map((actionFn) => actionFn(row))}
+                            <td className="p-2 border-admin-gray border-b-2">
+                                <div className="flex flex-row">{actions(row)}</div>
                             </td>
                         ) : null}
                     </tr>

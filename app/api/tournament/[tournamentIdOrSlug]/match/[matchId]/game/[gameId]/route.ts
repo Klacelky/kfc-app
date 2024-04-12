@@ -8,14 +8,15 @@ export interface RouteParams extends ParentRouteParams {
 }
 
 export const PATCH = handle(
-    auth({}, async (request: Request, { params: { matchId, gameId } }: RouteContext<RouteParams>) => {
+    auth({}, async (request: Request, { params: { gameId } }: RouteContext<RouteParams>) => {
         const data = await MatchGameUpdateDtoSchema.parseAsync(await request.json());
-        return Response.json(await updateGame(matchId, gameId, data));
+        return Response.json(await updateGame(gameId, data));
     }),
 );
 
 export const DELETE = handle(
-    auth({}, async (_: Request, { params: { matchId, gameId } }: RouteContext<RouteParams>) => {
-        return Response.json(await deleteGame(matchId, gameId));
+    auth({}, async (_: Request, { params: { gameId } }: RouteContext<RouteParams>) => {
+        await deleteGame(gameId);
+        return new Response(null, { status: 204 });
     }),
 );

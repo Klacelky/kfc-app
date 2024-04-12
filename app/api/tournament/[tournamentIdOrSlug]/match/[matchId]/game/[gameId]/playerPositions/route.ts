@@ -6,8 +6,8 @@ import { RouteParams as ParentRouteParams } from '../route';
 export interface RouteParams extends ParentRouteParams {}
 
 export const POST = handle(
-    auth({}, async (request: Request, { params: { matchId, gameId } }: RouteContext<RouteParams>) => {
+    auth({}, async (request: Request, { params: { gameId } }: RouteContext<RouteParams>) => {
         const data = await PlayerPositionsCreateDtoSchema.parseAsync(await request.json());
-        return Response.json(await createPlayerPositions(matchId, gameId, data));
+        return Response.json(await createPlayerPositions(gameId, data), { status: 201 });
     }),
 );

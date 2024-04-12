@@ -246,4 +246,5 @@ model PlayerPosition {
     playerPositionsId String
 
     @@unique([playerPositionsId, playerId])
+    @@unique([playerPositionsId, type])
 }

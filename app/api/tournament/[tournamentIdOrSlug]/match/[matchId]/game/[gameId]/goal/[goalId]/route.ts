@@ -7,7 +7,8 @@ export interface RouteParams extends ParentRouteParams {
 }
 
 export const DELETE = handle(
-    auth({}, async (_: Request, { params: { matchId, gameId, goalId } }: RouteContext<RouteParams>) => {
-        return Response.json(await deleteGoal(matchId, gameId, goalId));
+    auth({}, async (_: Request, { params: { goalId } }: RouteContext<RouteParams>) => {
+        await deleteGoal(goalId);
+        return new Response(null, { status: 204 });
     }),
 );

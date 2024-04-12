@@ -4,7 +4,7 @@ import { PlayerGetDtoSchema } from './player';
 
 const TeamBaseDtoSchema = z.object({
     name: z.string(),
-    abbrev: z.string().regex(/[A-Z]{3}/),
+    abbrev: z.string(),
     description: z.string(),
 });
 

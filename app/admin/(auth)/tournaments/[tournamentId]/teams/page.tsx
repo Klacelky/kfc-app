@@ -5,8 +5,6 @@ import { PageParams } from '@/utils/server/pages';
 import { TeamQueryDtoSchema } from '@/dtos/team';
 import Alert from '@/components/admin/Alert';
 import Table from '@/components/admin/Table';
-import Link from 'next/link';
-import { PencilSquareIcon } from '@heroicons/react/16/solid';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,15 +23,8 @@ export default async function TeamsPage({ params: { tournamentId }, searchParams
             <h1>Teams</h1>
             <Table
                 data={data!}
-                columnNames={['Name', 'Abbrev', 'Players', '']}
-                getCols={({ id, name, abbrev, players }) => [
-                    name,
-                    abbrev,
-                    players.map(({ name }) => name).join(', '),
-                    <Link key="edit" href={`teams/${id}`}>
-                        <PencilSquareIcon className="w-6" />
-                    </Link>,
-                ]}
+                columnNames={['Name', 'Abbrev', 'Players']}
+                getCols={({ name, abbrev, players }) => [name, abbrev, players.map(({ name }) => name).join(', ')]}
             />
         </>
     );

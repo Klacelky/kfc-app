@@ -17,7 +17,7 @@ export default function Button({ children, color, className, ...props }: ButtonP
                     'bg-slate-300 text-black': color === 'secondary',
                     'bg-red-600 text-white': color === 'danger',
                 },
-                'disabled:bg-gray-500',
+                'disabled:opacity-50',
                 className,
             )}
         >
