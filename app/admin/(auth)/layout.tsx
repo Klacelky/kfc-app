@@ -1,10 +1,14 @@
-import { listTournaments } from '@/services/tournaments';
-import { handleError } from '@/utils/server/common';
-import { TrophyIcon, UserGroupIcon, UserIcon, UsersIcon } from '@heroicons/react/16/solid';
-import Link from 'next/link';
-import { ReactNode } from 'react';
+'use client';
 
-export const dynamic = 'force-dynamic';
+import Alert from '@/components/admin/Alert';
+import { TournamentGetDto } from '@/dtos/tournament';
+import { apiFetch, getErrorMessage, useAuthCookie } from '@/utils/client/api';
+import { TrophyIcon, UserGroupIcon, UserIcon, UsersIcon } from '@heroicons/react/16/solid';
+import { AxiosError } from 'axios';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { ReactNode } from 'react';
+import useSWR from 'swr';
 
 export function NavItem({ children, href }: { children: ReactNode; href: string }) {
     return (
@@ -17,14 +21,21 @@ export function NavItem({ children, href }: { children: ReactNode; href: string 
 export function NavSection({ children, title }: { children: ReactNode; title?: ReactNode }) {
     return (
         <div className="border-b-2 border-b-slate-400 p-4">
-            {title ? <h2 className='text-3xl mb-6'>{title}</h2> : null}
+            {title ? <h2 className="text-3xl mb-6">{title}</h2> : null}
             {children}
         </div>
     );
 }
 
-export default async function AdminLayout({ children }: { children: ReactNode }) {
-    const { data: tournaments } = await handleError(() => listTournaments());
+export default function AdminLayout({ children }: { children: ReactNode }) {
+    const { push } = useRouter();
+    const { data: authData, error: authError } = useAuthCookie();
+    const { data, error } = useSWR<TournamentGetDto[], AxiosError>('/api/tournament', apiFetch);
+
+    if (authError) {
+        push('/admin/login');
+    }
+
     return (
         <div>
             <aside className="w-72 fixed top-0 left-0 h-[100vh] bg-slate-500 text-white p-6">
@@ -40,7 +51,8 @@ export default async function AdminLayout({ children }: { children: ReactNode })
                             Players
                         </NavItem>
                     </NavSection>
-                    {tournaments?.map(({ name, id }) => (
+                    {error && <Alert>{getErrorMessage(error)}</Alert>}
+                    {data?.map(({ name, id }) => (
                         <NavSection title={name} key={id}>
                             <NavItem href={`/admin/tournaments/${id}/teams`}>
                                 <UsersIcon className="w-7" />

@@ -23,8 +23,7 @@ export const POST = handle(async (request: Request) => {
 });
 
 export const DELETE = handle(
-    auth({}, async (request: AuthNextRequest) => {
-        console.log(request.auth);
+    auth({}, async () => {
         cookies().delete('jwt');
         return Response.json(null, { status: 204 });
     }),

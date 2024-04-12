@@ -51,23 +51,15 @@ function GroupCard({ name, teams }: GroupDetailedGetDto) {
 }
 
 export interface GroupsProps {
-    tournament: string;
+    groups: GroupDetailedGetDto[];
 }
 
-export default async function Groups({ tournament }: GroupsProps) {
-    try {
-        const { id: tournamentId } = await getTournament(tournament);
-        const groups = await listGroups(tournamentId);
-        return (
-            <div className="md:grid gap-10 md:grid-cols-2 2xl:grid-cols-4 justify-items-center">
-                {groups
-                    .sort(({ name: name1 }, { name: name2 }) => (name1 <= name2 ? -1 : 1))
-                    .map((group) => GroupCard(group))}
-            </div>
-        );
-    } catch (error) {
-        console.error(error);
-
-        return <div className="bg-kfc-red text-kfc-beige">Failed to load groups!</div>;
-    }
+export default async function Groups({ groups }: GroupsProps) {
+    return (
+        <div className="md:grid gap-10 md:grid-cols-2 2xl:grid-cols-4 justify-items-center">
+            {groups
+                .sort(({ name: name1 }, { name: name2 }) => (name1 <= name2 ? -1 : 1))
+                .map((group) => GroupCard(group))}
+        </div>
+    );
 }

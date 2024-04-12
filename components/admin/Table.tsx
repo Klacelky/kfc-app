@@ -4,10 +4,11 @@ import { ReactNode } from 'react';
 export interface TableProps<T extends { id: string }> {
     columnNames: ([string, ReactNode] | string)[];
     getCols: (row: T) => ReactNode[];
-    data: T[];
+    data?: T[];
+    actions?: ((row: T) => ReactNode)[];
 }
 
-export default function table<T extends { id: string }>({ columnNames, getCols, data }: TableProps<T>) {
+export default function table<T extends { id: string }>({ columnNames, getCols, data, actions }: TableProps<T>) {
     const columnKeys: string[] = columnNames.map((colName) => (Array.isArray(colName) ? colName[0] : colName));
     return (
         <table className="table-auto w-full">
@@ -21,10 +22,11 @@ export default function table<T extends { id: string }>({ columnNames, getCols, 
                             </th>
                         );
                     })}
+                    {actions ? <th className="p-3 border-b-admin-black border-b-2" key="actions" /> : null}
                 </tr>
             </thead>
             <tbody>
-                {data.map((row) => (
+                {data?.map((row) => (
                     <tr key={row.id}>
                         {getCols(row).map((col, colIndex) => (
                             <td
@@ -34,6 +36,11 @@ export default function table<T extends { id: string }>({ columnNames, getCols, 
                                 {col}
                             </td>
                         ))}
+                        {actions ? (
+                            <td className="p-2 border-admin-gray border-b-2 flex flex-row'">
+                                {actions?.map((actionFn) => actionFn(row))}
+                            </td>
+                        ) : null}
                     </tr>
                 ))}
             </tbody>
