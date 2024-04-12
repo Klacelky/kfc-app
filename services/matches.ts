@@ -223,6 +223,7 @@ export async function listMatches(
                 ],
             },
             include,
+            orderBy: { createdAt: 'asc' },
         })
     ).map(expandMatchDetails);
 }

@@ -79,14 +79,17 @@ export default function MatchEditForm({ tournamentId, values, matchId }: MatchEd
         mode: 'all',
         resolver: zodResolver(matchId ? MatchUpdateDtoSchema : MatchCreateDtoSchema),
         defaultValues: {
-            ...values,
+            name: values?.name || null,
             expectedStart: convertDate(values?.expectedStart),
+            playoffLayer: values?.playoffLayer ?? null,
             homeTeamId: values?.homeTeam?.id,
             visitingTeamId: values?.visitingTeam?.id,
-            homeTeamSource: values?.homeTeamSource ? mapTeamSource(values.homeTeamSource) : null,
-            visitingTeamSource: values?.visitingTeamSource ? mapTeamSource(values.visitingTeamSource) : null,
+            // homeTeamSource: values?.homeTeamSource ? mapTeamSource(values.homeTeamSource) : null,
+            // visitingTeamSource: values?.visitingTeamSource ? mapTeamSource(values.visitingTeamSource) : null,
         },
     });
+
+    console.log(isValid, errors);
 
     return (
         <form
