@@ -15,8 +15,8 @@ export const GET = handle(
 );
 
 export const POST = handle(
-    auth({}, async (request: Request) => {
+    auth({}, async (request: Request, {params: {tournamentIdOrSlug}}: RouteContext<RouteParams>) => {
         const data = await MatchCreateDtoSchema.parseAsync(await request.json());
-        return Response.json(await createMatch(data), { status: 201 });
+        return Response.json(await createMatch(tournamentIdOrSlug, data), { status: 201 });
     }),
 );

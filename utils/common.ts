@@ -1,3 +1,4 @@
+import { MatchTeamTypeEnum } from '@/dtos/match';
 import { MatchTeamType } from '@prisma/client';
 
 export function teamHomeCmp(

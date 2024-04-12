@@ -1,5 +1,5 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { ZodError, ZodIssue } from 'zod';
+import { ZodError } from 'zod';
 
 export interface ErrorResponse {
     status: number;
@@ -11,19 +11,29 @@ export interface ConflictErrorResponse extends ErrorResponse {
     target?: any;
 }
 
-export interface ZodErrorResponse extends ErrorResponse {
-    issues: ZodIssue[];
+export interface ZodErrorResponse<T> extends ErrorResponse {
+    issues: { [Field in keyof T | string]: string[] | undefined };
 }
 
 export interface Return<T> {
     data?: T;
-    error?: ErrorResponse | ConflictErrorResponse | ZodErrorResponse;
+    error?: ErrorResponse | ConflictErrorResponse | ZodErrorResponse<T>;
     rawError?: Error | any;
 }
 
-export async function handleError<T>(fn: (...args: any) => Promise<T>, ...args: any): Promise<Return<T>> {
+export async function handleErrorChain<T>(
+    prevError: ErrorResponse | undefined,
+    fn: () => Promise<T>,
+): Promise<Return<T>> {
+    if (prevError) {
+        return { error: prevError };
+    }
+    return handleError(fn);
+}
+
+export async function handleError<T>(fn: () => Promise<T>): Promise<Return<T>> {
     try {
-        return { data: await fn(args) };
+        return { data: await fn() };
     } catch (rawError) {
         if (rawError instanceof PrismaClientKnownRequestError) {
             if (rawError.code === 'P2025') {
@@ -74,7 +84,7 @@ export async function handleError<T>(fn: (...args: any) => Promise<T>, ...args: 
                     status: 400,
                     error: 'Bad Request',
                     message: 'Request body is invalid',
-                    issues: rawError.issues,
+                    issues: rawError.flatten().fieldErrors as any,
                 },
                 rawError,
             };

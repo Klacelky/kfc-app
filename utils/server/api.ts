@@ -5,9 +5,9 @@ import { handleError } from './common';
 
 export function handle<TContext>(fn: (request: NextRequest, context: TContext) => Promise<Response | NextResponse>) {
     return async (request: NextRequest, context: TContext) => {
-        const {data, error} = await handleError(fn, request, context);
+        const { data, error } = await handleError(async () => await fn(request, context));
         if (error) {
-            return Response.json(error, {status: error.status})
+            return Response.json(error, { status: error.status });
         }
         return data;
     };
