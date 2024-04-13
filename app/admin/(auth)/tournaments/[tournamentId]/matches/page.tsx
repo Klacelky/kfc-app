@@ -47,10 +47,10 @@ export default function MatchesPage({ params: { tournamentId } }: PageParams<Rou
                 actions={({ id }) => (
                     <>
                         <Link href={`matches/${id}`}>
-                            <PencilSquareIcon className="w-6" />
+                            <PencilSquareIcon className="w-8" />
                         </Link>
                         <Link href={`matches/${id}/games`}>
-                            <ClipboardDocumentListIcon className="w-6" />
+                            <ClipboardDocumentListIcon className="w-8" />
                         </Link>
                     </>
                 )}

@@ -10,36 +10,34 @@ export interface TableProps<T extends { id: string }> {
 export default function Table<T extends { id: string }>({ columnNames, getCols, data, actions }: TableProps<T>) {
     const columnKeys: string[] = columnNames.map((colName) => (Array.isArray(colName) ? colName[0] : colName));
     return (
-        <table className="table-auto w-full">
-            <thead className="bg-slate-500 text-white text-left">
-                <tr>
+        <div className="lg:table lg:table-auto w-full">
+            <div className="lg:table-header-group bg-slate-500 text-white text-left">
+                <div className="lg:table-row lg:border-none border-b-2">
                     {columnNames.map((colName) => {
                         const [key, name] = Array.isArray(colName) ? colName : [colName, colName];
                         return (
-                            <th className="p-3 border-b-admin-black border-b-2" key={key}>
+                            <div className="lg:table-cell p-3 border-slate-300 lg:border-b-2" key={key}>
                                 {name}
-                            </th>
+                            </div>
                         );
                     })}
-                    {actions ? <th className="p-3 border-b-admin-black border-b-2" key="actions" /> : null}
-                </tr>
-            </thead>
-            <tbody>
-                {data?.map((row) => (
-                    <tr key={row.id}>
-                        {getCols(row).map((col, colIndex) => (
-                            <td className="p-2 border-admin-gray border-b-2" key={`${row.id}-${columnKeys[colIndex]}`}>
-                                {col}
-                            </td>
-                        ))}
-                        {actions ? (
-                            <td className="p-2 border-admin-gray border-b-2">
-                                <div className="flex flex-row">{actions(row)}</div>
-                            </td>
-                        ) : null}
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+                    {actions ? <div className="lg:table-cell p-3 border-slate-300 border-b-2" key="actions" /> : null}
+                </div>
+            </div>
+            {data?.map((row) => (
+                <div className='lg:table-row lg:border-none border-slate-300 border-b-2' key={row.id}>
+                    {getCols(row).map((col, colIndex) => (
+                        <div className="lg:table-cell p-2 border-slate-300 lg:border-b-2" key={`${row.id}-${columnKeys[colIndex]}`}>
+                            {col}
+                        </div>
+                    ))}
+                    {actions ? (
+                        <div className="lg:table-cell p-2 border-slate-300 lg:border-b-2">
+                            <div className="flex flex-row">{actions(row)}</div>
+                        </div>
+                    ) : null}
+                </div>
+            ))}
+        </div>
     );
 }

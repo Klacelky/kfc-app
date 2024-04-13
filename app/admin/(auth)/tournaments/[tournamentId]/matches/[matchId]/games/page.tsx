@@ -51,10 +51,10 @@ export default function MatchGamesPage({ params: { matchId, tournamentId } }: Pa
                 actions={({ id }) => (
                     <>
                         <Link href={`games/${id}`}>
-                            <PencilSquareIcon className="w-6" />
+                            <PencilSquareIcon className="w-8" />
                         </Link>
                         <Link href={`games/${id}/ref`}>
-                            <ClipboardDocumentListIcon className="w-6" />
+                            <ClipboardDocumentListIcon className="w-8" />
                         </Link>
                     </>
                 )}
