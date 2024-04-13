@@ -5,7 +5,7 @@ import Alert from '@/components/admin/Alert';
 import Button from '@/components/admin/Button';
 import { TournamentGetDto } from '@/dtos/tournament';
 import { apiFetch, getErrorMessage, useAuthCookie } from '@/utils/client/api';
-import { Bars3Icon, TrophyIcon, UserGroupIcon, UserIcon, UsersIcon } from '@heroicons/react/16/solid';
+import { Bars3Icon, ChartBarIcon, TrophyIcon, UserGroupIcon, UserIcon, UsersIcon } from '@heroicons/react/16/solid';
 import { AxiosError } from 'axios';
 import classNames from 'classnames';
 import Link from 'next/link';
@@ -82,6 +82,10 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                             <NavItem href={`/admin/tournaments/${id}/matches`}>
                                 <TrophyIcon className="w-7" />
                                 Matches
+                            </NavItem>
+                            <NavItem href={`/admin/tournaments/${id}/stats`}>
+                                <ChartBarIcon className="w-7" />
+                                Stats
                             </NavItem>
                         </NavSection>
                     ))}
