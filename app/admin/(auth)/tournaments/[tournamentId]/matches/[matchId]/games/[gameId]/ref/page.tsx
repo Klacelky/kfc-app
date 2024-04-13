@@ -34,17 +34,20 @@ interface ColoredTeam {
 }
 
 function GameTeams({
+    homeTeamId,
     game,
     left,
     right,
     exchangeTeams,
 }: {
+        homeTeamId: string,
     game: MatchGameGetDto;
     left: ColoredTeam;
     right: ColoredTeam;
     exchangeTeams: () => Promise<void>;
 }) {
     const [loading, setLoading] = useState(false);
+    const [leftScoreIndex, rightScoreIndex] = left.team.id === homeTeamId ? [0, 1] : [1, 0];
     return (
         <Button onClick={loadingButton(setLoading, exchangeTeams)} disabled={loading}>
             <div className="text-3xl font-bold flex flex-row justify-center items-baseline gap-2">
@@ -57,11 +60,11 @@ function GameTeams({
                     {left.team.abbrev}
                 </span>
                 <span>
-                    {game.score[0][0]}({game.score[0][1]})
+                    {game.score[leftScoreIndex][0]}({game.score[leftScoreIndex][1]})
                 </span>
                 :
                 <span>
-                    {game.score[1][0]}({game.score[1][1]})
+                    {game.score[rightScoreIndex][0]}({game.score[rightScoreIndex][1]})
                 </span>
                 <span
                     className={classNames('p-2', {
@@ -308,7 +311,7 @@ export default function MatchGameRefPage({ params: { tournamentId, matchId, game
     if (!game) {
         return <Alert>Game not found</Alert>;
     }
-    if (!left || !right) {
+    if (!left || !right || !data?.homeTeam) {
         return <Alert>No Teams</Alert>;
     }
 
@@ -334,6 +337,7 @@ export default function MatchGameRefPage({ params: { tournamentId, matchId, game
     return (
         <div className="flex flex-col h-96 gap-4">
             <GameTeams
+                homeTeamId={data.homeTeam.id}
                 game={game}
                 left={left}
                 right={right}
