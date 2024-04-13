@@ -20,7 +20,7 @@ function Schedule({ matches }: ScheduleData) {
                 <Fragment key={name?.toString()}>
                     <div className="sm:col-span-6 flex flex-row gap-x-1 sm:justify-between">
                         <div>{name}</div>
-                        <div>{time.toLocaleTimeString()}</div>
+                        <div>{time.toLocaleTimeString('sk', { timeZone: 'Europe/Prague' })}</div>
                     </div>
                     <div
                         className={classNames('col-span-1 sm:text-right', {
@@ -251,9 +251,8 @@ export default function PlayOffPage() {
                 <h2>
                     <T sk="Vyhodnotenie" en="Award Ceremony" />
                 </h2>
-                <p>{new Date(2023, 11, 18, 20, 0, 0).toLocaleTimeString()}</p>
+                <p>{new Date(2023, 11, 18, 20, 0, 0).toLocaleTimeString('sk', { timeZone: 'Europe/Prague' })}</p>
             </section>
         </>
     );
 }
-
