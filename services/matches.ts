@@ -369,7 +369,11 @@ async function notify(matchId: string) {
         }
         await notifyScore({
             home_team: match.homeTeam?.abbrev || '',
+            home_team_name: match.homeTeam?.name || '',
+            home_team_player_names: match.homeTeam?.players.map(({ name }) => name) || [],
             visiting_team: match.visitingTeam?.abbrev || '',
+            visiting_team_name: match.visitingTeam?.name || '',
+            visiting_team_player_names: match.visitingTeam?.players.map(({ name }) => name) || [],
             home_score: match.games.slice(-1)[0]?.score[0][0],
             visiting_score: match.games.slice(-1)[0]?.score[1][0],
             home_games: match.score[0],

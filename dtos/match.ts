@@ -168,7 +168,11 @@ export type MatchItemCreatedDto = z.infer<typeof MatchItemCreatedDtoSchema>;
 
 export const ScoreDataSchema = z.object({
     home_team: z.string(),
+    home_team_name: z.string(),
+    home_team_player_names: z.array(z.string()),
     visiting_team: z.string(),
+    visiting_team_name: z.string(),
+    visiting_team_player_names: z.array(z.string()),
     home_score: z.number(),
     home_games: z.number(),
     visiting_score: z.number(),
