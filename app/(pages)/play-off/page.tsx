@@ -5,6 +5,7 @@ import { getTournament } from '@/services/tournaments';
 import T from '@/utils/client/i18n/t';
 import { handleError, handleErrorChain } from '@/utils/server/common';
 import classNames from 'classnames';
+import Link from 'next/link';
 import { Fragment } from 'react';
 
 export const dynamic = 'force-dynamic';
@@ -96,6 +97,7 @@ export default async function PlayOffPage() {
             <h1>Play-off</h1>
             <p>
                 <T sk="Sobota 13.4." en="Saturday Apr. 13" />
+                <Link href="https://twitch.tv/kolejeklacelky">https://twitch.tv/kolejeklacelky</Link>
             </p>
             <section>
                 <h2>
@@ -141,7 +143,7 @@ export default async function PlayOffPage() {
                     <T sk="Vyhodnotenie" en="Award Ceremony" />
                 </h2>
                 <p>
-                    {new Date(2024, 4, 13, 20, 0, 0).toLocaleTimeString('sk', {
+                    {new Date(2024, 4, 13, 18, 0, 0).toLocaleTimeString('sk', {
                         timeZone: 'Europe/Prague',
                     })}
                 </p>
