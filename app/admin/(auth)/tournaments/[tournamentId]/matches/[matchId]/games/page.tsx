@@ -2,7 +2,7 @@
 
 import { PageParams } from '@/utils/server/pages';
 import { RouteParams as ParentRouteParams } from '../page';
-import { MatchDetailedGetDtoSchema, MatchGameCreateDto, MatchItemCreatedDto } from '@/dtos/match';
+import { MatchDetailedGetDtoSchema, MatchGameCreateDto, MatchItemCreatedDto, MatchUpdateDto } from '@/dtos/match';
 import Table from '@/components/admin/Table';
 import Alert from '@/components/admin/Alert';
 import { api, getErrorMessage, loadingButton, useSWRSchema } from '@/utils/client/api';
@@ -59,22 +59,43 @@ export default function MatchGamesPage({ params: { matchId, tournamentId } }: Pa
                     </>
                 )}
             />
-            <Button
-                color="primary"
-                onClick={loadingButton(setNewLoading, async () => {
-                    try {
-                        await api.post<MatchItemCreatedDto>(`/api/tournament/${tournamentId}/match/${matchId}/game`, {
-                            homeTeamColor: 'BLUE',
-                        } as MatchGameCreateDto);
-                        mutate();
-                    } catch (error) {
-                        alert(getErrorMessage(error));
-                    }
-                })}
-                disabled={newLoading}
-            >
-                New Game
-            </Button>
+            <div className="flex flex-row justify-between">
+                <Button
+                    color="primary"
+                    onClick={loadingButton(setNewLoading, async () => {
+                        try {
+                            await api.post<MatchItemCreatedDto>(
+                                `/api/tournament/${tournamentId}/match/${matchId}/game`,
+                                {
+                                    homeTeamColor: 'BLUE',
+                                } as MatchGameCreateDto,
+                            );
+                            mutate();
+                        } catch (error) {
+                            alert(getErrorMessage(error));
+                        }
+                    })}
+                    disabled={newLoading}
+                >
+                    New Game
+                </Button>
+                <Button
+                    color="danger"
+                    onClick={loadingButton(setNewLoading, async () => {
+                        try {
+                            await api.patch<MatchUpdateDto>(`/api/tournament/${tournamentId}/match/${matchId}`, {
+                                updateSuccessiveMatches: true,
+                            } as MatchUpdateDto);
+                            mutate();
+                        } catch (error) {
+                            alert(getErrorMessage(error));
+                        }
+                    })}
+                    disabled={newLoading}
+                >
+                    Finish Match
+                </Button>
+            </div>
         </>
     );
 }

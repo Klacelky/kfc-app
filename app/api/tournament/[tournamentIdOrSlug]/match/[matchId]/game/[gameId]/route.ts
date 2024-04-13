@@ -15,8 +15,8 @@ export const PATCH = handle(
 );
 
 export const DELETE = handle(
-    auth({}, async (_: Request, { params: { gameId } }: RouteContext<RouteParams>) => {
-        await deleteGame(gameId);
+    auth({}, async (_: Request, { params: { matchId, gameId } }: RouteContext<RouteParams>) => {
+        await deleteGame(matchId, gameId);
         return new Response(null, { status: 204 });
     }),
 );

@@ -24,6 +24,7 @@ import {
     Team,
     TeamSource,
 } from '@prisma/client';
+import { nofityHideScore, notifyScore } from './notify';
 
 type GameWithDetails = MatchGame & {
     playerPositions: (PlayerPositions & {
@@ -285,8 +286,18 @@ export async function createMatch(
 
 export async function updateMatch(
     id: string,
-    { homeTeamId, visitingTeamId, homeTeamSource, visitingTeamSource, ...data }: MatchUpdateDto,
+    {
+        homeTeamId,
+        visitingTeamId,
+        homeTeamSource,
+        visitingTeamSource,
+        updateSuccessiveMatches,
+        ...data
+    }: MatchUpdateDto,
 ): Promise<MatchDetailedGetDto> {
+    if (updateSuccessiveMatches) {
+        await nofityHideScore();
+    }
     return expandMatchDetails(
         await prisma.$transaction(async (tx) => {
             const { teams, teamSources } = await tx.match.findUniqueOrThrow({
@@ -350,45 +361,72 @@ export async function updateMatch(
     );
 }
 
+async function notify(matchId: string) {
+    try {
+        const match = await getMatch(matchId);
+        if (match.winner) {
+            return;
+        }
+        await notifyScore({
+            home_team: match.homeTeam?.abbrev || '',
+            visiting_team: match.visitingTeam?.abbrev || '',
+            home_score: match.games.slice(-1)[0]?.score[0][0],
+            visiting_score: match.games.slice(-1)[0]?.score[1][0],
+            home_games: match.score[0],
+            visiting_games: match.score[1],
+            home_team_color: match.games.slice(-1)[0]?.homeTeamColor,
+            msg_type: 'score',
+        });
+    } catch (error) {}
+}
+
 export async function deleteMatch(id: string): Promise<void> {
     await prisma.match.delete({ where: { id } });
 }
 
 export async function createGame(matchId: string, data: MatchGameCreateDto): Promise<MatchItemCreatedDto> {
-    return await prisma.matchGame.create({
+    const result = await prisma.matchGame.create({
         data: {
             ...data,
             matchId,
         },
     });
+    await notify(matchId);
+    return result;
 }
 
 export async function updateGame(gameId: string, data: MatchGameUpdateDto): Promise<MatchItemCreatedDto> {
-    return await prisma.matchGame.update({
+    const result = await prisma.matchGame.update({
         where: { id: gameId },
         data,
     });
+    await notify(result.matchId);
+    return result;
 }
 
-export async function deleteGame(gameId: string): Promise<void> {
+export async function deleteGame(matchId: string, gameId: string): Promise<void> {
     await prisma.matchGame.delete({
         where: { id: gameId },
     });
+    await notify(matchId);
 }
 
-export async function createGoal(gameId: string, data: GoalCreateDto): Promise<MatchItemCreatedDto> {
-    return await prisma.goal.create({
+export async function createGoal(matchId: string, gameId: string, data: GoalCreateDto): Promise<MatchItemCreatedDto> {
+    const result = await prisma.goal.create({
         data: {
             ...data,
             gameId,
         },
     });
+    await notify(matchId);
+    return result;
 }
 
-export async function deleteGoal(goalId: string): Promise<void> {
+export async function deleteGoal(matchId: string, goalId: string): Promise<void> {
     await prisma.goal.delete({
         where: { id: goalId },
     });
+    await notify(matchId);
 }
 
 export async function createPlayerPositions(

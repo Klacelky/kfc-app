@@ -163,5 +163,17 @@ export type MatchQueryDto = z.infer<typeof MatchQueryDtoSchema>;
 
 export const MatchItemCreatedDtoSchema = z.object({
     id: z.string().uuid(),
-})
+});
 export type MatchItemCreatedDto = z.infer<typeof MatchItemCreatedDtoSchema>;
+
+export const ScoreDataSchema = z.object({
+    home_team: z.string(),
+    visiting_team: z.string(),
+    home_score: z.number(),
+    home_games: z.number(),
+    visiting_score: z.number(),
+    visiting_games: z.number(),
+    home_team_color: TeamColorSchema,
+    msg_type: z.literal('score'),
+});
+export type ScoreData = z.infer<typeof ScoreDataSchema>;
