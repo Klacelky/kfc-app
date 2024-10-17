@@ -1,69 +1,14 @@
 import Groups from '@/components/groups/Groups';
-import { GroupDetailedGetDto } from '@/dtos/group';
-import { MatchDetailedGetDto } from '@/dtos/match';
+import { GroupsMatches } from '@/components/groups/GroupsMatches';
 import { listGroups } from '@/services/groups';
 import { listMatches } from '@/services/matches';
 import { getTournament } from '@/services/tournaments';
 import T from '@/utils/client/i18n/t';
 import { RESERVATION } from '@/utils/links';
 import { handleError, handleErrorChain } from '@/utils/server/common';
-import classNames from 'classnames';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
-
-interface GroupMatches {
-    group: GroupDetailedGetDto;
-    matches: MatchDetailedGetDto[];
-}
-
-function GroupMatchesCard({ group: { id: groupId, name }, matches }: GroupMatches) {
-    return (
-        <div className="" key={groupId}>
-            <h2 className="bg-kfc-teal w-10 h-10 rounded-full text-center text-kfc-blue">
-                <span className="align-sub">{name}</span>
-            </h2>
-            <div className="pt-6">
-                <table className="table-auto w-full">
-                    <tbody>
-                        {matches.map(({ id: matchId, homeTeam, visitingTeam, games, winner }) => (
-                            <tr key={matchId}>
-                                <td className="text-right m-2">
-                                    <span
-                                        className={classNames({
-                                            'bg-kfc-teal text-kfc-blue font-bold p-1':
-                                                homeTeam?.id && homeTeam.id === winner?.id,
-                                        })}
-                                    >
-                                        {homeTeam?.abbrev}
-                                    </span>
-                                </td>
-                                <td className="text-center m-2">
-                                    {games
-                                        .map(
-                                            ({ score: [[homeScore, _], [visitingScore, __]] }) =>
-                                                `${homeScore}:${visitingScore}`,
-                                        )
-                                        .join(', ')}
-                                </td>
-                                <td className="m-2">
-                                    <span
-                                        className={classNames({
-                                            'bg-kfc-teal text-kfc-blue font-bold p-1':
-                                                visitingTeam?.id && visitingTeam.id === winner?.id,
-                                        })}
-                                    >
-                                        {visitingTeam?.abbrev}
-                                    </span>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    );
-}
 
 export default async function GroupsPage() {
     const { data: tournament, error: tournamentError } = await handleError(() => getTournament('spring2024'));
@@ -139,15 +84,11 @@ export default async function GroupsPage() {
                 <h2>
                     <T sk="Skupinové zápasy" en="Group matches" />
                 </h2>
-                <div className="grid gap-10 grid-cols-2 lg:grid-cols-4">
-                    {matchesByGroup ? (
-                        matchesByGroup?.map(({ group, matches }) => (
-                            <GroupMatchesCard key={group.id} group={group} matches={matches} />
-                        ))
-                    ) : (
-                        <div className="bg-kfc-red text-kfc-beige">{matchesError?.message}</div>
-                    )}
-                </div>
+                {matchesByGroup ? (
+                    <GroupsMatches matchesByGroup={matchesByGroup} />
+                ) : (
+                    <div className="bg-kfc-red text-kfc-beige">{matchesError?.message}</div>
+                )}
             </section>
         </>
     );
