@@ -4,6 +4,7 @@ import { listMatches } from '@/services/matches';
 import { getTournament } from '@/services/tournaments';
 import T from '@/utils/client/i18n/t';
 import { handleError, handleErrorChain } from '@/utils/server/common';
+import { TrophyIcon } from '@heroicons/react/16/solid';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { Fragment } from 'react';
@@ -34,7 +35,7 @@ function Schedule({ matches }: ScheduleData) {
                         expectedStart,
                     }) => (
                         <Fragment key={id}>
-                            <div className="sm:col-span-6 flex flex-row gap-x-1 sm:justify-between">
+                            <div className="sm:col-span-5 flex flex-row gap-x-1 sm:justify-between">
                                 <div>{name}</div>
                                 <div>
                                     {expectedStart?.toLocaleTimeString('sk', {
@@ -42,11 +43,10 @@ function Schedule({ matches }: ScheduleData) {
                                     })}
                                 </div>
                             </div>
-                            <div
-                                className={classNames('col-span-1 sm:text-right', {
-                                    'bg-kfc-teal text-kfc-blue font-bold': homeTeam && homeTeam.id === winner?.id,
-                                })}
-                            >
+                            <div className="sm:col-span-2 flex sm:justify-end items-center gap-1">
+                                {homeTeam?.id && homeTeam.id === winner?.id && (
+                                    <TrophyIcon className="text-kfc-teal h-6" />
+                                )}
                                 {homeTeam?.abbrev || (
                                     <span className="italic">
                                         {homeTeamSource?.match?.sourceMatch?.name}
@@ -54,7 +54,7 @@ function Schedule({ matches }: ScheduleData) {
                                     </span>
                                 )}
                             </div>
-                            <div className="sm:col-span-4 sm:text-center">
+                            <div className="sm:col-span-3 sm:text-center">
                                 {games
                                     .map(
                                         ({ score: [[homeScore, _], [visitingScore, __]] }) =>
@@ -62,17 +62,15 @@ function Schedule({ matches }: ScheduleData) {
                                     )
                                     .join(', ')}
                             </div>
-                            <div
-                                className={classNames('sm:col-span-1', {
-                                    'bg-kfc-teal text-kfc-blue font-bold':
-                                        visitingTeam && visitingTeam.id === winner?.id,
-                                })}
-                            >
+                            <div className="sm:col-span-2 flex sm:justify-start items-center gap-1">
                                 {visitingTeam?.abbrev || (
                                     <span className="italic">
                                         {visitingTeamSource?.match?.sourceMatch?.name}{' '}
                                         {visitingTeamSource?.match?.winner || ' L'}
                                     </span>
+                                )}
+                                {visitingTeam?.id && visitingTeam.id === winner?.id && (
+                                    <TrophyIcon className="text-kfc-teal h-6" />
                                 )}
                             </div>
                         </Fragment>
