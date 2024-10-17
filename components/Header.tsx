@@ -20,7 +20,11 @@ function BurgerButton({ open, onClick }: { open: boolean; onClick: () => void })
             >
                 {' '}
             </span>
-            <span className={classNames('block h-1 m-1 w-6 bg-kfc-blue rounded transition-opacity', { 'opacity-0': open })}>
+            <span
+                className={classNames('block h-1 m-1 w-6 bg-kfc-blue rounded transition-opacity', {
+                    'opacity-0': open,
+                })}
+            >
                 {' '}
             </span>
             <span
@@ -75,10 +79,10 @@ function NavBarSubMenu({ href, title, children }: { href?: string; title: ReactN
                 </div>
             </button>
             <ul
-                className={classNames(
-                    'flex flex-col gap-4 items-start flex-grow pl-6 overflow-hidden transition-all',
-                    { 'max-h-20': menuOpen, 'max-h-0': !menuOpen },
-                )}
+                className={classNames('flex flex-col gap-4 items-start flex-grow pl-6 overflow-hidden transition-all', {
+                    'max-h-72': menuOpen,
+                    'max-h-0': !menuOpen,
+                })}
                 onClick={() => setMenuOpen(false)}
             >
                 {children}
@@ -147,6 +151,9 @@ export default function Header({ logo }: { logo: boolean }) {
                         </NavBarItem>
                         <NavBarItem href="/play-off">Play-off</NavBarItem>
                         <NavBarSubMenu href="/archive" title={<T sk="Archív" en="Archive" />}>
+                            <NavBarItem href="/archive/spring2024">
+                                <T sk="Jaro 2024" en="Spring 2024" />
+                            </NavBarItem>
                             <NavBarItem href="/archive/podzim2023">
                                 <T sk="Podzim 2023" en="Autumn 2023" />
                             </NavBarItem>

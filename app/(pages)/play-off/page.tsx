@@ -81,7 +81,7 @@ function Schedule({ matches }: ScheduleData) {
 }
 
 export default async function PlayOffPage() {
-    const { data: tournament, error: tournamentError } = await handleError(() => getTournament('spring2024'));
+    const { data: tournament, error: tournamentError } = await handleError(() => getTournament('autumn2024'));
     const { data: matches, error: matchesError } = await handleErrorChain(tournamentError, () =>
         listMatches(tournament!.id, { playoff: true }),
     );

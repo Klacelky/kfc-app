@@ -11,7 +11,7 @@ import Link from 'next/link';
 export const dynamic = 'force-dynamic';
 
 export default async function GroupsPage() {
-    const { data: tournament, error: tournamentError } = await handleError(() => getTournament('spring2024'));
+    const { data: tournament, error: tournamentError } = await handleError(() => getTournament('autumn2024'));
     const { data: groups, error: groupsError } = await handleErrorChain(tournamentError, () =>
         listGroups(tournament!.id),
     );
