@@ -17,7 +17,7 @@ function Schedule({ matches }: ScheduleData) {
     return (
         <div className="grid gap-x-4 gap-y-2 grid-cols-1 sm:grid-cols-12 max-w-5xl">
             {matches.map(({ name, time, home, visiting, results, win }) => (
-                <Fragment key={name?.toString()}>
+                <Fragment key={`${home}-${visiting}`}>
                     <div className="sm:col-span-6 flex flex-row gap-x-1 sm:justify-between">
                         <div>{name}</div>
                         <div>{time.toLocaleTimeString('sk', { timeZone: 'Europe/Prague' })}</div>
