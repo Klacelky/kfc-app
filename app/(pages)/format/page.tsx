@@ -235,7 +235,6 @@ export default function FormatPage() {
                     />{' '}
                     <Link className="link" href={'/play-off'}>
                         <T sk="na tejto stránke:" en="on this page:" />
-                        <Link href="https://twitch.tv/kolejeklacelky">https://twitch.tv/kolejeklacelky</Link>
                     </Link>
                     .{' '}
                     <T
