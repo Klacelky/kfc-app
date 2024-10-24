@@ -94,58 +94,66 @@ export default async function PlayOffPage() {
         <>
             <h1>Play-off</h1>
             <p>
-                <T sk="Sobota 13.4." en="Saturday Apr. 13" />
+                {tournament?.endDate.toLocaleDateString()}{' '}
                 <Link href="https://twitch.tv/kolejeklacelky">https://twitch.tv/kolejeklacelky</Link>
             </p>
-            <section>
-                <h2>
-                    <T sk="Cena Bc. Petra Burdu" en="Bc. Peter Burda Award" />
-                </h2>
-                <Schedule matches={matches!.filter(({ playoffLayer }) => playoffLayer === 5)} />
-            </section>
-            <section>
-                <h2>
-                    <T sk="Baráž" en="Promotion and relegation" />
-                </h2>
-                <Schedule matches={matches!.filter(({ playoffLayer }) => playoffLayer === 4)} />
+            {tournament?.publishedAt && tournament.publishedAt > new Date() ? (
                 <p>
-                    <T sk="(30 min. prestávka na dobehnutie)" en="(30 min. catch-up break)" />
+                    <T sk="Viac o play-off čoskoro..." en="Play-off comming soon..." />
                 </p>
-            </section>
-            <section>
-                <h2>
-                    <T sk="Štrťfinále" en="Quarter-finals" />
-                </h2>
-                <Schedule matches={matches!.filter(({ playoffLayer }) => playoffLayer === 3)} />
-                <p>
-                    <T sk="(30 min. prestávka na dobehnutie)" en="(30 min. catch-up break)" />
-                </p>
-            </section>
-            <section>
-                <h2>
-                    <T sk="Seminfinále" en="Semi-finals" />
-                </h2>
-                <Schedule matches={matches!.filter(({ playoffLayer }) => playoffLayer === 2)} />
-                <p>
-                    <T sk="(30 min. prestávka na dobehnutie)" en="(30 min. catch-up break)" />
-                </p>
-            </section>
-            <section>
-                <h2>
-                    <T sk="Finále" en="Finals" />
-                </h2>
-                <Schedule matches={matches!.filter(({ playoffLayer }) => playoffLayer === 1)} />
-            </section>
-            <section>
-                <h2>
-                    <T sk="Vyhodnotenie" en="Award Ceremony" />
-                </h2>
-                <p>
-                    {new Date(2024, 4, 13, 18, 0, 0).toLocaleTimeString('sk', {
-                        timeZone: 'Europe/Prague',
-                    })}
-                </p>
-            </section>
+            ) : (
+                <>
+                    <section>
+                        <h2>
+                            <T sk="Cena Bc. Petra Burdu" en="Bc. Peter Burda Award" />
+                        </h2>
+                        <Schedule matches={matches!.filter(({ playoffLayer }) => playoffLayer === 5)} />
+                    </section>
+                    <section>
+                        <h2>
+                            <T sk="Baráž" en="Promotion and relegation" />
+                        </h2>
+                        <Schedule matches={matches!.filter(({ playoffLayer }) => playoffLayer === 4)} />
+                        <p>
+                            <T sk="(30 min. prestávka na dobehnutie)" en="(30 min. catch-up break)" />
+                        </p>
+                    </section>
+                    <section>
+                        <h2>
+                            <T sk="Štrťfinále" en="Quarter-finals" />
+                        </h2>
+                        <Schedule matches={matches!.filter(({ playoffLayer }) => playoffLayer === 3)} />
+                        <p>
+                            <T sk="(30 min. prestávka na dobehnutie)" en="(30 min. catch-up break)" />
+                        </p>
+                    </section>
+                    <section>
+                        <h2>
+                            <T sk="Seminfinále" en="Semi-finals" />
+                        </h2>
+                        <Schedule matches={matches!.filter(({ playoffLayer }) => playoffLayer === 2)} />
+                        <p>
+                            <T sk="(30 min. prestávka na dobehnutie)" en="(30 min. catch-up break)" />
+                        </p>
+                    </section>
+                    <section>
+                        <h2>
+                            <T sk="Finále" en="Finals" />
+                        </h2>
+                        <Schedule matches={matches!.filter(({ playoffLayer }) => playoffLayer === 1)} />
+                    </section>
+                    <section>
+                        <h2>
+                            <T sk="Vyhodnotenie" en="Award Ceremony" />
+                        </h2>
+                        <p>
+                            {new Date(2024, 4, 13, 18, 0, 0).toLocaleTimeString('sk', {
+                                timeZone: 'Europe/Prague',
+                            })}
+                        </p>
+                    </section>
+                </>
+            )}
         </>
     );
 }

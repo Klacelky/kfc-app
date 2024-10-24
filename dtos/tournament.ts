@@ -10,6 +10,7 @@ const TournamentBaseDtoSchema = z.object({
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
     description: z.string(),
+    publishedAt: z.coerce.date().nullable(),
     statsPublished: StatsPublishedSchema,
 });
 

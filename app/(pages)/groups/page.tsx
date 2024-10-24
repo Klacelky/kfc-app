@@ -53,43 +53,51 @@ export default async function GroupsPage() {
                     }
                 />
             </p>
-            <p>
-                <T
-                    sk={
-                        <>
-                            Obsadenosť stola nájdeš{' '}
-                            <Link className="link" href={RESERVATION} target="_blank">
-                                tu
-                            </Link>
-                            . Ak si dohodneš so súpermi zápas, hoď si tam rezervačku.
-                        </>
-                    }
-                    en={
-                        <>
-                            You can find the availability of the foosball table{' '}
-                            <Link className="link" href={RESERVATION} target="_blank">
-                                here
-                            </Link>
-                            . Please, make a reservation when you agree on a match.
-                        </>
-                    }
-                />
-            </p>
-            {groups ? (
-                <Groups groups={groups} />
+            {tournament?.publishedAt && tournament.publishedAt > new Date() ? (
+                <p>
+                    <T sk="Viac o skupinách čoskoro..." en="Groups comming soon..." />
+                </p>
             ) : (
-                <div className="bg-kfc-red text-kfc-beige">{groupsError?.message}</div>
+                <>
+                    <p>
+                        <T
+                            sk={
+                                <>
+                                    Obsadenosť stola nájdeš{' '}
+                                    <Link className="link" href={RESERVATION} target="_blank">
+                                        tu
+                                    </Link>
+                                    . Ak si dohodneš so súpermi zápas, hoď si tam rezervačku.
+                                </>
+                            }
+                            en={
+                                <>
+                                    You can find the availability of the foosball table{' '}
+                                    <Link className="link" href={RESERVATION} target="_blank">
+                                        here
+                                    </Link>
+                                    . Please, make a reservation when you agree on a match.
+                                </>
+                            }
+                        />
+                    </p>
+                    {groups ? (
+                        <Groups groups={groups} />
+                    ) : (
+                        <div className="bg-kfc-red text-kfc-beige">{groupsError?.message}</div>
+                    )}
+                    <section>
+                        <h2>
+                            <T sk="Skupinové zápasy" en="Group matches" />
+                        </h2>
+                        {matchesByGroup ? (
+                            <GroupsMatches matchesByGroup={matchesByGroup} />
+                        ) : (
+                            <div className="bg-kfc-red text-kfc-beige">{matchesError?.message}</div>
+                        )}
+                    </section>
+                </>
             )}
-            <section>
-                <h2>
-                    <T sk="Skupinové zápasy" en="Group matches" />
-                </h2>
-                {matchesByGroup ? (
-                    <GroupsMatches matchesByGroup={matchesByGroup} />
-                ) : (
-                    <div className="bg-kfc-red text-kfc-beige">{matchesError?.message}</div>
-                )}
-            </section>
         </>
     );
 }
