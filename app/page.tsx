@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import bannerImg from '@/public/banner_web_spring2024.svg';
+import bannerImg from '@/public/banner_web_autumn2024.svg';
 import Header from '@/components/Header';
 
 export default function Home() {
