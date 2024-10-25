@@ -304,22 +304,6 @@ export async function updateMatch(
                 where: { id },
                 include: { teamSources: true, teams: true },
             });
-            console.log(
-                makeNullTeamsArray(
-                    homeTeamId,
-                    visitingTeamId,
-                    teams.map(({ type }) => type),
-                ).map((type) => ({
-                    type_matchId: { type, matchId: id },
-                })),
-                makeNullTeamsArray(
-                    homeTeamSource,
-                    visitingTeamSource,
-                    teamSources.map(({ type }) => type),
-                ).map((type) => ({
-                    matchId_type: { type, matchId: id },
-                })),
-            );
             return await prisma.match.update({
                 where: { id },
                 data: {

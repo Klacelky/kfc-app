@@ -8,7 +8,6 @@ const JWT_EXP = process.env.JWT_EXP || '1 day';
 
 export async function loginAdmin({ username, password }: AuthLoginDto): Promise<string | null> {
     const admin = await prisma.adminUser.findUnique({ where: { username } });
-    console.log(admin, admin && await argon2.verify(admin.password, password));
     if (!admin || !(await argon2.verify(admin.password, password))) {
         return null;
     }

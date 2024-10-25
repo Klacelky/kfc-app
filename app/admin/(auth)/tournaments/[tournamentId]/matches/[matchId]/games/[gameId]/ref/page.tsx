@@ -241,7 +241,6 @@ function PendingGoalModal({
             timestamp: undefined,
         },
     });
-    console.log(isSubmitting);
 
     return (
         <form onSubmit={handleSubmit(submit)}>

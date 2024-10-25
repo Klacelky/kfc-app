@@ -89,8 +89,6 @@ export default function MatchEditForm({ tournamentId, values, matchId }: MatchEd
         },
     });
 
-    console.log(isValid, errors);
-
     return (
         <form
             onSubmit={handleSubmit(async (formData) => {
