@@ -34,8 +34,18 @@ export default function AdminLoginPage() {
         >
             {error && <Alert>{error}</Alert>}
             <div className="flex flex-col p-4 gap-4">
-                <Input {...register('username')} label="Username" error={errors.username?.message} />
-                <Input {...register('password')} label="Password" error={errors.password?.message} type="password" />
+                <Input
+                    register={() => register('username')}
+                    type="text"
+                    label="Username"
+                    error={errors.username?.message}
+                />
+                <Input
+                    register={() => register('password')}
+                    type="password"
+                    label="Password"
+                    error={errors.password?.message}
+                />
                 <Button type="submit" color="primary" disabled={!isValid}>
                     Login
                 </Button>

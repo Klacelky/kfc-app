@@ -1,77 +1,102 @@
-import { ErrorResponse, ZodErrorResponse } from '@/utils/server/common';
+import { callOptional } from '@/utils/common';
 import classNames from 'classnames';
-import { ForwardRefRenderFunction, InputHTMLAttributes, ReactNode, Ref, SelectHTMLAttributes, forwardRef } from 'react';
+import { HTMLInputTypeAttribute, InputHTMLAttributes, ReactNode, SelectHTMLAttributes } from 'react';
+import { FieldPath, FieldValues, UseFormRegisterReturn } from 'react-hook-form';
 
-interface BaseControlProps {
-    name?: string;
+type BaseControlProps<TInputProps, TFieldValues extends FieldValues> = {
     label?: ReactNode;
     error?: string;
-    issues?: ErrorResponse;
     className?: string;
-}
+    inputProps?: TInputProps;
+    register?: () => UseFormRegisterReturn<FieldPath<TFieldValues>>;
+};
 
-function BaseControl<TControl, TControlProps extends BaseControlProps, T>(
-    Control: ForwardRefRenderFunction<TControl, TControlProps>,
-) {
-    const component = forwardRef(function (props: TControlProps, ref: Ref<TControl>) {
-        const { issues, label, error, name, className } = props;
-        const zodError = issues as ZodErrorResponse<T>;
-        return (
-            <div className={classNames('flex gap-2 flex-col', className)}>
-                {label ? <label>{label}</label> : null}
-                {Control(props, ref)}
-                {error || (name && zodError?.issues[name]) ? (
-                    <span className="text-admin-danger text-sm">{error || (name && zodError?.issues[name])}</span>
-                ) : null}
-            </div>
-        );
-    });
-    component.displayName = 'BaseControl';
-    return component;
-}
+type ControlWrapperProps<TInputProps, TFieldValues extends FieldValues> = BaseControlProps<
+    TInputProps,
+    TFieldValues
+> & {
+    children: ReactNode;
+    labelClassName?: string;
+};
 
-export interface InputProps extends BaseControlProps, InputHTMLAttributes<HTMLInputElement> {
-    placeholder?: string;
-}
-
-export const Input = BaseControl(function ({ name, error, ...rest }: InputProps, ref: Ref<HTMLInputElement>) {
-    return (
-        <input
-            name={name}
-            {...rest}
-            ref={ref}
-            className={classNames('border-2 p-1 px-2', { 'border-red-500': !!error })}
-        />
-    );
-});
-Input.displayName = 'Input';
-
-export interface SelectProps extends BaseControlProps, SelectHTMLAttributes<HTMLSelectElement> {}
-
-export const Select = BaseControl(function ({ error, children, ...rest }: SelectProps, ref: Ref<HTMLSelectElement>) {
-    return (
-        <select {...rest} ref={ref} className={classNames('border-2 p-1 px-2', { 'border-red-500': !!error })}>
-            {children}
-        </select>
-    );
-});
-Select.displayName = 'Select';
-
-export const Checkbox = forwardRef(function <T>(
-    { className, label, error, issues, name, ...rest }: InputProps,
-    ref: Ref<HTMLInputElement>,
-) {
-    const zodError = issues as ZodErrorResponse<T>;
+function ControlWrapper<TInputProps, TFieldValues extends FieldValues>({
+    children,
+    label,
+    error,
+    className,
+    labelClassName,
+}: ControlWrapperProps<TInputProps, TFieldValues>) {
     return (
         <div className={classNames('flex gap-2 flex-col', className)}>
-            <label className="flex flex-row gap-2 items-center">
-                <input {...rest} type="checkbox" name={name} ref={ref} className="w-7 h-7" />
-                {label}
-            </label>
-            {error || (name && zodError?.issues[name]) ? (
-                <span className="text-admin-danger text-sm">{error || (name && zodError?.issues[name])}</span>
-            ) : null}
+            {label && <label className={labelClassName}>{label}</label>}
+            {children}
+            {error && <span className="text-admin-danger text-sm">{error}</span>}
         </div>
     );
-});
-Checkbox.displayName = 'Checkbox';
+}
+
+export type InputProps<TFieldValues extends FieldValues> = BaseControlProps<
+    InputHTMLAttributes<HTMLInputElement>,
+    TFieldValues
+> & {
+    type: HTMLInputTypeAttribute;
+};
+
+export function Input<TFieldValues extends FieldValues>(props: InputProps<TFieldValues>) {
+    const { register, inputProps, error, type, ...wrapperProps } = props;
+    return (
+        <ControlWrapper error={error} {...wrapperProps}>
+            <input
+                type={type}
+                {...inputProps}
+                {...callOptional(register)}
+                className={classNames('border-2 p-1 px-2', { 'border-red-500': !!error }, inputProps?.className)}
+            />
+        </ControlWrapper>
+    );
+}
+
+export type SelectProps<TFieldValues extends FieldValues> = BaseControlProps<
+    SelectHTMLAttributes<HTMLSelectElement>,
+    TFieldValues
+> & {
+    children?: ReactNode;
+};
+
+export function Select<TFieldValues extends FieldValues>(props: SelectProps<TFieldValues>) {
+    const { register, inputProps, error, children, ...wrapperProps } = props;
+    return (
+        <ControlWrapper error={error} {...wrapperProps}>
+            <select
+                {...inputProps}
+                {...callOptional(register)}
+                className={classNames('border-2 p-1 px-2', { 'border-red-500': !!error })}
+            >
+                {children}
+            </select>
+        </ControlWrapper>
+    );
+}
+
+export type CheckboxProps<TFieldValues extends FieldValues> = BaseControlProps<
+    InputHTMLAttributes<HTMLInputElement>,
+    TFieldValues
+>;
+
+export function Checkbox<TFieldValues extends FieldValues>(props: CheckboxProps<TFieldValues>) {
+    const { register, inputProps, label, ...wrapperProps } = props;
+    return (
+        <ControlWrapper
+            {...wrapperProps}
+            labelClassName="flex flex-row gap-2 items-center"
+            label={
+                <>
+                    <input {...inputProps} {...callOptional(register)} type="checkbox" className="w-7 h-7" />
+                    {label}
+                </>
+            }
+        >
+            {null}
+        </ControlWrapper>
+    );
+}

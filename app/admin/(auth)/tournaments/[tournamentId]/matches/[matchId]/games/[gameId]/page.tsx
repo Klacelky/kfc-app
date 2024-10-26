@@ -28,14 +28,10 @@ export default function MatchGameEditPage({ params: { tournamentId, matchId, gam
         formState: { errors, isValid },
         handleSubmit,
         setError,
-    } = useForm<Omit<MatchGameUpdateDto, 'startedAt' | 'finishedAt'> & { startedAt?: string; finishedAt?: string }>({
+    } = useForm<MatchGameUpdateDto>({
         mode: 'all',
         resolver: zodResolver(MatchGameUpdateDtoSchema),
-        defaultValues: {
-            ...game,
-            startedAt: convertDate(game?.startedAt),
-            finishedAt: convertDate(game?.finishedAt),
-        },
+        defaultValues: game,
     });
 
     if (error) {
@@ -62,19 +58,19 @@ export default function MatchGameEditPage({ params: { tournamentId, matchId, gam
                 {errors.root && <Alert>{errors.root.message}</Alert>}
                 <div className="flex flex-col gap-4">
                     <Input
-                        {...register('startedAt')}
+                        register={() => register('startedAt', { valueAsDate: true })}
                         type="datetime-local"
                         label="Started At"
                         error={errors?.startedAt?.message}
                     />
                     <Input
-                        {...register('finishedAt')}
+                        register={() => register('finishedAt', { valueAsDate: true })}
                         type="datetime-local"
                         label="Finished At"
                         error={errors?.finishedAt?.message}
                     />
                     <Select
-                        {...register('homeTeamColor')}
+                        register={() => register('homeTeamColor')}
                         label="Home Team Color"
                         error={errors.homeTeamColor?.message}
                     >

@@ -40,7 +40,7 @@ function GameTeams({
     right,
     exchangeTeams,
 }: {
-        homeTeamId: string,
+    homeTeamId: string;
     game: MatchGameGetDto;
     left: ColoredTeam;
     right: ColoredTeam;
@@ -248,14 +248,14 @@ function PendingGoalModal({
                 <div>{player.name}</div>
                 {errors.root?.message && <Alert>{errors.root.message}</Alert>}
                 <Input
-                    {...register('timestamp', { setValueAs: (v) => v || undefined })}
+                    register={() => register('timestamp', {valueAsDate: true})}
                     type="datetime-local"
                     label="Timestamp"
                     error={errors.timestamp?.message}
                 />
-                <Checkbox {...register('photo')} label="Photo" error={errors.photo?.message} />
-                <Checkbox {...register('own')} label="Own" error={errors.own?.message} />
-                <Checkbox {...register('out')} label="Out" error={errors.out?.message} />
+                <Checkbox register={() => register('photo')} label="Photo" error={errors.photo?.message} />
+                <Checkbox register={() => register('own')} label="Own" error={errors.own?.message} />
+                <Checkbox register={() => register('out')} label="Out" error={errors.out?.message} />
                 <Button type="submit" color="primary" disabled={!isValid || isSubmitting}>
                     Add Goal
                 </Button>

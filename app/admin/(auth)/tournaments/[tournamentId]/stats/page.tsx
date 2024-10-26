@@ -18,7 +18,10 @@ function PlayerGoalStatsSection({ stats }: { stats: PlayerGoalStats[] }) {
     return (
         <section>
             <h2>Player Goals</h2>
-            <Select label="Sort by (descending)" onChange={(event) => setSort(event.target.value)} value={sort}>
+            <Select
+                label="Sort by (descending)"
+                inputProps={{ onChange: (event) => setSort(event.target.value), value: sort }}
+            >
                 <option value="goals">Goals</option>
                 <option value="goals">Games</option>
                 <option value="goalsPerGame">Goals per game</option>
@@ -61,7 +64,10 @@ function GoalkeeperStatsSection({ stats }: { stats: GoalkeeperStats[] }) {
     return (
         <section>
             <h2>Goalkeeper received goals</h2>
-            <Select label="Sort by (ascending)" onChange={(event) => setSort(event.target.value)} value={sort}>
+            <Select
+                label="Sort by (ascending)"
+                inputProps={{ onChange: (event) => setSort(event.target.value), value: sort }}
+            >
                 <option value="games">Games</option>
                 <option value="timeInGoal">Time in goal</option>
                 <option value="receivedGoals">Received goals</option>
