@@ -24,7 +24,7 @@ export function NavItem({ children, href }: { children: ReactNode; href: string 
 export function NavSection({ children, title }: { children: ReactNode; title?: ReactNode }) {
     return (
         <div className="border-b-2 border-b-slate-400 p-4">
-            {title ? <h2 className="text-3xl mb-6">{title}</h2> : null}
+            {title && <h2 className="text-3xl mb-6">{title}</h2>}
             {children}
         </div>
     );
@@ -33,7 +33,7 @@ export function NavSection({ children, title }: { children: ReactNode; title?: R
 export default function AdminLayout({ children }: { children: ReactNode }) {
     const { push } = useRouter();
     const { error: authError } = useAuthCookie();
-    const { data, error, isLoading } = useSWR<TournamentGetDto[], AxiosError>('/api/tournament', apiFetch);
+    const { data: tournaments, error, isLoading } = useSWR<TournamentGetDto[], AxiosError>('/api/tournament', apiFetch);
 
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -69,8 +69,8 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                     </NavSection>
                     {error && <Alert>{getErrorMessage(error)}</Alert>}
                     {isLoading && <Loading />}
-                    {data?.map(({ name, id }) => (
-                        <NavSection title={name} key={id}>
+                    {tournaments?.map(({ id, slug }) => (
+                        <NavSection title={slug} key={id}>
                             <NavItem href={`/admin/tournaments/${id}/teams`}>
                                 <UsersIcon className="w-7" />
                                 Teams

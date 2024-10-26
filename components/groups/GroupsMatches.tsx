@@ -52,7 +52,7 @@ function GroupMatchesCard({ group: { id: groupId, name }, matches }: GroupMatche
     );
 }
 
-export interface GroupsMatchesProps {
+export type GroupsMatchesProps = {
     matchesByGroup: GroupMatches[];
 }
 

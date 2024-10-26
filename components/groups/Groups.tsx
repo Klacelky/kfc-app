@@ -13,7 +13,7 @@ function GroupCard({ name, teams }: GroupDetailedGetDto) {
                     .map(({ name, abbrev, players, standing }) => (
                         <div key={name}>
                             <div className="flex flex-row items-center gap-3">
-                                {standing !== null ? (
+                                {standing !== null && (
                                     <h3
                                         className={classNames(
                                             'translate-y-2 w-6 h-6 text-center rounded-full',
@@ -27,7 +27,7 @@ function GroupCard({ name, teams }: GroupDetailedGetDto) {
                                     >
                                         {standing}
                                     </h3>
-                                ) : null}
+                                )}
                                 <h3>{abbrev}</h3>
                                 <h3>{name}</h3>
                                 {/* <h3 className="flex-grow text-right"> */}
@@ -47,9 +47,9 @@ function GroupCard({ name, teams }: GroupDetailedGetDto) {
     );
 }
 
-export interface GroupsProps {
+export type GroupsProps = {
     groups: GroupDetailedGetDto[];
-}
+};
 
 export default function Groups({ groups }: GroupsProps) {
     return (

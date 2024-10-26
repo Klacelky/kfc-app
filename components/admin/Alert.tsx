@@ -2,10 +2,10 @@ import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/16/soli
 import classNames from 'classnames';
 import { ReactNode } from 'react';
 
-export interface AlertProps {
+export type AlertProps = {
     type?: 'error' | 'success';
     children: ReactNode;
-}
+};
 
 export default function Alert({ type, children }: AlertProps) {
     return (

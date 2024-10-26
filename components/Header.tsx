@@ -108,7 +108,7 @@ export default function Header({ logo }: { logo: boolean }) {
                     'justify-end': !logo,
                 })}
             >
-                {logo ? <Image className="h-16 w-auto z-50" src={logoImg} alt="Klácelky Foosball Cup" /> : null}
+                {logo && <Image className="h-16 w-auto z-50" src={logoImg} alt="Klácelky Foosball Cup" />}
                 <div
                     className={classNames(
                         // "lg:hidden",

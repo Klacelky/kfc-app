@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     color?: 'primary' | 'secondary' | 'danger';
     children?: ReactNode;
-}
+};
 
 export default function Button({ children, color, className, ...props }: ButtonProps) {
     return (
