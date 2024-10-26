@@ -38,6 +38,11 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
+RUN mkdir -p /app/node_modules/argon2
+RUN chown nextjs:nodejs /app/node_modules
+RUN chown nextjs:nodejs /app/node_modules/argon2
+COPY --from=deps --chown=nextjs:nodejs /app/node_modules/argon2/prebuilds /app/node_modules/argon2/prebuilds
+
 COPY --from=builder /app/public ./public
 
 RUN mkdir .next
