@@ -1,6 +1,7 @@
+import { RouteParams as ParentRouteParams } from '../route';
+
 import { deletePlayerPositions } from '@/services/matches';
 import { RouteContext, auth, handle } from '@/utils/server/api';
-import { RouteParams as ParentRouteParams } from '../route';
 
 export interface RouteParams extends ParentRouteParams {
     playerPositionsId: string;

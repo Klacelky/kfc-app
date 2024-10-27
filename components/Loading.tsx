@@ -1,5 +1,3 @@
-import classNames from 'classnames';
-
 export default function Loading({ className }: { className?: string }) {
     return (
         <div className={className}>

@@ -1,10 +1,5 @@
 'use client';
 
-import Loading from '@/components/Loading';
-import Alert from '@/components/admin/Alert';
-import Button from '@/components/admin/Button';
-import { TournamentGetDto } from '@/dtos/tournament';
-import { apiFetch, getErrorMessage, useAuthCookie } from '@/utils/client/api';
 import { Bars3Icon, ChartBarIcon, TrophyIcon, UserGroupIcon, UserIcon, UsersIcon } from '@heroicons/react/16/solid';
 import { AxiosError } from 'axios';
 import classNames from 'classnames';
@@ -12,6 +7,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ReactNode, useState } from 'react';
 import useSWR from 'swr';
+
+import Alert from '@/components/Alert';
+import Loading from '@/components/Loading';
+import Button from '@/components/admin/Button';
+import { TournamentGetDto } from '@/dtos/tournament';
+import { apiFetch, getErrorMessage, useAuthCookie } from '@/utils/client/api';
 
 export function NavItem({ children, href }: { children: ReactNode; href: string }) {
     return (

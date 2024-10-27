@@ -1,10 +1,10 @@
-import type { Metadata } from 'next';
+import classNames from 'classnames';
+import { Metadata } from 'next';
 import { Nunito } from 'next/font/google';
 import localFont from 'next/font/local';
 
 import './globals.css';
 import 'flag-icons/css/flag-icons.min.css';
-import classNames from 'classnames';
 import { LangProvider } from '@/utils/client/i18n/LangProvider';
 
 const nunito = Nunito({

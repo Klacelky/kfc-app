@@ -1,4 +1,5 @@
-import Alert from '@/components/admin/Alert';
+import Alert from '@/components/Alert';
+import PlayOffSchedule from '@/components/PlayOffSchedule';
 import Groups from '@/components/groups/Groups';
 import { GroupsMatches } from '@/components/groups/GroupsMatches';
 import { listGroups } from '@/services/groups';
@@ -6,11 +7,10 @@ import { listMatches } from '@/services/matches';
 import { getTournament } from '@/services/tournaments';
 import T from '@/utils/client/i18n/t';
 import { handleError } from '@/utils/server/common';
-import PlayOffSchedule from '@/components/PlayOffSchedule';
 
-export interface RouteParams {
+export type RouteParams = {
     tournamentBlob: string;
-}
+};
 
 export default async function TournamentArchivePage({ params: { tournamentBlob } }: { params: RouteParams }) {
     const { data, error } = await handleError(async () => {

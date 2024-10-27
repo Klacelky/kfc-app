@@ -1,9 +1,11 @@
 import { NextRequest } from 'next/server';
+
+import { RouteParams as ParentRouteParams } from '../route';
+
 import { MatchCreateDtoSchema, MatchQueryDtoSchema } from '@/dtos/match';
 import { createMatch, listMatches } from '@/services/matches';
 import { RouteContext, auth, handle } from '@/utils/server/api';
 import { getQueryObject } from '@/utils/server/query';
-import { RouteParams as ParentRouteParams } from '../route';
 
 export interface RouteParams extends ParentRouteParams {}
 

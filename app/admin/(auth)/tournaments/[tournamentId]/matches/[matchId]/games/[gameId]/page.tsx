@@ -1,16 +1,18 @@
 'use client';
 
-import { PageParams } from '@/utils/server/pages';
-import { RouteParams as ParentRouteParams } from '../page';
-import { api, convertDate, getErrorMessage, useSWRSchema } from '@/utils/client/api';
-import { MatchDetailedGetDtoSchema, MatchGameUpdateDto, MatchGameUpdateDtoSchema, TeamColorSchema } from '@/dtos/match';
-import Alert from '@/components/admin/Alert';
-import Loading from '@/components/Loading';
-import { Select, Input } from '@/components/admin/Input';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Button from '@/components/admin/Button';
 import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+
+import { RouteParams as ParentRouteParams } from '../page';
+
+import Alert from '@/components/Alert';
+import Loading from '@/components/Loading';
+import Button from '@/components/admin/Button';
+import { Select, Input } from '@/components/admin/Input';
+import { MatchDetailedGetDtoSchema, MatchGameUpdateDto, MatchGameUpdateDtoSchema, TeamColorSchema } from '@/dtos/match';
+import { api, getErrorMessage, useSWRSchema } from '@/utils/client/api';
+import { PageParams } from '@/utils/server/pages';
 
 export interface RouteParams extends ParentRouteParams {
     gameId: string;

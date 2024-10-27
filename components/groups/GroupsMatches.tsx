@@ -1,12 +1,12 @@
+import { TrophyIcon } from '@heroicons/react/16/solid';
+
 import { GroupDetailedGetDto } from '@/dtos/group';
 import { MatchDetailedGetDto } from '@/dtos/match';
-import { TrophyIcon } from '@heroicons/react/16/solid';
-import classNames from 'classnames';
 
-export interface GroupMatches {
+export type GroupMatches = {
     group: GroupDetailedGetDto;
     matches: MatchDetailedGetDto[];
-}
+};
 
 function GroupMatchesCard({ group: { id: groupId, name }, matches }: GroupMatches) {
     return (
@@ -54,7 +54,7 @@ function GroupMatchesCard({ group: { id: groupId, name }, matches }: GroupMatche
 
 export type GroupsMatchesProps = {
     matchesByGroup: GroupMatches[];
-}
+};
 
 export function GroupsMatches({ matchesByGroup }: GroupsMatchesProps) {
     return (

@@ -1,8 +1,10 @@
+import { RouteParams as ParentRouteParams } from '../page';
+
+import Alert from '@/components/Alert';
 import Table from '@/components/admin/Table';
-import Alert from '@/components/admin/Alert';
 import { listPlayers } from '@/services/players';
 import { handleError } from '@/utils/server/common';
-import { RouteParams as ParentRouteParams } from '../page';
+
 
 export const dynamic = 'force-dynamic';
 

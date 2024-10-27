@@ -1,12 +1,13 @@
 'use client';
 
-import { PageParams } from '@/utils/server/pages';
 import { RouteParams as ParentRouteParams } from '../page';
-import { MatchDetailedGetDtoSchema } from '@/dtos/match';
-import MatchEditForm from '@/components/admin/forms/MatchEditForm';
-import Alert from '@/components/admin/Alert';
-import { getErrorMessage, useSWRSchema } from '@/utils/client/api';
+
+import Alert from '@/components/Alert';
 import Loading from '@/components/Loading';
+import MatchEditForm from '@/components/admin/forms/MatchEditForm';
+import { MatchDetailedGetDtoSchema } from '@/dtos/match';
+import { getErrorMessage, useSWRSchema } from '@/utils/client/api';
+import { PageParams } from '@/utils/server/pages';
 
 export const dynamic = 'force-dynamic';
 

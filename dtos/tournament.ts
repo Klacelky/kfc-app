@@ -1,4 +1,5 @@
 import { z } from 'zod';
+
 import { BaseDtoSchema, slug } from './base';
 
 export const StatsPublishedSchema = z.enum(['NOW', 'AFTER', 'NEVER']);

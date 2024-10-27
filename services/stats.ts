@@ -1,6 +1,7 @@
+import { Goal, MatchGame, Player, PlayerPosition, PlayerPositionType, PlayerPositions, Team } from '@prisma/client';
+
 import { GoalkeeperStats, PlayerGoalStats, PlayerPhotosStats, TournamentStats } from '@/dtos/stats';
 import prisma from '@/utils/server/db';
-import { Goal, MatchGame, Player, PlayerPosition, PlayerPositionType, PlayerPositions, Team } from '@prisma/client';
 
 export async function playerGoalStats(tournamentId: string): Promise<PlayerGoalStats[]> {
     const playersWithGoals = await prisma.player.findMany({

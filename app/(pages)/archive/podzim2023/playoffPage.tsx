@@ -1,8 +1,10 @@
 import classNames from 'classnames';
 import { Fragment, ReactNode } from 'react';
+
+import TDateTime from '@/utils/client/i18n/TDateTime';
 import T from '@/utils/client/i18n/t';
 
-interface ScheduleData {
+type ScheduleData = {
     matches: {
         name: ReactNode;
         time: Date;
@@ -11,7 +13,7 @@ interface ScheduleData {
         results?: [number, number][];
         win?: number;
     }[];
-}
+};
 
 function Schedule({ matches }: ScheduleData) {
     return (
@@ -20,7 +22,9 @@ function Schedule({ matches }: ScheduleData) {
                 <Fragment key={`${home}-${visiting}`}>
                     <div className="sm:col-span-6 flex flex-row gap-x-1 sm:justify-between">
                         <div>{name}</div>
-                        <div>{time.toLocaleTimeString('sk', { timeZone: 'Europe/Prague' })}</div>
+                        <div>
+                            <TDateTime datetime={time} type="time" />
+                        </div>
                     </div>
                     <div
                         className={classNames('col-span-1 sm:text-right', {
@@ -251,7 +255,9 @@ export default function PlayOffPage() {
                 <h2>
                     <T sk="Vyhodnotenie" en="Award Ceremony" />
                 </h2>
-                <p>{new Date(2023, 11, 18, 20, 0, 0).toLocaleTimeString('sk', { timeZone: 'Europe/Prague' })}</p>
+                <p>
+                    <TDateTime datetime={new Date(2023, 11, 18, 20, 0, 0)} type="time" />
+                </p>
             </section>
         </>
     );

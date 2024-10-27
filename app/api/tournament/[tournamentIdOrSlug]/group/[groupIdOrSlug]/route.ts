@@ -1,7 +1,8 @@
+import { RouteParams as ParentRouteParams } from '../route';
+
 import { GroupUpdateDtoSchema } from '@/dtos/group';
 import { deleteGroup, getGroup, updateGroup } from '@/services/groups';
 import { RouteContext, auth, handle } from '@/utils/server/api';
-import { RouteParams as ParentRouteParams } from '../route';
 
 export interface RouteParams extends ParentRouteParams {
     groupIdOrSlug: string;

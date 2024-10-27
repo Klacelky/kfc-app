@@ -1,8 +1,10 @@
 import { cookies } from 'next/headers';
+
+import { RouteParams as ParentRouteParams } from '../route';
+
 import { AuthLoginDtoSchema } from '@/dtos/auth';
 import { loginAdmin } from '@/services/auth';
 import { AuthNextRequest, auth, handle } from '@/utils/server/api';
-import { RouteParams as ParentRouteParams } from '../route';
 
 export interface RouteParams extends ParentRouteParams {}
 

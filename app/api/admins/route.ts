@@ -1,7 +1,8 @@
+import { RouteParams as ParentRouteParams } from '../route';
+
 import { AdminCreateDtoSchema } from '@/dtos/admin';
 import { createAdmin, listAdmins } from '@/services/admins';
 import { auth, handle } from '@/utils/server/api';
-import { RouteParams as ParentRouteParams } from '../route';
 
 export interface RouteParams extends ParentRouteParams {}
 

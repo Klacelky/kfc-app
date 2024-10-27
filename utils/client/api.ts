@@ -1,11 +1,13 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { ErrorResponse } from '../server/common';
-import { AuthAdmin } from '@/dtos/auth';
 import useSWR, { SWRResponse } from 'swr';
 import { ZodSchema, z } from 'zod';
+
+import { ErrorResponse } from '../server/common';
+
+import { AuthAdmin } from '@/dtos/auth';
 import { TeamColorEnum } from '@/dtos/match';
 
-interface X<T, D> {
+type X<T, D> = {
     response?: AxiosResponse<T, D>;
     error?: ErrorResponse;
 }

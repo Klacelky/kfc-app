@@ -1,14 +1,16 @@
 'use client';
 
-import { PageParams } from '@/utils/server/pages';
-import { RouteParams as ParentRouteParams } from '../page';
-import { getErrorMessage, useSWRSchema } from '@/utils/client/api';
-import { GoalkeeperStats, PlayerGoalStats, PlayerPhotosStats, TournamentStatsSchema } from '@/dtos/stats';
-import Alert from '@/components/admin/Alert';
-import Loading from '@/components/Loading';
 import { useState } from 'react';
-import Table from '@/components/admin/Table';
+
+import { RouteParams as ParentRouteParams } from '../page';
+
+import Alert from '@/components/Alert';
+import Loading from '@/components/Loading';
 import { Select } from '@/components/admin/Input';
+import Table from '@/components/admin/Table';
+import { GoalkeeperStats, PlayerGoalStats, PlayerPhotosStats, TournamentStatsSchema } from '@/dtos/stats';
+import { getErrorMessage, useSWRSchema } from '@/utils/client/api';
+import { PageParams } from '@/utils/server/pages';
 
 export interface RouteParams extends ParentRouteParams {}
 

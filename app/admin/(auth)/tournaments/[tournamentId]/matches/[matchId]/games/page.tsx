@@ -1,24 +1,24 @@
 'use client';
 
-import { PageParams } from '@/utils/server/pages';
-import { RouteParams as ParentRouteParams } from '../page';
-import { MatchDetailedGetDtoSchema, MatchGameCreateDto, MatchItemCreatedDto, MatchUpdateDto } from '@/dtos/match';
-import Table from '@/components/admin/Table';
-import Alert from '@/components/admin/Alert';
-import { api, getErrorMessage, loadingButton, useSWRSchema } from '@/utils/client/api';
-import Link from 'next/link';
 import { ClipboardDocumentListIcon, PencilSquareIcon } from '@heroicons/react/16/solid';
+import Link from 'next/link';
+import { useState } from 'react';
+
+import { RouteParams as ParentRouteParams } from '../page';
+
+import Alert from '@/components/Alert';
 import Loading from '@/components/Loading';
 import Button from '@/components/admin/Button';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import Table from '@/components/admin/Table';
+import { MatchDetailedGetDtoSchema, MatchGameCreateDto, MatchItemCreatedDto, MatchUpdateDto } from '@/dtos/match';
+import { api, getErrorMessage, loadingButton, useSWRSchema } from '@/utils/client/api';
+import { PageParams } from '@/utils/server/pages';
 
 export const dynamic = 'force-dynamic';
 
 export interface RouteParams extends ParentRouteParams {}
 
 export default function MatchGamesPage({ params: { matchId, tournamentId } }: PageParams<RouteParams>) {
-    const { push } = useRouter();
     const { data, error, isLoading, mutate } = useSWRSchema(
         `/api/tournament/${tournamentId}/match/${matchId}`,
         MatchDetailedGetDtoSchema,

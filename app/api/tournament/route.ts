@@ -1,7 +1,8 @@
+import { RouteParams as ParentRouteParams } from '../route';
+
 import { TournamentCreateDtoSchema } from '@/dtos/tournament';
 import { createTournament, listTournaments } from '@/services/tournaments';
 import { auth, handle } from '@/utils/server/api';
-import { RouteParams as ParentRouteParams } from '../route';
 
 export interface RouteParams extends ParentRouteParams {}
 

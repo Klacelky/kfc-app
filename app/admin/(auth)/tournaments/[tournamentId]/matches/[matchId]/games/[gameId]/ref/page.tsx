@@ -1,8 +1,18 @@
 'use client';
 
-import { PageParams } from '@/utils/server/pages';
+import { ArrowsRightLeftIcon, ArrowsUpDownIcon } from '@heroicons/react/16/solid';
+import { zodResolver } from '@hookform/resolvers/zod';
+import classNames from 'classnames';
+import { useRouter } from 'next/navigation';
+import { useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+
 import { RouteParams as ParentRouteParams } from '../page';
-import { api, getErrorMessage, loadingButton, oppositeColor, useSWRSchema } from '@/utils/client/api';
+
+import Alert from '@/components/Alert';
+import Loading from '@/components/Loading';
+import Button from '@/components/admin/Button';
+import { Checkbox, Input } from '@/components/admin/Input';
 import {
     GoalCreateDto,
     GoalCreateDtoSchema,
@@ -13,18 +23,10 @@ import {
     PlayerPositionsCreateDto,
     TeamColorEnum,
 } from '@/dtos/match';
-import Alert from '@/components/admin/Alert';
-import Loading from '@/components/Loading';
-import { useMemo, useState } from 'react';
-import classNames from 'classnames';
-import { TeamGetDto } from '@/dtos/team';
-import Button from '@/components/admin/Button';
 import { PlayerGetDto } from '@/dtos/player';
-import { ArrowsRightLeftIcon, ArrowsUpDownIcon } from '@heroicons/react/16/solid';
-import { useForm } from 'react-hook-form';
-import { Checkbox, Input } from '@/components/admin/Input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import { TeamGetDto } from '@/dtos/team';
+import { api, getErrorMessage, loadingButton, oppositeColor, useSWRSchema } from '@/utils/client/api';
+import { PageParams } from '@/utils/server/pages';
 
 export interface RouteParams extends ParentRouteParams {}
 
@@ -248,7 +250,7 @@ function PendingGoalModal({
                 <div>{player.name}</div>
                 {errors.root?.message && <Alert>{errors.root.message}</Alert>}
                 <Input
-                    register={() => register('timestamp', {valueAsDate: true})}
+                    register={() => register('timestamp', { valueAsDate: true })}
                     type="datetime-local"
                     label="Timestamp"
                     error={errors.timestamp?.message}

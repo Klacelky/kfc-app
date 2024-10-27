@@ -1,7 +1,8 @@
-import { callOptional } from '@/utils/common';
 import classNames from 'classnames';
 import { HTMLInputTypeAttribute, InputHTMLAttributes, ReactNode, SelectHTMLAttributes } from 'react';
 import { FieldPath, FieldValues, UseFormRegisterReturn } from 'react-hook-form';
+
+import { callOptional } from '@/utils/common';
 
 type BaseControlProps<TInputProps, TFieldValues extends FieldValues> = {
     label?: ReactNode;

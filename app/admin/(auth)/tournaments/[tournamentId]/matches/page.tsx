@@ -1,16 +1,18 @@
 'use client';
 
-import { MatchDetailedGetDtoSchema } from '@/dtos/match';
-import { RouteParams as ParentRouteParams } from '../page';
-import Table from '@/components/admin/Table';
 import { ClipboardDocumentListIcon, PencilSquareIcon } from '@heroicons/react/16/solid';
 import Link from 'next/link';
-import Alert from '@/components/admin/Alert';
-import { PageParams } from '@/utils/server/pages';
-import Button from '@/components/admin/Button';
-import { getErrorMessage, useSWRSchema } from '@/utils/client/api';
-import Loading from '@/components/Loading';
 import { z } from 'zod';
+
+import { RouteParams as ParentRouteParams } from '../page';
+
+import Alert from '@/components/Alert';
+import Loading from '@/components/Loading';
+import Button from '@/components/admin/Button';
+import Table from '@/components/admin/Table';
+import { MatchDetailedGetDtoSchema } from '@/dtos/match';
+import { getErrorMessage, useSWRSchema } from '@/utils/client/api';
+import { PageParams } from '@/utils/server/pages';
 
 export const dynamic = 'force-dynamic';
 

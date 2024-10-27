@@ -1,4 +1,5 @@
 import Link from 'next/link';
+
 import T from '@/utils/client/i18n/t';
 import { FB_EVENT, RESERVATION } from '@/utils/links';
 

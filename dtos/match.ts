@@ -1,8 +1,9 @@
 import { z } from 'zod';
+
 import { BaseDtoSchema } from './base';
-import { TeamGetDtoSchema } from './team';
-import { PlayerGetDtoSchema } from './player';
 import { GroupGetDtoSchema } from './group';
+import { PlayerGetDtoSchema } from './player';
+import { TeamGetDtoSchema } from './team';
 
 export const TeamColorSchema = z.enum(['BLUE', 'WHITE']);
 export type TeamColorEnum = z.infer<typeof TeamColorSchema>;

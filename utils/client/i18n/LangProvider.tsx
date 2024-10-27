@@ -1,6 +1,7 @@
 'use client';
 
 import { ReactNode, useCallback, useEffect, useState } from 'react';
+
 import { LangContext } from './LangContext';
 
 const langOrder = [/^cs/, /^sk/, /^en/, /^.*/];

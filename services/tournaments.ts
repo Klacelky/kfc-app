@@ -9,6 +9,13 @@ export async function getTournament(idOrSlug: string): Promise<TournamentGetDto>
     return await prisma.tournament.findFirstOrThrow({ where: { OR: [{ id: idOrSlug }, { slug: idOrSlug }] } });
 }
 
+export async function getLatestTournament(): Promise<TournamentGetDto> {
+    return await prisma.tournament.findFirstOrThrow({
+        where: { OR: [{ publishedAt: null }, { publishedAt: { lte: new Date() } }] },
+        orderBy: { startDate: 'desc' },
+    });
+}
+
 export async function createTournament(data: TournamentCreateDto): Promise<TournamentGetDto> {
     return await prisma.tournament.create({ data });
 }

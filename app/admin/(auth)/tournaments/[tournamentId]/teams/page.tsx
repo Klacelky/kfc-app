@@ -1,10 +1,11 @@
-import { handleError } from '@/utils/server/common';
 import { RouteParams as ParentRouteParams } from '../page';
-import { listTeams } from '@/services/teams';
-import { PageParams } from '@/utils/server/pages';
-import { TeamQueryDtoSchema } from '@/dtos/team';
-import Alert from '@/components/admin/Alert';
+
+import Alert from '@/components/Alert';
 import Table from '@/components/admin/Table';
+import { TeamQueryDtoSchema } from '@/dtos/team';
+import { listTeams } from '@/services/teams';
+import { handleError } from '@/utils/server/common';
+import { PageParams } from '@/utils/server/pages';
 
 export const dynamic = 'force-dynamic';
 

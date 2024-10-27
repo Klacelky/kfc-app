@@ -1,4 +1,6 @@
 import Link from 'next/link';
+
+import Alert from '@/components/Alert';
 import Groups from '@/components/groups/Groups';
 import { GroupsMatches } from '@/components/groups/GroupsMatches';
 import { listGroups } from '@/services/groups';
@@ -7,7 +9,6 @@ import { getTournament } from '@/services/tournaments';
 import T from '@/utils/client/i18n/t';
 import { RESERVATION } from '@/utils/links';
 import { handleError } from '@/utils/server/common';
-import Alert from '@/components/admin/Alert';
 
 export const dynamic = 'force-dynamic';
 

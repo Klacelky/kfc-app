@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+
 import { GroupDetailedGetDto } from '@/dtos/group';
 
 function GroupCard({ name, teams }: GroupDetailedGetDto) {

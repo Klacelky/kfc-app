@@ -1,14 +1,15 @@
 'use client';
 
-import { Input } from '@/components/admin/Input';
-import Button from '@/components/admin/Button';
-import { useForm } from 'react-hook-form';
-import { AuthAdmin, AuthLoginDto, AuthLoginDtoSchema } from '@/dtos/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { api, handleApiCall } from '@/utils/client/api';
-import { useState } from 'react';
-import Alert from '@/components/admin/Alert';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import Alert from '@/components/Alert';
+import Button from '@/components/admin/Button';
+import { Input } from '@/components/admin/Input';
+import { AuthAdmin, AuthLoginDto, AuthLoginDtoSchema } from '@/dtos/auth';
+import { api, handleApiCall } from '@/utils/client/api';
 
 export default function AdminLoginPage() {
     const { replace } = useRouter();

@@ -1,11 +1,12 @@
 import Link from 'next/link';
-import Alert from '@/components/admin/Alert';
+
+import Alert from '@/components/Alert';
+import PlayOffSchedule from '@/components/PlayOffSchedule';
 import { listMatches } from '@/services/matches';
 import { getTournament } from '@/services/tournaments';
+import TDateTime from '@/utils/client/i18n/TDateTime';
 import T from '@/utils/client/i18n/t';
 import { handleError } from '@/utils/server/common';
-import PlayOffSchedule from '@/components/PlayOffSchedule';
-import TDateTime from '@/utils/client/i18n/TDateTime';
 
 export const dynamic = 'force-dynamic';
 

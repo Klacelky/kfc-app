@@ -1,7 +1,8 @@
+import { RouteParams as ParentRouteParams } from '../route';
+
 import { AdminUpdateDtoSchema } from '@/dtos/admin';
 import { deleteAdmin, getAdmin, updateAdmin } from '@/services/admins';
 import { RouteContext, auth, handle } from '@/utils/server/api';
-import { RouteParams as ParentRouteParams } from '../route';
 
 export interface RouteParams extends ParentRouteParams {
     adminId: string;

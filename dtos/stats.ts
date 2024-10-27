@@ -1,4 +1,5 @@
 import { z } from 'zod';
+
 import { PlayerGetDtoSchema } from './player';
 
 export const PlayerGoalStatsSchema = z.object({

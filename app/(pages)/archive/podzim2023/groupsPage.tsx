@@ -1,18 +1,19 @@
 import classNames from 'classnames';
 import { Fragment } from 'react';
+
 import T from '@/utils/client/i18n/t';
 
-interface TeamData {
+type TeamData = {
     name: string;
     abbrev: string;
     players: { name: string }[];
     points: number;
-}
+};
 
-interface GroupData {
+type GroupData = {
     name: string;
     teams: TeamData[];
-}
+};
 
 const groups: GroupData[] = [
     {
@@ -133,16 +134,16 @@ const groups: GroupData[] = [
     },
 ];
 
-interface MatchData {
+type MatchData = {
     homeTeam: string;
     visitingTeam: string;
     results: [number, number][];
-}
+};
 
-interface GroupMatchesData {
+type GroupMatchesData = {
     group: string;
     matches: MatchData[];
-}
+};
 
 const matches: GroupMatchesData[] = [
     {
@@ -378,7 +379,10 @@ function GroupCard({ name, teams }: GroupData) {
                                     className={classNames(
                                         'translate-y-2 w-6 h-6 text-center rounded-full',
                                         { 'text-kfc-beige bg-kfc-red': index == 3 },
-                                        { 'dark:text-kfc-blue text-kfc-beige dark:bg-kfc-beige bg-kfc-blue': index == 1 || index == 2},
+                                        {
+                                            'dark:text-kfc-blue text-kfc-beige dark:bg-kfc-beige bg-kfc-blue':
+                                                index == 1 || index == 2,
+                                        },
                                         { 'text-kfc-blue bg-kfc-teal': index == 0 },
                                     )}
                                 >
@@ -401,10 +405,6 @@ function GroupCard({ name, teams }: GroupData) {
             </div>
         </div>
     );
-}
-
-function getTeamName(group: string, abbrev: string) {
-    return groups.find(({ name }) => name === group)?.teams.find(({ abbrev: a }) => abbrev === a)?.name;
 }
 
 function GroupMatchesCard({ group, matches }: GroupMatchesData) {
@@ -454,4 +454,3 @@ export default function GroupsPage() {
         </>
     );
 }
-

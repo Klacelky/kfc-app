@@ -1,5 +1,6 @@
-import { ScoreData } from '@/dtos/match';
 import axios from 'axios';
+
+import { ScoreData } from '@/dtos/match';
 
 const KFC_LIVE_URL = process.env.KFC_LIVE_URL;
 const KFC_LIVE_USER = process.env.KFC_LIVE_USER;
