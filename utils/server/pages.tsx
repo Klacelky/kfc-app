@@ -1,4 +1,4 @@
-export interface PageParams<TParams> {
+export type PageParams<TParams> = {
     params: TParams;
     searchParams: { [key: string]: string | string[] | undefined };
 }

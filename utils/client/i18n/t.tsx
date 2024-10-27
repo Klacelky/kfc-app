@@ -2,15 +2,9 @@
 
 import { ReactNode, useContext } from 'react';
 import { LangContext } from './LangContext';
-
-type Lang = 'sk' | 'en';
+import { getUserLang, Lang } from './common';
 
 export type Translations = { [lang in Lang]?: ReactNode };
-
-const langs: { [lang in Lang]: RegExp } = {
-    sk: /^(sk|cs)/,
-    en: /^.*/,
-};
 
 function parseTranslations(s: string): Translations {
     const translations: Translations = { sk: '', en: '' };
@@ -21,8 +15,9 @@ function parseTranslations(s: string): Translations {
         if (lang) {
             translations[lang] += (index === -1 ? s : s.substring(0, index)).trim();
         }
-        if (index === -1)
+        if (index === -1) {
             break;
+        }
         lang = s.substring(index + 2, index + 4) as Lang;
         s = s.substring(index + 5);
     } while (true);
@@ -38,8 +33,13 @@ function parseTranslations(s: string): Translations {
 export default function T({ children, ...rest }: { children?: string } & Translations): ReactNode {
     const { currentLang } = useContext(LangContext);
 
-    const userLang = (Object.keys(langs) as Lang[]).find((k) => langs[k].test(currentLang));
+    const userLang = getUserLang(currentLang);
+
     const translations: Translations = children ? parseTranslations(children) : rest;
+    if (!Object.keys(translations)) {
+        console.log('Non translated string', children);
+        return children;
+    }
     return userLang && translations[userLang] ? (
         translations[userLang]
     ) : (

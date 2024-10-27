@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { handleError } from './common';
 import { AuthAdmin } from '@/dtos/auth';
 import { verifyAdmin } from '@/services/auth';
-import { handleError } from './common';
 
 export function handle<TContext>(fn: (request: NextRequest, context: TContext) => Promise<Response | NextResponse>) {
     return async (request: NextRequest, context: TContext) => {
@@ -17,10 +17,10 @@ export type RouteContext<TParams> = {
     params: TParams;
 };
 
-export interface AuthOptions {
+export type AuthOptions = {
     optional?: boolean;
     su?: boolean;
-}
+};
 
 export class AuthNextRequest extends NextRequest {
     auth?: AuthAdmin;
