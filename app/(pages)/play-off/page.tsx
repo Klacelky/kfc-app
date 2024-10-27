@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function PlayOffPage() {
     const { data, error } = await handleError(async () => {
-        const tournament = await getTournament('spring2024');
+        const tournament = await getTournament('autumn2024');
         const matches = await listMatches(tournament.id, { playoff: true });
         return { tournament, matches };
     });
