@@ -1,25 +1,30 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { ZodError } from 'zod';
 
-export interface ErrorResponse {
+export type ErrorResponse = {
     status: number;
     error: string;
     message: string;
-}
+};
 
-export interface ConflictErrorResponse extends ErrorResponse {
+export type ConflictErrorResponse = ErrorResponse & {
     target?: any;
-}
+};
 
-export interface ZodErrorResponse<T> extends ErrorResponse {
+export type ZodErrorResponse<T> = ErrorResponse & {
     issues: { [Field in keyof T | string]: string[] | undefined };
-}
+};
 
-export interface Return<T> {
-    data?: T;
-    error?: ErrorResponse | ConflictErrorResponse | ZodErrorResponse<T>;
-    rawError?: Error | any;
-}
+export type Return<T> =
+    | {
+          data: T;
+          error?: undefined;
+      }
+    | {
+          data?: undefined;
+          error: ErrorResponse | ConflictErrorResponse | ZodErrorResponse<T>;
+          rawError?: Error | any;
+      };
 
 export async function handleErrorChain<T>(
     prevError: ErrorResponse | undefined,

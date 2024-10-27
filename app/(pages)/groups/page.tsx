@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Groups from '@/components/groups/Groups';
 import { GroupsMatches } from '@/components/groups/GroupsMatches';
 import { listGroups } from '@/services/groups';
@@ -5,26 +6,30 @@ import { listMatches } from '@/services/matches';
 import { getTournament } from '@/services/tournaments';
 import T from '@/utils/client/i18n/t';
 import { RESERVATION } from '@/utils/links';
-import { handleError, handleErrorChain } from '@/utils/server/common';
-import Link from 'next/link';
+import { handleError } from '@/utils/server/common';
+import Alert from '@/components/admin/Alert';
 
 export const dynamic = 'force-dynamic';
 
 export default async function GroupsPage() {
-    const { data: tournament, error: tournamentError } = await handleError(() => getTournament('autumn2024'));
-    const { data: groups, error: groupsError } = await handleErrorChain(tournamentError, () =>
-        listGroups(tournament!.id),
-    );
-    const { data: matchesByGroup, error: matchesError } = await handleErrorChain(
-        groupsError,
-        async () =>
-            await Promise.all(
-                groups!.map(async (group) => ({
-                    group,
-                    matches: await listMatches(tournament!.id, { groupId: group.id }),
-                })),
-            ),
-    );
+    const { data, error } = await handleError(async () => {
+        const tournament = await getTournament('autumn2024');
+        const groups = await listGroups(tournament.id);
+        const matchesByGroup = await Promise.all(
+            groups!.map(async (group) => ({
+                group,
+                matches: await listMatches(tournament!.id, { groupId: group.id }),
+            })),
+        );
+        return { tournament, groups, matchesByGroup };
+    });
+
+    if (error) {
+        console.error(error);
+        return <Alert>Failed to load the tournament goups: {error.message}</Alert>;
+    }
+
+    const { tournament, groups, matchesByGroup } = data;
 
     return (
         <>
@@ -81,20 +86,12 @@ export default async function GroupsPage() {
                             }
                         />
                     </p>
-                    {groups ? (
-                        <Groups groups={groups} />
-                    ) : (
-                        <div className="bg-kfc-red text-kfc-beige">{groupsError?.message}</div>
-                    )}
+                    <Groups groups={groups} />
                     <section>
                         <h2>
                             <T sk="Skupinové zápasy" en="Group matches" />
                         </h2>
-                        {matchesByGroup ? (
-                            <GroupsMatches matchesByGroup={matchesByGroup} />
-                        ) : (
-                            <div className="bg-kfc-red text-kfc-beige">{matchesError?.message}</div>
-                        )}
+                        <GroupsMatches matchesByGroup={matchesByGroup} />
                     </section>
                 </>
             )}
