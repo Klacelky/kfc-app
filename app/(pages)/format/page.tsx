@@ -76,7 +76,7 @@ export default function FormatPage() {
                         sk={
                             <>
                                 Žrebovanie skupín prebehne{' '}
-                                <TDateTime datetime={new Date(2024, 10, 2, 19)} type="datetime" /> v spoločenskej
+                                <TDateTime datetime={new Date(2024, 10, 3, 19)} type="datetime" /> v spoločenskej
                                 miestnosti. Prihlásené tímy sú rozdelené do štyroch košov (I-IV). Do každej zo štyroch
                                 skupín (A-D) bude vyžrebovaný jeden tím z každého koša.
                             </>
@@ -84,7 +84,7 @@ export default function FormatPage() {
                         en={
                             <>
                                 Group drawings will be held{' '}
-                                <TDateTime datetime={new Date(2024, 10, 2, 19)} type="datetime" /> in the TV Room.
+                                <TDateTime datetime={new Date(2024, 10, 3, 19)} type="datetime" /> in the TV Room.
                                 Registered teams are divided into four baskets (I-IV). One team from each basket will be
                                 drawn into each of the four groups (A-D).
                             </>
@@ -118,7 +118,7 @@ export default function FormatPage() {
                         sk={
                             <>
                                 Po rozlosovaní skupín majú tímy týždeň (
-                                <TDateTime datetime={new Date(2024, 10, 3)} type="date" />
+                                <TDateTime datetime={new Date(2024, 10, 4)} type="date" />
                                 {' - '}
                                 <TDateTime datetime={new Date(2024, 10, 8)} type="date" />) na to, aby odohrali
                                 svoje skupinové zápasy. V skupine hrá každý s každým BO3, teda najlepší z troch hier.
@@ -130,7 +130,7 @@ export default function FormatPage() {
                         en={
                             <>
                                 After the groups are drawn, teams have one week (
-                                <TDateTime datetime={new Date(2024, 10, 3)} type="date" />
+                                <TDateTime datetime={new Date(2024, 10, 4)} type="date" />
                                 {' - '}
                                 <TDateTime datetime={new Date(2024, 10, 8)} type="date" />) to play their group
                                 matches. In the groups, teams play each other BO3, i.e. best of three games. The teams
