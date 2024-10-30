@@ -67,7 +67,7 @@ export default function PlayOffPage() {
                     matches={[
                         {
                             name: 'Br I',
-                            time: new Date(2023, 11, 18, 12, 0, 0),
+                            time: new Date(2023, 10, 18, 12, 0, 0),
                             home: 'NPV',
                             visiting: 'OCO',
                             results: [
@@ -78,7 +78,7 @@ export default function PlayOffPage() {
                         },
                         {
                             name: 'Br II',
-                            time: new Date(2023, 11, 18, 12, 30, 0),
+                            time: new Date(2023, 10, 18, 12, 30, 0),
                             home: 'KKT',
                             visiting: 'DIF',
                             results: [
@@ -89,7 +89,7 @@ export default function PlayOffPage() {
                         },
                         {
                             name: 'Br III',
-                            time: new Date(2023, 11, 18, 13, 0, 0),
+                            time: new Date(2023, 10, 18, 13, 0, 0),
                             home: 'MID',
                             visiting: 'ZMK',
                             results: [
@@ -100,7 +100,7 @@ export default function PlayOffPage() {
                         },
                         {
                             name: 'Br IV',
-                            time: new Date(2023, 11, 18, 13, 30, 0),
+                            time: new Date(2023, 10, 18, 13, 30, 0),
                             home: 'MSB',
                             visiting: 'TAP',
                             results: [
@@ -123,7 +123,7 @@ export default function PlayOffPage() {
                     matches={[
                         {
                             name: 'Qf I',
-                            time: new Date(2023, 11, 18, 14, 30, 0),
+                            time: new Date(2023, 10, 18, 14, 30, 0),
                             home: 'BBH',
                             visiting: 'KKT',
                             results: [
@@ -134,7 +134,7 @@ export default function PlayOffPage() {
                         },
                         {
                             name: 'Qf II',
-                            time: new Date(2023, 11, 18, 15, 0, 0),
+                            time: new Date(2023, 10, 18, 15, 0, 0),
                             home: 'ORG',
                             visiting: 'NPV',
                             results: [
@@ -146,7 +146,7 @@ export default function PlayOffPage() {
                         },
                         {
                             name: 'Qf III',
-                            time: new Date(2023, 11, 18, 15, 30, 0),
+                            time: new Date(2023, 10, 18, 15, 30, 0),
                             home: 'KYM',
                             visiting: 'TAP',
                             results: [
@@ -157,7 +157,7 @@ export default function PlayOffPage() {
                         },
                         {
                             name: 'Qf IV',
-                            time: new Date(2023, 11, 18, 16, 0, 0),
+                            time: new Date(2023, 10, 18, 16, 0, 0),
                             home: 'PAC',
                             visiting: 'MID',
                             results: [
@@ -180,7 +180,7 @@ export default function PlayOffPage() {
                     matches={[
                         {
                             name: 'Sf I',
-                            time: new Date(2023, 11, 18, 17, 0, 0),
+                            time: new Date(2023, 10, 18, 17, 0, 0),
                             home: 'BBH',
                             visiting: 'PAC',
                             results: [
@@ -192,7 +192,7 @@ export default function PlayOffPage() {
                         },
                         {
                             name: 'Sf II',
-                            time: new Date(2023, 11, 18, 17, 30, 0),
+                            time: new Date(2023, 10, 18, 17, 30, 0),
                             home: 'NPV',
                             visiting: 'KYM',
                             results: [
@@ -215,7 +215,7 @@ export default function PlayOffPage() {
                     matches={[
                         {
                             name: <T sk="Cena Bc. Petra Burdu" en="Bc. Peter Burda award" />,
-                            time: new Date(2023, 11, 18, 18, 30, 0),
+                            time: new Date(2023, 10, 18, 18, 30, 0),
                             home: 'PIN',
                             visiting: 'VID',
                             results: [
@@ -227,7 +227,7 @@ export default function PlayOffPage() {
                         },
                         {
                             name: <T sk="3. miesto" en="3rd place" />,
-                            time: new Date(2023, 11, 18, 19, 0, 0),
+                            time: new Date(2023, 10, 18, 19, 0, 0),
                             home: 'BBH',
                             visiting: 'NPV',
                             results: [
@@ -239,7 +239,7 @@ export default function PlayOffPage() {
                         },
                         {
                             name: <T sk="Finále" en="Finals" />,
-                            time: new Date(2023, 11, 18, 19, 30, 0),
+                            time: new Date(2023, 10, 18, 19, 30, 0),
                             home: 'PAC',
                             visiting: 'KYM',
                             results: [
@@ -256,7 +256,7 @@ export default function PlayOffPage() {
                     <T sk="Vyhodnotenie" en="Award Ceremony" />
                 </h2>
                 <p>
-                    <TDateTime datetime={new Date(2023, 11, 18, 20, 0, 0)} type="time" />
+                    <TDateTime datetime={new Date(2023, 10, 18, 20, 0, 0)} type="time" />
                 </p>
             </section>
         </>
