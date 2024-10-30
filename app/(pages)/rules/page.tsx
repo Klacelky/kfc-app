@@ -10,7 +10,7 @@ export default function RulesPage() {
                 <T
                     sk={
                         <>
-                            Ktorí hrávate, poznáte ako sa to u nás hráva. V prípade nejasností kontaktujte
+                            Ktorí hrávate, poznáte, ako sa to u nás hráva. V prípade nejasností kontaktujte
                             organizátorov.
                         </>
                     }
@@ -57,16 +57,15 @@ export default function RulesPage() {
                             sk=", hráči v tíme sa môžu kedykoľvek vymeniť."
                             en=", players in the team can switch at any time during the match."
                         />
-                        .
                     </li>
                     <li>
                         <strong>
                             <T sk="Ak nikto nedosiahne na loptu" en="If no one can reach the ball" />
-                        </strong>{' '}
+                        </strong>
                         <T
                             sk={
                                 <>
-                                    , vhoďte novú, ak lopta zastala medzi bielimia modrými hráčmi. Inak si ju obranca
+                                    , vhoďte novú, ak lopta zastala medzi bielymi a modrými hráčmi. Inak si ju obranca
                                     môže posunúť.
                                 </>
                             }
@@ -84,7 +83,7 @@ export default function RulesPage() {
                                 sk="Ak lopta vyskočí z brány, hrá sa ďalej, kým nepadne normálny gól."
                                 en="If the ball pops out of the goal, the play continues until a normal goal is scored."
                             />
-                        </strong>
+                        </strong>{' '}
                         <T
                             sk={
                                 <>
@@ -129,7 +128,7 @@ export default function RulesPage() {
                                     sk={
                                         <>
                                             Bieli strelia dva vyskočené góly po sebe, bieli strelia gól = bieli +1,
-                                            modrý -2.
+                                            modrí -2.
                                         </>
                                     }
                                     en={
@@ -242,7 +241,7 @@ export default function RulesPage() {
                     <T
                         sk={
                             <>
-                                Ak sa hráč dopustí jedného z týchto prestupkov, v rámci fair-play odovzdá loptu
+                                Ak sa hráč dopustí jedného z týchto priestupkov, v rámci fair-play odovzdá loptu
                                 súperovi.
                             </>
                         }
@@ -264,7 +263,7 @@ export default function RulesPage() {
                         sk={
                             <>
                                 Nie sú to majstrovstvá sveta, ale priateľský turnaj v rámci našej Klácelkovskej kalčeto
-                                komunity. Pravidlá majú pár bodov, nie strán a určite nepokrývajú každú situáciu ktorá
+                                komunity. Pravidlá majú pár bodov, nie strán a určite nepokrývajú každú situáciu, ktorá
                                 môže potenciálne nastať. Pevne veríme, že ak takáto neočakávaná situácia nastane,
                                 zainteresovaní situáciu rozumne vyriešia.
                             </>

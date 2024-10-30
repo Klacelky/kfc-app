@@ -78,9 +78,9 @@ export default async function PlayOffPage() {
                         <h2>
                             <T sk="Vyhodnotenie" en="Award Ceremony" />
                         </h2>
-                        <p>
-                            <TDateTime datetime={new Date(2024, 11, 9, 18, 0, 0)} type="time" />
-                        </p>
+                        {/* <p> */}
+                        {/*     <TDateTime datetime={new Date(2024, 11, 9, 18, 0, 0)} type="time" /> */}
+                        {/* </p> */}
                     </section>
                 </>
             )}

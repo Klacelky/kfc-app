@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import TDateTime from '@/utils/client/i18n/TDateTime';
 import T from '@/utils/client/i18n/t';
 import { FB_EVENT, RESERVATION } from '@/utils/links';
 
@@ -74,16 +75,18 @@ export default function FormatPage() {
                     <T
                         sk={
                             <>
-                                Žrebovanie skupín prebehne 5.4. o 20.00 v spoločenskej miestnosti. Prihlásené tímy sú
-                                rozdelené do štyroch košov (I-IV). Do každej zo štyroch skupín (A-D) bude vyžrebovaný
-                                jeden tím z každého koša.
+                                Žrebovanie skupín prebehne{' '}
+                                <TDateTime datetime={new Date(2024, 11, 1, 20, 0, 0)} type="datetime" /> v spoločenskej
+                                miestnosti. Prihlásené tímy sú rozdelené do štyroch košov (I-IV). Do každej zo štyroch
+                                skupín (A-D) bude vyžrebovaný jeden tím z každého koša.
                             </>
                         }
                         en={
                             <>
-                                Group drawings will be held on Apr. 5 at 8 p.m. in the TV Room. Registered teams are
-                                divided into four baskets (I-IV). One team from each basket will be drawn into each of
-                                the four groups (A-D).
+                                Group drawings will be held{' '}
+                                <TDateTime datetime={new Date(2024, 11, 1, 20, 0, 0)} type="datetime" /> in the TV Room.
+                                Registered teams are divided into four baskets (I-IV). One team from each basket will be
+                                drawn into each of the four groups (A-D).
                             </>
                         }
                     />
@@ -92,7 +95,7 @@ export default function FormatPage() {
                     <T
                         sk={
                             <>
-                                Poznámka od organizátorov: Keďže nemáme žiadny oficiány kalčeto rebríček, rozdelenie
+                                Poznámka od organizátorov: Keďže nemáme žiadny oficiálny kalčeto rebríček, rozdelenie
                                 tímov do košov uskutočníme podľa nášho najlepšieho vedomia a svedomia tak, aby boli
                                 všetky skupiny čo najvyrovnanejšie.
                             </>
@@ -114,16 +117,22 @@ export default function FormatPage() {
                     <T
                         sk={
                             <>
-                                Po rozlosovaní skupín majú tímy týždeň (6.4. - 12.4.) na to, aby odohrali svoje
-                                skupinové zápasy. V skupine hrá každý s každým BO3, teda najlepší z troch hier. Dátumy a
-                                časy zápasov si tímy dohodnú individuálne so svojimi skupinovými súpermi. Každej skupine
-                                spravíme na dohadovanie messenger skupinu v ktorej budeme aj my aby sme na to dohliadli
-                                a vyriešili prípadné problémy.
+                                Po rozlosovaní skupín majú tímy týždeň (
+                                <TDateTime datetime={new Date(2024, 11, 2, 0, 0, 0)} type="date" />
+                                {' - '}
+                                <TDateTime datetime={new Date(2024, 11, 8, 0, 0, 0)} type="date" />) na to, aby odohrali
+                                svoje skupinové zápasy. V skupine hrá každý s každým BO3, teda najlepší z troch hier.
+                                Dátumy a časy zápasov si tímy dohodnú individuálne so svojimi skupinovými súpermi.
+                                Každej skupine spravíme na dohadovanie Messenger skupinu v ktorej budeme aj my aby sme
+                                na to dohliadli a vyriešili prípadné problémy.
                             </>
                         }
                         en={
                             <>
-                                After the groups are drawn, teams have one week (Apr. 6 - Apr. 12) to play their group
+                                After the groups are drawn, teams have one week (
+                                <TDateTime datetime={new Date(2024, 11, 2, 0, 0, 0)} type="date" />
+                                {' - '}
+                                <TDateTime datetime={new Date(2024, 11, 8, 0, 0, 0)} type="date" />) to play their group
                                 matches. In the groups, teams play each other BO3, i.e. best of three games. The teams
                                 will arrange the dates and times of the matches individually with their group opponents.
                                 We will make a messenger group for each group to arrange this, and we will be in it to
@@ -147,11 +156,11 @@ export default function FormatPage() {
                         en={
                             <>
                                 We only have one table and there are quite a few matches. If you agree on a time and
-                                date please make a reservation for a match{' '}
+                                date, please make a reservation for a match{' '}
                                 <Link className="link" href={RESERVATION} target="_blank">
                                     in this shared calendar
-                                </Link>
-                                , so that other teams know when the table is occupied.
+                                </Link>{' '}
+                                so that other teams know when the table is occupied.
                             </>
                         }
                     />
@@ -162,7 +171,7 @@ export default function FormatPage() {
                             <>
                                 Pri väčšine zápasov sa budeme snažiť byť osobne. Ak tam ale nebudeme, tak okrem termínu
                                 si vybavte na zápas ambasadora (niekoho kto bude zapisovateľ „robiť čiarky“, kto dal
-                                koľko gólov, a v prípade potreby rozhodca). Po zápase dovzdá výsledky organizátorom.
+                                koľko gólov, a v prípade potreby rozhodca). Po zápase odovzdá výsledky organizátorom.
                             </>
                         }
                         en={
@@ -223,14 +232,17 @@ export default function FormatPage() {
                     <T
                         sk={
                             <>
-                                Vyraďovacie zápasy sa odohrajú 13.4. (sobota). Na rozdiel od skupín si v play-off
-                                zahráte BO5 teda najlepší z piatich zápasov. Harmonogram zápasov nájdeš
+                                Vyraďovacie zápasy sa odohrajú{' '}
+                                <TDateTime datetime={new Date(2024, 11, 9, 0, 0, 0)} type="date" />. Na rozdiel od
+                                skupín si v play-off zahráte BO5 teda najlepší z piatich zápasov. Harmonogram zápasov
+                                nájdeš
                             </>
                         }
                         en={
                             <>
-                                Play-off games will be played on Apr. 13 (Saturday). Unlike the groups, the play-off
-                                will be played BO5, i.e. best of five games. You can find the schedule
+                                Play-off games will be played{' '}
+                                <TDateTime datetime={new Date(2024, 11, 9, 0, 0, 0)} type="date" />. Unlike the groups,
+                                the play-off will be played BO5, i.e. best of five games. You can find the schedule
                             </>
                         }
                     />{' '}
@@ -241,13 +253,13 @@ export default function FormatPage() {
                     <T
                         sk={
                             <>
-                                Na každý zápas je vyhradených 30 minút. Keďže kalčeto sa nehrá na čas, hramonogram je
+                                Na každý zápas je vyhradených 45 minút. Keďže kalčeto sa nehrá na čas, harmonogram je
                                 orientačný a môžu nastať mierne posuny v časoch zápasov.
                             </>
                         }
                         en={
                             <>
-                                There are 30 minutes for each match. As foosball is not played on time, the schedule is
+                                There are 45 minutes for each match. As foosball is not played on time, the schedule is
                                 approximate and there may be slight shifts in match times.
                             </>
                         }
@@ -264,8 +276,8 @@ export default function FormatPage() {
                             <>
                                 Na vaše želanie a motivovanie nie tak skúsených hráčov sme sa inšpirovali KFO a rovnako
                                 zavedieme cenu Bc. Petra Burdu. Cenu získa tím, ktorý skončí v celom turnaji s najmenej
-                                bodmi a najhorším skóre. Cenu už tradične odovzdá sám Bc. Peter Burda prostredníctvom
-                                online spojenia. Cenou bude vopred nešpecifikovaný alkoholický výrobok.
+                                bodmi a najhorším skóre. Cenu už tradične odovzdá sám Bc. Peter Burda. Cenou bude vopred
+                                nešpecifikovaný alkoholický výrobok.
                             </>
                         }
                         en={
@@ -336,7 +348,7 @@ export default function FormatPage() {
                             <>
                                 Aby sme hráčom dopriali priestor na hranie a keďže okolo stola nie je veľa miesta pre
                                 divákov, zápasy play-off budú live streamované na telke v spoločenskej miestnosti hneď
-                                veďla kalčeta a online, aby ste pri sledovaní neprišli o atmosféru a emócie.
+                                vedľa kalčeta a online, aby ste pri sledovaní neprišli o atmosféru a emócie.
                             </>
                         }
                         en={
