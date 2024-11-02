@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import useSWR, { SWRResponse } from 'swr';
 import { ZodSchema, z } from 'zod';
 
-import { ErrorResponse } from '../server/common';
+import { ErrorResponse } from '../common';
 
 import { AuthAdmin } from '@/dtos/auth';
 import { TeamColorEnum } from '@/dtos/match';
@@ -10,7 +10,7 @@ import { TeamColorEnum } from '@/dtos/match';
 type X<T, D> = {
     response?: AxiosResponse<T, D>;
     error?: ErrorResponse;
-}
+};
 
 export function loadingButton(setState: (state: boolean) => void, handler: () => Promise<void>): () => Promise<void> {
     return async () => {

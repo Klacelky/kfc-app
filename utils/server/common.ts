@@ -1,30 +1,7 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { ZodError } from 'zod';
 
-export type ErrorResponse = {
-    status: number;
-    error: string;
-    message: string;
-};
-
-export type ConflictErrorResponse = ErrorResponse & {
-    target?: any;
-};
-
-export type ZodErrorResponse<T> = ErrorResponse & {
-    issues: { [Field in keyof T | string]: string[] | undefined };
-};
-
-export type Return<T> =
-    | {
-          data: T;
-          error?: undefined;
-      }
-    | {
-          data?: undefined;
-          error: ErrorResponse | ConflictErrorResponse | ZodErrorResponse<T>;
-          rawError?: Error | any;
-      };
+import { ErrorResponse, Return, ZodErrorResponse } from '../common';
 
 export async function handleErrorChain<T>(
     prevError: ErrorResponse | undefined,
@@ -34,6 +11,15 @@ export async function handleErrorChain<T>(
         return { error: prevError };
     }
     return handleError(fn);
+}
+
+export function responseFromZodError<T>(error: ZodError): ZodErrorResponse<T> {
+    return {
+        status: 400,
+        error: error.name,
+        message: error.message,
+        issues: error.flatten().fieldErrors as any,
+    };
 }
 
 export async function handleError<T>(fn: () => Promise<T>): Promise<Return<T>> {
@@ -48,7 +34,6 @@ export async function handleError<T>(fn: () => Promise<T>): Promise<Return<T>> {
                         error: 'Not Found',
                         message: 'Requested entity was not found or is not accessible',
                     },
-                    rawError,
                 };
             }
             if (rawError.code == 'P2018') {
@@ -58,7 +43,6 @@ export async function handleError<T>(fn: () => Promise<T>): Promise<Return<T>> {
                         error: 'Not Found',
                         message: 'Requested child entity was not found or is not accessible',
                     },
-                    rawError,
                 };
             }
             if (rawError.code == 'P2002') {
@@ -69,7 +53,6 @@ export async function handleError<T>(fn: () => Promise<T>): Promise<Return<T>> {
                         message: 'Requested value already exists',
                         target: rawError.meta?.target,
                     },
-                    rawError,
                 };
             }
         }
@@ -80,18 +63,11 @@ export async function handleError<T>(fn: () => Promise<T>): Promise<Return<T>> {
                     error: 'Bad Request',
                     message: rawError.message,
                 },
-                rawError,
             };
         }
         if (rawError instanceof ZodError) {
             return {
-                error: {
-                    status: 400,
-                    error: 'Bad Request',
-                    message: 'Request body is invalid',
-                    issues: rawError.flatten().fieldErrors as any,
-                },
-                rawError,
+                error: responseFromZodError(rawError),
             };
         }
         console.error(rawError);
@@ -101,7 +77,6 @@ export async function handleError<T>(fn: () => Promise<T>): Promise<Return<T>> {
                 error: 'Internal Server Error',
                 message: 'An unknown server error occured',
             },
-            rawError,
         };
     }
 }
