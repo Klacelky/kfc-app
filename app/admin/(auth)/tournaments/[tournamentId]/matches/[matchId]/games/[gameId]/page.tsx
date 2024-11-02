@@ -14,9 +14,9 @@ import { MatchDetailedGetDtoSchema, MatchGameUpdateDto, MatchGameUpdateDtoSchema
 import { api, getErrorMessage, useSWRSchema } from '@/utils/client/api';
 import { PageParams } from '@/utils/server/pages';
 
-export interface RouteParams extends ParentRouteParams {
+export type RouteParams = ParentRouteParams & {
     gameId: string;
-}
+};
 
 export default function MatchGameEditPage({ params: { tournamentId, matchId, gameId } }: PageParams<RouteParams>) {
     const { replace } = useRouter();

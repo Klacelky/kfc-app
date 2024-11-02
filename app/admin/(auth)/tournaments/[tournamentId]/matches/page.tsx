@@ -16,7 +16,7 @@ import { PageParams } from '@/utils/server/pages';
 
 export const dynamic = 'force-dynamic';
 
-export interface RouteParams extends ParentRouteParams {}
+export type RouteParams = ParentRouteParams;
 
 export default function MatchesPage({ params: { tournamentId } }: PageParams<RouteParams>) {
     const { data, error, isLoading } = useSWRSchema(

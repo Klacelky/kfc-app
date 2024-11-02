@@ -12,7 +12,7 @@ import { GoalkeeperStats, PlayerGoalStats, PlayerPhotosStats, TournamentStatsSch
 import { getErrorMessage, useSWRSchema } from '@/utils/client/api';
 import { PageParams } from '@/utils/server/pages';
 
-export interface RouteParams extends ParentRouteParams {}
+export type RouteParams = ParentRouteParams;
 
 function PlayerGoalStatsSection({ stats }: { stats: PlayerGoalStats[] }) {
     const [sort, setSort] = useState('goalsPerGame');

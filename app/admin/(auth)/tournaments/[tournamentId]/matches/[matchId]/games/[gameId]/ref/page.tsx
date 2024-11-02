@@ -28,7 +28,7 @@ import { TeamGetDto } from '@/dtos/team';
 import { api, getErrorMessage, loadingButton, oppositeColor, useSWRSchema } from '@/utils/client/api';
 import { PageParams } from '@/utils/server/pages';
 
-export interface RouteParams extends ParentRouteParams {}
+export type RouteParams = ParentRouteParams;
 
 interface ColoredTeam {
     color: TeamColorEnum;

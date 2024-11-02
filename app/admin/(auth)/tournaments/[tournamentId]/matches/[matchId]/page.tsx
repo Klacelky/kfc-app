@@ -11,9 +11,9 @@ import { PageParams } from '@/utils/server/pages';
 
 export const dynamic = 'force-dynamic';
 
-export interface RouteParams extends ParentRouteParams {
+export type RouteParams = ParentRouteParams & {
     matchId: string;
-}
+};
 
 function NewMatch({ tournamentId }: RouteParams) {
     return (
