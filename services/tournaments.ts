@@ -2,11 +2,14 @@ import { TournamentCreateDto, TournamentGetDto, TournamentUpdateDto } from '@/dt
 import prisma from '@/utils/server/db';
 
 export async function listTournaments(): Promise<TournamentGetDto[]> {
-    return await prisma.tournament.findMany({ orderBy: { createdAt: 'asc' } });
+    return await prisma.tournament.findMany({ orderBy: { startDate: 'desc' } });
 }
 
 export async function getTournament(idOrSlug: string): Promise<TournamentGetDto> {
-    return await prisma.tournament.findFirstOrThrow({ where: { OR: [{ id: idOrSlug }, { slug: idOrSlug }] } });
+    return await prisma.tournament.findFirstOrThrow({
+        where: { OR: [{ id: idOrSlug }, { slug: idOrSlug }] },
+        orderBy: { startDate: 'desc' },
+    });
 }
 
 export async function getLatestTournament(): Promise<TournamentGetDto> {

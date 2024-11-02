@@ -23,6 +23,7 @@ export async function listGroups(tournamentId: string): Promise<GroupDetailedGet
         await prisma.group.findMany({
             where: { tournamentId },
             include: includeDetails,
+            orderBy: { name: 'asc' },
         })
     ).map(mapGroupTeams);
 }

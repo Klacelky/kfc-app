@@ -4,7 +4,7 @@ import { AdminCreateDto, AdminGetDto, AdminGetDtoSchema, AdminUpdateDto } from '
 import prisma from '@/utils/server/db';
 
 export async function listAdmins(): Promise<AdminGetDto[]> {
-    return await prisma.adminUser.findMany();
+    return await prisma.adminUser.findMany({ orderBy: { username: 'asc' } });
 }
 
 export async function getAdmin(id: string): Promise<AdminGetDto> {
