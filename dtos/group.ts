@@ -4,8 +4,8 @@ import { BaseDtoSchema, slug } from './base';
 import { TeamGetDtoSchema } from './team';
 
 const GroupBaseDtoSchema = z.object({
-    name: z.string(),
-    slug: slug(),
+    name: z.string().min(1, {message: 'Required'}),
+    slug: slug().min(1, {message: 'Required'}),
     description: z.string(),
 });
 

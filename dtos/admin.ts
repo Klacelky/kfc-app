@@ -3,14 +3,14 @@ import { z } from 'zod';
 import { BaseDtoSchema } from './base';
 
 export const AdminGetDtoSchema = BaseDtoSchema.extend({
-    username: z.string(),
+    username: z.string().min(1, { message: 'Required' }),
     su: z.boolean(),
 });
 export type AdminGetDto = z.infer<typeof AdminGetDtoSchema>;
 
 export const AdminCreateDtoSchema = z
     .object({
-        username: z.string(),
+        username: z.string().min(1, { message: 'Required' }),
         password: z.string().min(8),
         passwordRepeat: z.string(),
         su: z.boolean(),
@@ -23,7 +23,7 @@ export type AdminCreateDto = z.infer<typeof AdminCreateDtoSchema>;
 
 export const AdminUpdateDtoSchema = z
     .object({
-        username: z.string(),
+        username: z.string().min(1, { message: 'Required' }),
         password: z.string().min(8),
         passwordRepeat: z.string(),
     })

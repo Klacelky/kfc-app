@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { BaseDtoSchema } from './base';
 
 const PlayerBaseDtoSchema = z.object({
-    name: z.string(),
+    name: z.string().min(1, {message: 'Required'}),
     description: z.string(),
 });
 

@@ -6,8 +6,8 @@ export const StatsPublishedSchema = z.enum(['NOW', 'AFTER', 'NEVER']);
 export type StatsPublishedEnum = z.infer<typeof StatsPublishedSchema>;
 
 const TournamentBaseDtoSchema = z.object({
-    name: z.string(),
-    slug: slug(),
+    name: z.string().min(1, { message: 'Required' }),
+    slug: slug().min(1, { message: 'Required' }),
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
     description: z.string(),
