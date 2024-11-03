@@ -44,7 +44,16 @@ export default function MatchesPage({ params: { tournamentId } }: PageParams<Rou
                     playoffLayer,
                     homeTeam?.abbrev,
                     visitingTeam?.abbrev,
-                    games.map(({ score }) => score.join(':')).join('; '),
+                    games
+                        .map(
+                            ({
+                                score: {
+                                    home: { score: homeScore },
+                                    visiting: { score: visiting },
+                                },
+                            }) => `${homeScore}:${visiting}`,
+                        )
+                        .join('; '),
                 ]}
                 actions={({ id }) => (
                     <>

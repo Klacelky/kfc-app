@@ -30,8 +30,12 @@ function GroupMatchesCard({ group: { id: groupId, name }, matches }: GroupMatche
                                 <td className="text-center p-1">
                                     {games
                                         .map(
-                                            ({ score: [[homeScore, _], [visitingScore, __]] }) =>
-                                                `${homeScore}:${visitingScore}`,
+                                            ({
+                                                score: {
+                                                    home: { score: homeScore },
+                                                    visiting: { score: visitingScore },
+                                                },
+                                            }) => `${homeScore}:${visitingScore}`,
                                         )
                                         .join(', ')}
                                 </td>

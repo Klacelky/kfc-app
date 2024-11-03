@@ -42,11 +42,19 @@ export default function MatchGamesPage({ params: { matchId, tournamentId } }: Pa
             <Table
                 data={data?.games}
                 columnNames={['Started At', 'Finished At', 'Home Team Color', 'Score']}
-                getCols={({ startedAt, finishedAt, homeTeamColor, score }) => [
+                getCols={({
+                    startedAt,
+                    finishedAt,
+                    homeTeamColor,
+                    score: {
+                        home: { score: homeScore, out: homeOut },
+                        visiting: { score: visitingScore, out: visitingOut },
+                    },
+                }) => [
                     startedAt.toLocaleString(),
                     finishedAt?.toLocaleString(),
                     homeTeamColor,
-                    score.map(([goals, outGoals]) => `${goals}(${outGoals})`).join(':'),
+                    `${homeScore}(${homeOut}):${visitingScore}(${visitingOut})`,
                 ]}
                 actions={({ id }) => (
                     <>

@@ -83,6 +83,7 @@ model Team {
     players      Player[]
     group        GroupTeam?
     matches      MatchTeam[]
+    Goal         Goal[]
 
     @@unique([abbrev, tournamentId])
 }
@@ -212,8 +213,10 @@ model Goal {
 
     game     MatchGame @relation(fields: [gameId], references: [id], onDelete: Cascade)
     gameId   String
-    player   Player    @relation(fields: [playerId], references: [id], onDelete: Restrict)
-    playerId String
+    team     Team      @relation(fields: [teamId], references: [id], onDelete: Restrict)
+    teamId   String
+    player   Player?    @relation(fields: [playerId], references: [id], onDelete: Restrict)
+    playerId String?
 }
 
 model PlayerPositions {

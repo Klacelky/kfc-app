@@ -18,7 +18,16 @@ export const MatchGetDtoSchema = BaseDtoSchema.extend({
 });
 export type MatchGetDto = z.infer<typeof MatchGetDtoSchema>;
 
-export const GameScoreSchema = z.tuple([z.tuple([z.number(), z.number()]), z.tuple([z.number(), z.number()])]);
+export const TeamGameScoreSchema = z.object({
+    score: z.number(),
+    out: z.number(),
+});
+export type TeamGameScore = z.infer<typeof TeamGameScoreSchema>;
+
+export const GameScoreSchema = z.object({
+    home: TeamGameScoreSchema,
+    visiting: TeamGameScoreSchema,
+});
 export type GameScore = z.infer<typeof GameScoreSchema>;
 
 export const TeamSourceGetDtoSchema = z.object({
@@ -56,7 +65,8 @@ export const MatchGameGetDtoSchema = BaseDtoSchema.extend({
             timestamp: z.coerce.date(),
             own: z.boolean(),
             photo: z.boolean(),
-            player: PlayerGetDtoSchema,
+            team: TeamGetDtoSchema,
+            player: PlayerGetDtoSchema.nullable(),
         }),
     ),
     score: GameScoreSchema,
@@ -137,7 +147,8 @@ export const GoalCreateDtoSchema = z.object({
     own: z.boolean(),
     photo: z.boolean(),
     out: z.boolean(),
-    playerId: PlayerGetDtoSchema.shape.id,
+    teamId: TeamGetDtoSchema.shape.id,
+    playerId: PlayerGetDtoSchema.shape.id.optional(),
     notifyLive: z.boolean().optional(),
 });
 export type GoalCreateDto = z.infer<typeof GoalCreateDtoSchema>;

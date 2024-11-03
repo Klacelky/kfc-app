@@ -49,7 +49,8 @@ function GameTeams({
     exchangeTeams: () => Promise<void>;
 }) {
     const [loading, setLoading] = useState(false);
-    const [leftScoreIndex, rightScoreIndex] = left.team.id === homeTeamId ? [0, 1] : [1, 0];
+    const [leftScoreIndex, rightScoreIndex]: ('home' | 'visiting')[] =
+        left.team.id === homeTeamId ? ['home', 'visiting'] : ['visiting', 'home'];
     return (
         <Button onClick={loadingButton(setLoading, exchangeTeams)} disabled={loading}>
             <div className="text-3xl font-bold flex flex-row justify-center items-baseline gap-2">
@@ -62,11 +63,11 @@ function GameTeams({
                     {left.team.abbrev}
                 </span>
                 <span>
-                    {game.score[leftScoreIndex][0]}({game.score[leftScoreIndex][1]})
+                    {game.score[leftScoreIndex].score}({game.score[leftScoreIndex].out})
                 </span>
                 :
                 <span>
-                    {game.score[rightScoreIndex][0]}({game.score[rightScoreIndex][1]})
+                    {game.score[rightScoreIndex].score}({game.score[rightScoreIndex].out})
                 </span>
                 <span
                     className={classNames('p-2', {
@@ -135,7 +136,9 @@ function PlayerPositions({
                 <Button color="primary" className="w-28 h-28 font-bold" onClick={() => goalTrigger(defender)}>
                     {defender.name}
                 </Button>
-                <span className="text-lg">{game.goals.filter(({ player: { id } }) => id === defender.id).length}</span>
+                <span className="text-lg">
+                    {game.goals.filter(({ player }) => player && player.id === defender.id).length}
+                </span>
             </div>
             <Button
                 color="primary"
@@ -155,7 +158,9 @@ function PlayerPositions({
                 <Button color="primary" className="w-28 h-28 font-bold" onClick={() => goalTrigger(striker)}>
                     {striker.name}
                 </Button>
-                <span className="text-lg">{game.goals.filter(({ player: { id } }) => id === striker.id).length}</span>
+                <span className="text-lg">
+                    {game.goals.filter(({ player }) => player && player.id === striker.id).length}
+                </span>
             </div>
             Striker
         </div>

@@ -28,6 +28,14 @@ import {
 } from '@/dtos/match';
 import prisma from '@/utils/server/db';
 
+type TeamWithPlayers = Team & {
+    players: Player[];
+};
+
+type MatchTeamWithPlayers = MatchTeam & {
+    team: TeamWithPlayers;
+};
+
 type GameWithDetails = MatchGame & {
     playerPositions: (PlayerPositions & {
         players: (PlayerPosition & {
@@ -35,16 +43,9 @@ type GameWithDetails = MatchGame & {
         })[];
     })[];
     goals: (Goal & {
-        player: Player;
+        team: TeamWithPlayers;
+        player: Player | null;
     })[];
-};
-
-type TeamWithPlayers = Team & {
-    players: Player[];
-};
-
-type MatchTeamWithPlayers = MatchTeam & {
-    team: TeamWithPlayers;
 };
 
 type MatchWithDetails = Match & {
@@ -56,40 +57,34 @@ type MatchWithDetails = Match & {
     })[];
 };
 
-function countGameScore(
-    homeTeam: TeamWithPlayers | null,
-    visitingTeam: TeamWithPlayers | null,
-    goals: Goal[],
-): GameScore {
-    const homePlayerIds = homeTeam?.players.map(({ id }) => id) || [];
-    const visitingPlayerIds = visitingTeam?.players.map(({ id }) => id) || [];
+function countGameScore(homeTeam: Team | null, visitingTeam: Team | null, goals: Goal[]): GameScore {
     return goals
         .sort(({ timestamp: ta }, { timestamp: tb }) => ta.getTime() - tb.getTime())
         .reduce(
             (
-                [[homeScore, homeOut], [visitingScore, visitingOut]]: GameScore,
-                { own, out, playerId }: Goal,
+                {
+                    home: { score: homeScore, out: homeOut },
+                    visiting: { score: visitingScore, out: visitingOut },
+                }: GameScore,
+                { own, out, teamId }: Goal,
             ): GameScore => {
-                let homeGoal = homePlayerIds.indexOf(playerId) != -1 ? 1 : 0;
-                let visitingGoal = visitingPlayerIds.indexOf(playerId) != -1 ? 1 : 0;
+                let homeGoal = teamId === homeTeam?.id ? 1 : 0;
+                let visitingGoal = teamId === visitingTeam?.id ? 1 : 0;
                 if (own) {
                     [homeGoal, visitingGoal] = [visitingGoal, homeGoal];
                 }
                 if (out) {
-                    return [
-                        [homeScore, homeOut + homeGoal],
-                        [visitingScore, visitingOut + visitingGoal],
-                    ];
+                    return {
+                        home: { score: homeScore, out: homeOut + homeGoal },
+                        visiting: { score: visitingScore, out: visitingOut + visitingGoal },
+                    };
                 }
-                return [
-                    [homeScore + homeGoal - visitingOut, 0],
-                    [visitingScore + visitingGoal - homeOut, 0],
-                ];
+                return {
+                    home: { score: homeScore + homeGoal - visitingOut, out: 0 },
+                    visiting: { score: visitingScore + visitingGoal - homeOut, out: 0 },
+                };
             },
-            [
-                [0, 0],
-                [0, 0],
-            ],
+            { home: { score: 0, out: 0 }, visiting: { score: 0, out: 0 } },
         );
 }
 
@@ -144,7 +139,12 @@ function expandMatchDetails({
         .reduce(
             (
                 [homeScore, visitingScore]: [number, number],
-                { score: [[homeGameScore, _], [visitingGameScore, __]] },
+                {
+                    score: {
+                        home: { score: homeGameScore },
+                        visiting: { score: visitingGameScore },
+                    },
+                },
             ): [number, number] => [
                 homeScore + (homeGameScore > visitingGameScore ? 1 : 0),
                 visitingScore + (homeGameScore < visitingGameScore ? 1 : 0),
@@ -191,6 +191,11 @@ const include = {
             },
             goals: {
                 include: {
+                    team: {
+                        include: {
+                            players: true,
+                        },
+                    },
                     player: true,
                 },
                 orderBy: {
@@ -360,8 +365,8 @@ async function notify(matchId: string) {
             visiting_team: match.visitingTeam?.abbrev || '',
             visiting_team_name: match.visitingTeam?.name || '',
             visiting_team_player_names: match.visitingTeam?.players.map(({ name }) => name) || [],
-            home_score: match.games.slice(-1)[0]?.score[0][0],
-            visiting_score: match.games.slice(-1)[0]?.score[1][0],
+            home_score: match.games.slice(-1)[0]?.score.home.score,
+            visiting_score: match.games.slice(-1)[0]?.score.visiting.score,
             home_games: match.score[0],
             visiting_games: match.score[1],
             home_team_color: match.games.slice(-1)[0]?.homeTeamColor,

@@ -55,6 +55,15 @@ export async function handleError<T>(fn: () => Promise<T>): Promise<Return<T>> {
                     },
                 };
             }
+            if (rawError.code == 'P2003') {
+                return {
+                    error: {
+                        status: 400,
+                        error: 'Bad Request',
+                        message: `Cannot manipulate ${rawError.meta?.modelName} as this would lead to a database inconsistency`,
+                    },
+                };
+            }
         }
         if (rawError instanceof SyntaxError) {
             return {

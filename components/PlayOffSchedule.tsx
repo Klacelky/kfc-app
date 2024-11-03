@@ -49,8 +49,12 @@ export default function PlayOffSchedule({ matches, hideTimes }: ScheduleProps) {
                             <div className="sm:col-span-3 sm:text-center">
                                 {games
                                     .map(
-                                        ({ score: [[homeScore, _], [visitingScore, __]] }) =>
-                                            `${homeScore}:${visitingScore}`,
+                                        ({
+                                            score: {
+                                                home: { score: homeScore },
+                                                visiting: { score: visitingScore },
+                                            },
+                                        }) => `${homeScore}:${visitingScore}`,
                                     )
                                     .join(', ')}
                             </div>
