@@ -215,7 +215,7 @@ model Goal {
     gameId   String
     team     Team      @relation(fields: [teamId], references: [id], onDelete: Restrict)
     teamId   String
-    player   Player?    @relation(fields: [playerId], references: [id], onDelete: Restrict)
+    player   Player?   @relation(fields: [playerId], references: [id], onDelete: Restrict)
     playerId String?
 }
 
