@@ -12,6 +12,7 @@ import Button from '@/components/admin/Button';
 import { Select, Input } from '@/components/admin/Input';
 import { MatchDetailedGetDtoSchema, MatchGameUpdateDto, MatchGameUpdateDtoSchema, TeamColorSchema } from '@/dtos/match';
 import { api, getErrorMessage, useSWRSchema } from '@/utils/client/api';
+import { dateTimeToInput, registerOptions } from '@/utils/client/forms';
 import { PageParams } from '@/utils/server/pages';
 
 export type RouteParams = ParentRouteParams & {
@@ -33,7 +34,11 @@ export default function MatchGameEditPage({ params: { tournamentId, matchId, gam
     } = useForm<MatchGameUpdateDto>({
         mode: 'all',
         resolver: zodResolver(MatchGameUpdateDtoSchema),
-        defaultValues: game,
+        defaultValues: {
+            ...game,
+            startedAt: dateTimeToInput(game?.startedAt),
+            finishedAt: dateTimeToInput(game?.finishedAt),
+        },
     });
 
     if (error) {
@@ -60,13 +65,13 @@ export default function MatchGameEditPage({ params: { tournamentId, matchId, gam
                 {errors.root && <Alert>{errors.root.message}</Alert>}
                 <div className="flex flex-col gap-4">
                     <Input
-                        register={() => register('startedAt', { valueAsDate: true })}
+                        register={() => register('startedAt', registerOptions({ empty: 'null', date: true }))}
                         type="datetime-local"
                         label="Started At"
                         error={errors?.startedAt?.message}
                     />
                     <Input
-                        register={() => register('finishedAt', { valueAsDate: true })}
+                        register={() => register('finishedAt', registerOptions({ empty: 'null', date: true }))}
                         type="datetime-local"
                         label="Finished At"
                         error={errors?.finishedAt?.message}

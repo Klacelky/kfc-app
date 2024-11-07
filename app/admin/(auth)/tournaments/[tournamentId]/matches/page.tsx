@@ -1,49 +1,51 @@
-'use client';
-
 import { ClipboardDocumentListIcon, PencilSquareIcon } from '@heroicons/react/16/solid';
 import Link from 'next/link';
-import { z } from 'zod';
 
 import { RouteParams as ParentRouteParams } from '../page';
 
 import Alert from '@/components/Alert';
-import Loading from '@/components/Loading';
 import Button from '@/components/admin/Button';
 import Table from '@/components/admin/Table';
-import { MatchDetailedGetDtoSchema } from '@/dtos/match';
-import { getErrorMessage, useSWRSchema } from '@/utils/client/api';
+import { TeamSourceGetDto } from '@/dtos/match';
+import { listMatches } from '@/services/matches';
+import { handleError } from '@/utils/server/common';
 import { PageParams } from '@/utils/server/pages';
 
 export const dynamic = 'force-dynamic';
 
 export type RouteParams = ParentRouteParams;
 
-export default function MatchesPage({ params: { tournamentId } }: PageParams<RouteParams>) {
-    const { data, error, isLoading } = useSWRSchema(
-        `/api/tournament/${tournamentId}/match`,
-        z.array(MatchDetailedGetDtoSchema),
-    );
+function formatTeamSource(source: TeamSourceGetDto | null): string | null {
+    if (!source) {
+        return null;
+    }
+    switch (source.type) {
+        case 'group':
+        return `=> ${source.sourceGroup.name}@${source.standing}`;
+        case 'match':
+        return `=> ${source.sourceMatch.name}@${source.winner ? 'W' : 'L'}`;
+    }
+}
+
+export default async function MatchesPage({ params: { tournamentId } }: PageParams<RouteParams>) {
+    const { data: matches, error } = await handleError(() => listMatches(tournamentId, {}));
 
     if (error) {
-        return <Alert>{getErrorMessage(error)}</Alert>;
-    }
-
-    if (isLoading) {
-        return <Loading className="" />;
+        return <Alert>{error.message}</Alert>;
     }
 
     return (
         <>
             <h1>Matches</h1>
             <Table
-                data={data}
+                data={matches}
                 columnNames={['Name', 'Expected start', 'Playoff Level', 'Home Team', 'Visiting Team', 'Score']}
-                getCols={({ name, expectedStart, playoffLayer, homeTeam, visitingTeam, games }) => [
+                getCols={({ name, expectedStart, playoffLayer, home, visiting, games }) => [
                     name,
                     expectedStart?.toLocaleString(),
                     playoffLayer,
-                    homeTeam?.abbrev,
-                    visitingTeam?.abbrev,
+                    home.team?.abbrev || formatTeamSource(home.source),
+                    visiting.team?.abbrev || formatTeamSource(visiting.source),
                     games
                         .map(
                             ({

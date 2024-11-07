@@ -26,6 +26,7 @@ import {
 import { PlayerGetDto } from '@/dtos/player';
 import { TeamGetDto } from '@/dtos/team';
 import { api, getErrorMessage, loadingButton, oppositeColor, useSWRSchema } from '@/utils/client/api';
+import { registerOptions } from '@/utils/client/forms';
 import { PageParams } from '@/utils/server/pages';
 
 export type RouteParams = ParentRouteParams;
@@ -89,7 +90,7 @@ interface PositionedPlayers {
 
 function PlayerPositions({
     game,
-    team: { players },
+    team,
     players: { defender, striker },
     reverse,
     goalTrigger,
@@ -99,11 +100,11 @@ function PlayerPositions({
     team: TeamGetDto;
     players: PositionedPlayers;
     reverse?: boolean;
-    goalTrigger: (player: PlayerGetDto) => void;
+    goalTrigger: (pendingGoal: { team: TeamGetDto; player: PlayerGetDto }) => void;
     playerSwitchTrigger: (players: PositionedPlayers) => Promise<void>;
 }) {
     const [switchLoading, setSwitchLoading] = useState(false);
-    if ((!defender || !striker) && players.length !== 2) {
+    if ((!defender || !striker) && team.players.length !== 2) {
         return (
             <div>
                 <Alert>Not Enough Players</Alert>
@@ -118,7 +119,7 @@ function PlayerPositions({
                     color="primary"
                     className="font-bold"
                     onClick={loadingButton(setSwitchLoading, async () => {
-                        const [defender, striker] = players;
+                        const [defender, striker] = team.players;
                         await playerSwitchTrigger({ defender, striker });
                     })}
                     disabled={switchLoading}
@@ -133,7 +134,11 @@ function PlayerPositions({
         <div className={classNames('flex flex-col items-center justify-around gap-4', { 'flex-col-reverse': reverse })}>
             Defender
             <div className={classNames('flex flex-row items-center gap-2', { 'flex-row-reverse': reverse })}>
-                <Button color="primary" className="w-28 h-28 font-bold" onClick={() => goalTrigger(defender)}>
+                <Button
+                    color="primary"
+                    className="w-28 h-28 font-bold"
+                    onClick={() => goalTrigger({ team, player: defender })}
+                >
                     {defender.name}
                 </Button>
                 <span className="text-lg">
@@ -155,7 +160,11 @@ function PlayerPositions({
                 <ArrowsUpDownIcon className="w-8" />
             </Button>
             <div className={classNames('flex flex-row items-center gap-2', { 'flex-row-reverse': reverse })}>
-                <Button color="primary" className="w-28 h-28 font-bold" onClick={() => goalTrigger(striker)}>
+                <Button
+                    color="primary"
+                    className="w-28 h-28 font-bold"
+                    onClick={() => goalTrigger({ team, player: striker })}
+                >
                     {striker.name}
                 </Button>
                 <span className="text-lg">
@@ -179,7 +188,7 @@ function GamePlayers({
     leftTeam: TeamGetDto;
     rightTeam: TeamGetDto;
     switchSides: () => void;
-    goalTrigger: (player: PlayerGetDto) => void;
+    goalTrigger: (pendingGoal: { team: TeamGetDto; player: PlayerGetDto }) => void;
     playerSwitchTrigger: (players: PositionedPlayers) => Promise<void>;
 }) {
     const [leftPlayers, rightPlayers] = useMemo(() => {
@@ -227,10 +236,12 @@ function GamePlayers({
 }
 
 function PendingGoalModal({
+    team,
     player,
     submit,
     cancel,
 }: {
+    team: TeamGetDto;
     player: PlayerGetDto;
     submit: (formData: GoalCreateDto) => Promise<void>;
     cancel: () => void;
@@ -238,16 +249,19 @@ function PendingGoalModal({
     const {
         register,
         handleSubmit,
-        formState: { errors, isValid, isSubmitting },
+        formState: { errors, isValid, isSubmitting, defaultValues },
         reset,
     } = useForm<GoalCreateDto>({
         mode: 'all',
         resolver: zodResolver(GoalCreateDtoSchema),
         defaultValues: {
+            teamId: team.id,
             playerId: player.id,
             timestamp: undefined,
         },
     });
+    console.log(errors, isValid, isSubmitting);
+    console.log(GoalCreateDtoSchema.safeParse(defaultValues));
 
     return (
         <form onSubmit={handleSubmit(submit)}>
@@ -255,7 +269,7 @@ function PendingGoalModal({
                 <div>{player.name}</div>
                 {errors.root?.message && <Alert>{errors.root.message}</Alert>}
                 <Input
-                    register={() => register('timestamp', { valueAsDate: true })}
+                    register={() => register('timestamp', registerOptions({ empty: 'undefined', date: true }))}
                     type="datetime-local"
                     label="Timestamp"
                     error={errors.timestamp?.message}
@@ -294,20 +308,20 @@ export default function MatchGameRefPage({ params: { tournamentId, matchId, game
 
     const [reverse, setReverse] = useState(false);
     const [left, right] = useMemo((): (ColoredTeam | undefined)[] => {
-        if (!data?.homeTeam || !data?.visitingTeam || !game) {
+        if (!data?.home.team || !data?.visiting.team || !game) {
             return [undefined, undefined];
         }
         const teams = [
-            { team: data.homeTeam, color: game.homeTeamColor },
-            { team: data.visitingTeam, color: oppositeColor(game.homeTeamColor) },
+            { team: data.home.team, color: game.homeTeamColor },
+            { team: data.visiting.team, color: oppositeColor(game.homeTeamColor) },
         ];
         return reverse ? teams.reverse() : teams;
-    }, [data?.homeTeam, data?.visitingTeam, game, reverse]);
+    }, [data?.home.team, data?.visiting.team, game, reverse]);
 
     const [actionLog, setActionLog] = useState<ActionLogItem[]>([]);
     const [undoLoading, setUndoLoading] = useState(false);
 
-    const [pendingGoal, setPendingGoal] = useState<PlayerGetDto | undefined>();
+    const [pendingGoal, setPendingGoal] = useState<{ team: TeamGetDto; player: PlayerGetDto } | undefined>();
     if (error) {
         return <Alert>{getErrorMessage(error)}</Alert>;
     }
@@ -317,14 +331,15 @@ export default function MatchGameRefPage({ params: { tournamentId, matchId, game
     if (!game) {
         return <Alert>Game not found</Alert>;
     }
-    if (!left || !right || !data?.homeTeam) {
+    if (!left || !right || !data?.home.team) {
         return <Alert>No Teams</Alert>;
     }
 
     if (pendingGoal) {
         return (
             <PendingGoalModal
-                player={pendingGoal}
+                team={pendingGoal.team}
+                player={pendingGoal.player}
                 submit={async (data) => {
                     try {
                         const response = await api.post<MatchItemCreatedDto>(`${prefix}/game/${gameId}/goal`, data);
@@ -343,7 +358,7 @@ export default function MatchGameRefPage({ params: { tournamentId, matchId, game
     return (
         <div className="flex flex-col h-96 gap-4">
             <GameTeams
-                homeTeamId={data.homeTeam.id}
+                homeTeamId={data.home.team.id}
                 game={game}
                 left={left}
                 right={right}

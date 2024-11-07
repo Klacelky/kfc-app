@@ -40,3 +40,20 @@ export function registerOptions({ empty, date, number }: RegisterOptionsOptions)
     }
     return {};
 }
+
+export function dateTimeToInput(date: Date | undefined | null): Date | undefined {
+    if (!date) {
+        return undefined;
+    }
+    return (date.getFullYear().toString() +
+        '-' +
+        (date.getMonth() + 1).toString().padStart(2, '0') +
+        '-' +
+        date.getDate().toString().padStart(2, '0') +
+        'T' +
+        date.getHours().toString().padStart(2, '0') +
+        ':' +
+        date.getMinutes().toString().padStart(2, '0') +
+        ':' +
+        date.getSeconds().toString().padStart(2, '0')) as unknown as Date;
+}

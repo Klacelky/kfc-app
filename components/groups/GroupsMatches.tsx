@@ -17,14 +17,14 @@ function GroupMatchesCard({ group: { id: groupId, name }, matches }: GroupMatche
             <div className="pt-6">
                 <table className="table-auto w-full whitespace-nowrap">
                     <tbody>
-                        {matches.map(({ id: matchId, homeTeam, visitingTeam, games, winner }) => (
+                        {matches.map(({ id: matchId, home, visiting, games, winner }) => (
                             <tr key={matchId} className="line">
                                 <td className="text-right p-1">
                                     <div className="flex justify-end items-center gap-1">
-                                        {homeTeam?.id && homeTeam.id === winner?.id && (
+                                        {home.team?.id && home.team.id === winner?.id && (
                                             <TrophyIcon className="text-kfc-teal h-6" />
                                         )}
-                                        <span>{homeTeam?.abbrev}</span>
+                                        <span>{home.team?.abbrev}</span>
                                     </div>
                                 </td>
                                 <td className="text-center p-1">
@@ -41,8 +41,8 @@ function GroupMatchesCard({ group: { id: groupId, name }, matches }: GroupMatche
                                 </td>
                                 <td className="p-1">
                                     <div className="flex justify-start items-center gap-1">
-                                        <span>{visitingTeam?.abbrev}</span>
-                                        {visitingTeam?.id && visitingTeam.id === winner?.id && (
+                                        <span>{visiting.team?.abbrev}</span>
+                                        {visiting.team?.id && visiting.team.id === winner?.id && (
                                             <TrophyIcon className="text-kfc-teal h-6" />
                                         )}
                                     </div>

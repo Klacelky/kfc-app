@@ -30,22 +30,6 @@ export const GameScoreSchema = z.object({
 });
 export type GameScore = z.infer<typeof GameScoreSchema>;
 
-export const TeamSourceGetDtoSchema = z.object({
-    group: z
-        .object({
-            standing: z.number(),
-            sourceGroup: GroupGetDtoSchema,
-        })
-        .nullable(),
-    match: z
-        .object({
-            winner: z.boolean(),
-            sourceMatch: MatchGetDtoSchema,
-        })
-        .nullable(),
-});
-export type TeamSourceGetDto = z.infer<typeof TeamSourceGetDtoSchema>;
-
 export const MatchGameGetDtoSchema = BaseDtoSchema.extend({
     startedAt: z.coerce.date(),
     finishedAt: z.coerce.date().nullable(),
@@ -73,35 +57,51 @@ export const MatchGameGetDtoSchema = BaseDtoSchema.extend({
 });
 export type MatchGameGetDto = z.infer<typeof MatchGameGetDtoSchema>;
 
+export const TeamSourceGetDtoSchema = z
+    .object({
+        type: z.literal('group'),
+        standing: z.number(),
+        sourceGroup: GroupGetDtoSchema,
+    })
+    .or(
+        z.object({
+            type: z.literal('match'),
+            winner: z.boolean(),
+            sourceMatch: MatchGetDtoSchema,
+        }),
+    );
+export type TeamSourceGetDto = z.infer<typeof TeamSourceGetDtoSchema>;
+
 export const MatchDetailedGetDtoSchema = MatchGetDtoSchema.extend({
-    homeTeam: TeamGetDtoSchema.nullable(),
-    visitingTeam: TeamGetDtoSchema.nullable(),
+    home: z.object({
+        team: TeamGetDtoSchema.nullable(),
+        source: TeamSourceGetDtoSchema.nullable(),
+    }),
+    visiting: z.object({
+        team: TeamGetDtoSchema.nullable(),
+        source: TeamSourceGetDtoSchema.nullable(),
+    }),
     games: z.array(MatchGameGetDtoSchema),
-    homeTeamSource: TeamSourceGetDtoSchema.nullable(),
-    visitingTeamSource: TeamSourceGetDtoSchema.nullable(),
     score: z.tuple([z.number(), z.number()]),
     winner: TeamGetDtoSchema.nullable(),
 });
 export type MatchDetailedGetDto = z.infer<typeof MatchDetailedGetDtoSchema>;
 
 export const TeamSourceCreateDtoSchema = z
-    .object({
-        group: z
-            .object({
-                standing: z.number(),
-                sourceGroupId: GroupGetDtoSchema.shape.id,
-            })
-            .nullable(),
-        match: z
-            .object({
-                winner: z.boolean(),
-                sourceMatchId: MatchGetDtoSchema.shape.id,
-            })
-            .nullable(),
-    })
-    .refine(
-        ({ group, match }) => (group === undefined) != (match === undefined),
-        'One and only one of group or match has to be defined',
+    .object({ type: z.null() })
+    .or(
+        z.object({
+            type: z.literal('group'),
+            standing: z.number(),
+            sourceGroupId: GroupGetDtoSchema.shape.id,
+        }),
+    )
+    .or(
+        z.object({
+            type: z.literal('match'),
+            winner: z.boolean(),
+            sourceMatchId: MatchGetDtoSchema.shape.id,
+        }),
     );
 export type TeamSourceCreateDto = z.infer<typeof TeamSourceCreateDtoSchema>;
 
@@ -109,10 +109,18 @@ export const MatchCreateDtoSchema = z.object({
     name: z.string().nullable().optional(),
     expectedStart: z.coerce.date().nullable().optional(),
     playoffLayer: z.coerce.number().nullable().optional(),
-    homeTeamId: TeamGetDtoSchema.shape.id.nullable().optional(),
-    visitingTeamId: TeamGetDtoSchema.shape.id.nullable().optional(),
-    homeTeamSource: TeamSourceCreateDtoSchema.nullable().optional(),
-    visitingTeamSource: TeamSourceCreateDtoSchema.nullable().optional(),
+    home: z
+        .object({
+            teamId: TeamGetDtoSchema.shape.id.nullable().optional(),
+            source: TeamSourceCreateDtoSchema.nullable().optional(),
+        })
+        .optional(),
+    visiting: z
+        .object({
+            teamId: TeamGetDtoSchema.shape.id.nullable().optional(),
+            source: TeamSourceCreateDtoSchema.nullable().optional(),
+        })
+        .optional(),
 });
 export type MatchCreateDto = z.infer<typeof MatchCreateDtoSchema>;
 
@@ -120,11 +128,18 @@ export const MatchUpdateDtoSchema = z.object({
     name: z.string().nullable().optional(),
     expectedStart: z.coerce.date().nullable().optional(),
     playoffLayer: z.coerce.number().nullable().optional(),
-    homeTeamId: TeamGetDtoSchema.shape.id.nullable().optional(),
-    visitingTeamId: TeamGetDtoSchema.shape.id.nullable().optional(),
-    homeTeamSource: TeamSourceCreateDtoSchema.nullable().optional(),
-    visitingTeamSource: TeamSourceCreateDtoSchema.nullable().optional(),
-    updateSuccessiveMatches: z.coerce.boolean().optional(),
+    home: z
+        .object({
+            teamId: TeamGetDtoSchema.shape.id.nullable().optional(),
+            source: TeamSourceCreateDtoSchema.nullable().optional(),
+        })
+        .optional(),
+    visiting: z
+        .object({
+            teamId: TeamGetDtoSchema.shape.id.nullable().optional(),
+            source: TeamSourceCreateDtoSchema.nullable().optional(),
+        })
+        .optional(),
 });
 export type MatchUpdateDto = z.infer<typeof MatchUpdateDtoSchema>;
 
@@ -165,6 +180,11 @@ export const PlayerPositionsCreateDtoSchema = z.object({
 export type PlayerPositionsCreateDto = z.infer<typeof PlayerPositionsCreateDtoSchema>;
 
 export const GameFinishDtoSchema = z.object({});
+
+export const MatchFinishDtoSchema = z.object({
+    updateSuccessiveMatches: z.coerce.boolean(),
+});
+export type MatchFinishDto = z.infer<typeof MatchFinishDtoSchema>;
 
 export const MatchQueryDtoSchema = z.object({
     groupId: GroupGetDtoSchema.shape.id.optional(),

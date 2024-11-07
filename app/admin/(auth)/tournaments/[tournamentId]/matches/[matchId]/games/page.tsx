@@ -36,7 +36,7 @@ export default function MatchGamesPage({ params: { matchId, tournamentId } }: Pa
     return (
         <>
             <h1>
-                {data?.homeTeam?.abbrev} - {data?.visitingTeam?.abbrev}
+                {data?.home.team?.abbrev} - {data?.visiting.team?.abbrev}
             </h1>
             {data?.winner && <div>Winner: {data.winner.abbrev}</div>}
             <Table
@@ -91,7 +91,7 @@ export default function MatchGamesPage({ params: { matchId, tournamentId } }: Pa
                     color="danger"
                     onClick={loadingButton(setNewLoading, async () => {
                         try {
-                            await api.patch<MatchUpdateDto>(`/api/tournament/${tournamentId}/match/${matchId}`, {
+                            await api.post<MatchUpdateDto>(`/api/tournament/${tournamentId}/match/${matchId}/finish`, {
                                 updateSuccessiveMatches: true,
                             } as MatchUpdateDto);
                             mutate();

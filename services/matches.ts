@@ -25,7 +25,10 @@ import {
     MatchGameUpdateDto,
     PlayerPositionsCreateDto,
     MatchItemCreatedDto,
+    TeamSourceGetDto,
+    MatchFinishDto,
 } from '@/dtos/match';
+import { BadRequestError } from '@/utils/server/common';
 import prisma from '@/utils/server/db';
 
 type TeamWithPlayers = Team & {
@@ -128,11 +131,17 @@ function expandMatchDetails({
         score: countGameScore(homeTeam, visitingTeam, goals),
     }));
 
-    const mappedTeamSources = teamSources.map(({ standing, sourceGroup, winner, sourceMatch, ...rest }) => ({
-        ...rest,
-        group: sourceGroup !== null && standing !== null ? { sourceGroup, standing } : null,
-        match: sourceMatch !== null && winner !== null ? { sourceMatch, winner } : null,
-    }));
+    const mappedTeamSources: { type: MatchTeamType; data: TeamSourceGetDto | null }[] = teamSources.map(
+        ({ standing, sourceGroup, winner, sourceMatch, type }) => ({
+            type,
+            data:
+                sourceGroup !== null && standing !== null
+                    ? { type: 'group' as 'group', sourceGroup, standing }
+                    : sourceMatch !== null && winner !== null
+                      ? { type: 'match' as 'match', winner, sourceMatch }
+                      : null,
+        }),
+    );
 
     const finalScore = scoredGames
         .filter(({ finishedAt }) => finishedAt !== null)
@@ -155,11 +164,15 @@ function expandMatchDetails({
     return {
         ...matchRest,
         playoffLayer,
-        homeTeam: homeTeam,
-        visitingTeam: visitingTeam,
+        home: {
+            team: homeTeam,
+            source: findTeamType(mappedTeamSources, MatchTeamType.HOME)?.data || null,
+        },
+        visiting: {
+            team: visitingTeam,
+            source: findTeamType(mappedTeamSources, MatchTeamType.VISITING)?.data || null,
+        },
         games: scoredGames,
-        homeTeamSource: findTeamType(mappedTeamSources, MatchTeamType.HOME),
-        visitingTeamSource: findTeamType(mappedTeamSources, MatchTeamType.VISITING),
         score: finalScore,
         winner: getWinner(homeTeam, visitingTeam, finalScore, playoffLayer),
     };
@@ -263,7 +276,7 @@ function makeNullTeamsArray<T>(
 
 export async function createMatch(
     tournamentId: string,
-    { homeTeamId, visitingTeamId, homeTeamSource, visitingTeamSource, ...data }: MatchCreateDto,
+    { home, visiting, ...data }: MatchCreateDto,
 ): Promise<MatchDetailedGetDto> {
     return expandMatchDetails(
         await prisma.match.create({
@@ -271,19 +284,18 @@ export async function createMatch(
                 ...data,
                 tournamentId,
                 teams: {
-                    create: makeTeamsArray(homeTeamId, visitingTeamId).map(({ type, value: teamId }) => ({
+                    create: makeTeamsArray(home?.teamId, visiting?.teamId).map(({ type, value: teamId }) => ({
                         type,
                         teamId,
                     })),
                 },
                 teamSources: {
-                    create: makeTeamsArray(homeTeamSource, visitingTeamSource).map(
-                        ({ type, value: { match, group } }) => ({
+                    create: makeTeamsArray(home?.source, visiting?.source)
+                        .filter(({ value: { type } }) => type)
+                        .map(({ type, value: { type: _, ...source } }) => ({
                             type,
-                            ...match,
-                            ...group,
-                        }),
-                    ),
+                            ...source,
+                        })),
                 },
             },
             include,
@@ -293,18 +305,8 @@ export async function createMatch(
 
 export async function updateMatch(
     id: string,
-    {
-        homeTeamId,
-        visitingTeamId,
-        homeTeamSource,
-        visitingTeamSource,
-        updateSuccessiveMatches,
-        ...data
-    }: MatchUpdateDto,
+    { home, visiting, ...data }: MatchUpdateDto,
 ): Promise<MatchDetailedGetDto> {
-    if (updateSuccessiveMatches) {
-        await nofityHideScore();
-    }
     return expandMatchDetails(
         await prisma.$transaction(async (tx) => {
             const { teams, teamSources } = await tx.match.findUniqueOrThrow({
@@ -316,30 +318,30 @@ export async function updateMatch(
                 data: {
                     ...data,
                     teams: {
-                        upsert: makeTeamsArray(homeTeamId, visitingTeamId).map(({ type, value: teamId }) => ({
+                        upsert: makeTeamsArray(home?.teamId, visiting?.teamId).map(({ type, value: teamId }) => ({
                             create: { type, teamId },
                             where: { type_matchId: { type, matchId: id } },
                             update: { teamId },
                         })),
                         delete: makeNullTeamsArray(
-                            homeTeamId,
-                            visitingTeamId,
+                            home?.teamId,
+                            visiting?.teamId,
                             teams.map(({ type }) => type),
                         ).map((type) => ({
                             type_matchId: { type, matchId: id },
                         })),
                     },
                     teamSources: {
-                        upsert: makeTeamsArray(homeTeamSource, visitingTeamSource).map(
-                            ({ type, value: { match, group } }) => ({
-                                create: { type, ...match, ...group },
+                        upsert: makeTeamsArray(home?.source, visiting?.source)
+                            .filter(({ value: { type } }) => type)
+                            .map(({ type, value: { type: _, ...source } }) => ({
+                                create: { type, ...source },
                                 where: { matchId_type: { type, matchId: id } },
-                                update: { ...match, ...group },
-                            }),
-                        ),
+                                update: { ...source },
+                            })),
                         delete: makeNullTeamsArray(
-                            homeTeamSource,
-                            visitingTeamSource,
+                            home?.source?.type,
+                            visiting?.source?.type,
                             teamSources.map(({ type }) => type),
                         ).map((type) => ({
                             matchId_type: { type, matchId: id },
@@ -352,6 +354,48 @@ export async function updateMatch(
     );
 }
 
+export async function finishMatch(
+    id: string,
+    { updateSuccessiveMatches }: MatchFinishDto,
+): Promise<MatchDetailedGetDto> {
+    await nofityHideScore();
+    return await prisma.$transaction(async (tx) => {
+        const match = await tx.match.findUniqueOrThrow({
+            where: { id },
+            include: { ...include, successiveMatches: updateSuccessiveMatches },
+        });
+        const matchDetails = expandMatchDetails(match);
+        if (!matchDetails.winner || !matchDetails.home.team || !matchDetails.visiting.team) {
+            throw new BadRequestError('Cannot declare winner');
+        }
+        const winnerId: string =
+            matchDetails.home.team.id === matchDetails.winner.id
+                ? matchDetails.home.team.id
+                : matchDetails.visiting.team.id;
+        const looserId =
+            matchDetails.home.team.id !== matchDetails.winner.id
+                ? matchDetails.home.team.id
+                : matchDetails.visiting.team.id;
+        await Promise.all(
+            match.successiveMatches.map(({ matchId: successiveMatchId, type: successiveTeamType, winner }) =>
+                tx.match.update({
+                    where: { id: successiveMatchId },
+                    data: {
+                        teams: {
+                            upsert: {
+                                create: { type: successiveTeamType, teamId: winner ? winnerId : looserId },
+                                where: { type_matchId: { type: successiveTeamType, matchId: successiveMatchId } },
+                                update: { teamId: winner ? winnerId : looserId },
+                            },
+                        },
+                    },
+                }),
+            ),
+        );
+        return matchDetails;
+    });
+}
+
 async function notify(matchId: string) {
     try {
         const match = await getMatch(matchId);
@@ -359,12 +403,12 @@ async function notify(matchId: string) {
             return;
         }
         await notifyScore({
-            home_team: match.homeTeam?.abbrev || '',
-            home_team_name: match.homeTeam?.name || '',
-            home_team_player_names: match.homeTeam?.players.map(({ name }) => name) || [],
-            visiting_team: match.visitingTeam?.abbrev || '',
-            visiting_team_name: match.visitingTeam?.name || '',
-            visiting_team_player_names: match.visitingTeam?.players.map(({ name }) => name) || [],
+            home_team: match.home.team?.abbrev || '',
+            home_team_name: match.home.team?.name || '',
+            home_team_player_names: match.home.team?.players.map(({ name }) => name) || [],
+            visiting_team: match.visiting.team?.abbrev || '',
+            visiting_team_name: match.visiting.team?.name || '',
+            visiting_team_player_names: match.visiting.team?.players.map(({ name }) => name) || [],
             home_score: match.games.slice(-1)[0]?.score.home.score,
             visiting_score: match.games.slice(-1)[0]?.score.visiting.score,
             home_games: match.score[0],

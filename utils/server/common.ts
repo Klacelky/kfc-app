@@ -3,6 +3,10 @@ import { ZodError } from 'zod';
 
 import { ErrorResponse, Return, ZodErrorResponse } from '../common';
 
+export class BadRequestError extends Error {
+
+}
+
 export async function handleErrorChain<T>(
     prevError: ErrorResponse | undefined,
     fn: () => Promise<T>,
@@ -78,6 +82,15 @@ export async function handleError<T>(fn: () => Promise<T>): Promise<Return<T>> {
             return {
                 error: responseFromZodError(rawError),
             };
+        }
+        if (rawError instanceof BadRequestError) {
+            return {
+                error: {
+                    status: 400,
+                    error: 'Bad Request',
+                    message: rawError.message,
+                }
+            }
         }
         console.error(rawError);
         return {
