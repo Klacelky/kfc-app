@@ -27,22 +27,10 @@ export default async function TeamPage({ params: { tournamentId, teamId } }: Pag
 
     const { players, team } = data;
 
-    return team ? (
+    return (
         <>
-            <h1>Edit Team</h1>
-            <TeamEditForm
-                tournamentId={tournamentId}
-                players={players}
-                type="update"
-                team={team}
-                updateAction={updateTeamAction}
-                deleteAction={deleteTeamAction}
-            />
-        </>
-    ) : (
-        <>
-            <h1>New Team</h1>
-            <TeamEditForm tournamentId={tournamentId} players={players} type="create" createAction={createTeamAction} />
+            <h1>{team ? 'Edit Team' : 'New Team'}</h1>
+            <TeamEditForm tournamentId={tournamentId} players={players} team={team} />
         </>
     );
 }
