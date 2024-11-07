@@ -1,3 +1,6 @@
+import { PencilSquareIcon } from '@heroicons/react/16/solid';
+import Link from 'next/link';
+
 import { RouteParams as ParentRouteParams } from '../page';
 
 import Alert from '@/components/Alert';
@@ -23,6 +26,13 @@ export default async function PlayersPage() {
                 data={data!}
                 columnNames={['Name', 'Description']}
                 getCols={({ name, description }) => [name, description]}
+                actions={({ id }) => (
+                    <>
+                        <Link href={`players/${id}`}>
+                            <PencilSquareIcon className="w-8" />
+                        </Link>
+                    </>
+                )}
             />
         </>
     );
