@@ -38,7 +38,7 @@ export default function T({ children, ...rest }: { children?: string } & Transla
 
     const translations: Translations = children ? parseTranslations(children) : rest;
     if (!Object.keys(translations)) {
-        console.log('Non translated string', children);
+        console.warn('Non translated string', children);
         return children;
     }
     return userLang && translations[userLang] ? (

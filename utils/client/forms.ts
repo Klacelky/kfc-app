@@ -24,7 +24,6 @@ export function registerOptions({ empty, date, number }: RegisterOptionsOptions)
     if (date) {
         return {
             setValueAs: (v) => {
-                console.log(v, typeof v);
                 return v ? new Date(v) : convertEmpty(empty);
             },
         };
@@ -32,7 +31,6 @@ export function registerOptions({ empty, date, number }: RegisterOptionsOptions)
     if (number) {
         return {
             setValueAs: (v) => {
-                console.log(v, typeof v);
                 return v ? +v : convertEmpty(empty);
             },
         };

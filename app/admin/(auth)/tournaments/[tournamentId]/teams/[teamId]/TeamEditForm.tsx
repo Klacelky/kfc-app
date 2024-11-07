@@ -60,7 +60,6 @@ export default function TeamEditForm({
                   }
                 : { players: ['', ''] },
     });
-    console.log(errors);
     return (
         <form
             onSubmit={handleSubmit(async (data) => {
