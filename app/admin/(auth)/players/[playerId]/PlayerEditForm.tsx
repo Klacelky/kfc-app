@@ -24,7 +24,7 @@ export default function PlayerEditForm({ player }: PlayerEditFormProps) {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isValid },
         setError,
     } = useForm<PlayerCreateDto | PlayerUpdateDto>({
         mode: 'all',
@@ -57,7 +57,7 @@ export default function PlayerEditForm({ player }: PlayerEditFormProps) {
                     error={errors.description?.message}
                 />
                 <div className="flex flex-col sm:flex-row gap-4">
-                    <Button type="submit" className="flex-grow" color="primary">
+                    <Button type="submit" className="flex-grow" color="primary" disabled={!isValid}>
                         {player ? 'Update Player' : 'Create Player'}
                     </Button>
                     {player && (
