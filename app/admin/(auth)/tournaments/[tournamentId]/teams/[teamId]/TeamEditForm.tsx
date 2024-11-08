@@ -63,27 +63,31 @@ export default function TeamEditForm({ tournamentId, players, team }: TeamEditFo
                     label="Description"
                     error={errors.description?.message}
                 />
-                <Select
-                    label="Players"
-                    register={() => register('players.0', registerOptions({ empty: '' }))}
-                    error={errors.players && errors.players[0]?.message}
-                >
-                    {players.map(({ id: playerId, name: playerName }) => (
-                        <option value={playerId} key={playerId}>
-                            {playerName}
-                        </option>
-                    ))}
-                </Select>
-                <Select
-                    register={() => register('players.1', registerOptions({ empty: '' }))}
-                    error={errors.players && (errors.players.message || errors.players[1]?.message)}
-                >
-                    {players.map(({ id: playerId, name: playerName }) => (
-                        <option value={playerId} key={playerId}>
-                            {playerName}
-                        </option>
-                    ))}
-                </Select>
+                <div className="flex flex-col sm:flex-row gap-4 items-end">
+                    <Select
+                        label="Players"
+                        register={() => register('players.0', registerOptions({ empty: '' }))}
+                        error={errors.players && errors.players[0]?.message}
+                        className="flex-grow"
+                    >
+                        {players.map(({ id: playerId, name: playerName }) => (
+                            <option value={playerId} key={playerId}>
+                                {playerName}
+                            </option>
+                        ))}
+                    </Select>
+                    <Select
+                        register={() => register('players.1', registerOptions({ empty: '' }))}
+                        error={errors.players && (errors.players.message || errors.players[1]?.message)}
+                        className="flex-grow"
+                    >
+                        {players.map(({ id: playerId, name: playerName }) => (
+                            <option value={playerId} key={playerId}>
+                                {playerName}
+                            </option>
+                        ))}
+                    </Select>
+                </div>
                 <div className="flex flex-col sm:flex-row gap-4">
                     <Button color="primary" disabled={!isValid} className="flex-grow">
                         {team ? 'Update Team' : 'Create Team'}

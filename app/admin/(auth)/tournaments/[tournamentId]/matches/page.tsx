@@ -1,5 +1,6 @@
 import { ClipboardDocumentListIcon, PencilSquareIcon } from '@heroicons/react/16/solid';
 import Link from 'next/link';
+import { ReactNode } from 'react';
 
 import { RouteParams as ParentRouteParams } from '../page';
 
@@ -15,15 +16,23 @@ export const dynamic = 'force-dynamic';
 
 export type RouteParams = ParentRouteParams;
 
-function formatTeamSource(source: TeamSourceGetDto | null): string | null {
+function formatTeamSource(source: TeamSourceGetDto | null): ReactNode {
     if (!source) {
         return null;
     }
     switch (source.type) {
         case 'group':
-        return `=> ${source.sourceGroup.name}@${source.standing}`;
+            return (
+                <span className="italic">
+                    {source.standing} of {source.sourceGroup.name}
+                </span>
+            );
         case 'match':
-        return `=> ${source.sourceMatch.name}@${source.winner ? 'W' : 'L'}`;
+            return (
+                <span className="italic">
+                    {source.winner ? 'W' : 'L'} {source.sourceMatch.name}
+                </span>
+            );
     }
 }
 
