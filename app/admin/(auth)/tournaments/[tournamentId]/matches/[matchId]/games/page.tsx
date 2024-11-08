@@ -38,7 +38,8 @@ export default function MatchGamesPage({ params: { matchId, tournamentId } }: Pa
             <h1>
                 {data?.home.team?.abbrev} - {data?.visiting.team?.abbrev}
             </h1>
-            {data?.winner && <div>Winner: {data.winner.abbrev}</div>}
+            {data?.home.winner && <div>Winner: {data.home.team?.abbrev}</div>}
+            {data?.visiting.winner && <div>Winner: {data.visiting.team?.abbrev}</div>}
             <Table
                 data={data?.games}
                 columnNames={['Started At', 'Finished At', 'Home Team Color', 'Score']}

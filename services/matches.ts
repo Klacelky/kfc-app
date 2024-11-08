@@ -91,24 +91,28 @@ function countGameScore(homeTeam: Team | null, visitingTeam: Team | null, goals:
         );
 }
 
-function findTeamType<T extends { type: MatchTeamType }>(teams: T[], targetType: MatchTeamType): T | null {
-    return teams.find(({ type }) => type === targetType) || null;
+function countMatchScore(scoredGames: (MatchGame & { score: GameScore })[]): { home: number; visiting: number } {
+    return scoredGames
+        .filter(({ finishedAt }) => finishedAt !== null)
+        .reduce(
+            (
+                { home: homeMatchScore, visiting: visitingMatchScore },
+                {
+                    score: {
+                        home: { score: homeGameScore },
+                        visiting: { score: visitingGameScore },
+                    },
+                },
+            ) => ({
+                home: homeMatchScore + (homeGameScore > visitingGameScore ? 1 : 0),
+                visiting: visitingMatchScore + (visitingGameScore > homeGameScore ? 1 : 0),
+            }),
+            { home: 0, visiting: 0 },
+        );
 }
 
-function getWinner(
-    homeTeam: TeamWithPlayers | null,
-    visitingTeam: TeamWithPlayers | null,
-    score: [number, number],
-    playoffLayer: number | null,
-): TeamWithPlayers | null {
-    const req = playoffLayer === null ? 2 : 3;
-    if (score[0] >= req) {
-        return homeTeam;
-    }
-    if (score[1] >= req) {
-        return visitingTeam;
-    }
-    return null;
+function findTeamType<T extends { type: MatchTeamType }>(teams: T[], targetType: MatchTeamType): T | null {
+    return teams.find(({ type }) => type === targetType) || null;
 }
 
 function expandMatchDetails({
@@ -118,8 +122,10 @@ function expandMatchDetails({
     playoffLayer,
     ...matchRest
 }: MatchWithDetails): MatchDetailedGetDto {
-    const homeTeam = findTeamType(teams, MatchTeamType.HOME)?.team || null;
-    const visitingTeam = findTeamType(teams, MatchTeamType.VISITING)?.team || null;
+    const homeMatchTeam = findTeamType(teams, MatchTeamType.HOME) || null;
+    const visitingMatchTeam = findTeamType(teams, MatchTeamType.VISITING) || null;
+    const homeTeam = homeMatchTeam?.team || null;
+    const visitingTeam = visitingMatchTeam?.team || null;
 
     const scoredGames = games.map(({ playerPositions, goals, ...gameRest }) => ({
         ...gameRest,
@@ -143,23 +149,7 @@ function expandMatchDetails({
         }),
     );
 
-    const finalScore = scoredGames
-        .filter(({ finishedAt }) => finishedAt !== null)
-        .reduce(
-            (
-                [homeScore, visitingScore]: [number, number],
-                {
-                    score: {
-                        home: { score: homeGameScore },
-                        visiting: { score: visitingGameScore },
-                    },
-                },
-            ): [number, number] => [
-                homeScore + (homeGameScore > visitingGameScore ? 1 : 0),
-                visitingScore + (homeGameScore < visitingGameScore ? 1 : 0),
-            ],
-            [0, 0],
-        );
+    const { home: homeScore, visiting: visitingScore } = countMatchScore(scoredGames);
 
     return {
         ...matchRest,
@@ -167,14 +157,16 @@ function expandMatchDetails({
         home: {
             team: homeTeam,
             source: findTeamType(mappedTeamSources, MatchTeamType.HOME)?.data || null,
+            score: homeScore,
+            winner: homeMatchTeam?.winner ?? null,
         },
         visiting: {
             team: visitingTeam,
             source: findTeamType(mappedTeamSources, MatchTeamType.VISITING)?.data || null,
+            score: visitingScore,
+            winner: visitingMatchTeam?.winner ?? null,
         },
         games: scoredGames,
-        score: finalScore,
-        winner: getWinner(homeTeam, visitingTeam, finalScore, playoffLayer),
     };
 }
 
@@ -364,42 +356,68 @@ export async function finishMatch(
             where: { id },
             include: { ...include, successiveMatches: updateSuccessiveMatches },
         });
-        const matchDetails = expandMatchDetails(match);
-        if (!matchDetails.winner || !matchDetails.home.team || !matchDetails.visiting.team) {
-            throw new BadRequestError('Cannot declare winner');
+        if (match.teams.length !== 2) {
+            throw new BadRequestError('Not enough teams to declare a winner');
         }
-        const winnerId: string =
-            matchDetails.home.team.id === matchDetails.winner.id
-                ? matchDetails.home.team.id
-                : matchDetails.visiting.team.id;
-        const looserId =
-            matchDetails.home.team.id !== matchDetails.winner.id
-                ? matchDetails.home.team.id
-                : matchDetails.visiting.team.id;
-        await Promise.all(
-            match.successiveMatches.map(({ matchId: successiveMatchId, type: successiveTeamType, winner }) =>
-                tx.match.update({
-                    where: { id: successiveMatchId },
-                    data: {
-                        teams: {
-                            upsert: {
-                                create: { type: successiveTeamType, teamId: winner ? winnerId : looserId },
-                                where: { type_matchId: { type: successiveTeamType, matchId: successiveMatchId } },
-                                update: { teamId: winner ? winnerId : looserId },
+        const homeTeam = findTeamType(match.teams, MatchTeamType.HOME)!.team;
+        const visitingTeam = findTeamType(match.teams, MatchTeamType.VISITING)!.team;
+        const scoredGames = match.games.map(({ goals, ...game }) => ({
+            ...game,
+            goals,
+            score: countGameScore(homeTeam, visitingTeam, goals),
+        }));
+        const { home: homeScore, visiting: visitingScore } = countMatchScore(scoredGames);
+        console.log(
+            homeScore,
+            visitingScore,
+            scoredGames.map(({ score, finishedAt }) => ({ score, finishedAt })),
+        );
+        if (homeScore === visitingScore) {
+            throw new BadRequestError('Cannot declare winner with a tie');
+        }
+        const [winnerId, looserId] =
+            homeScore > visitingScore ? [homeTeam.id, visitingTeam.id] : [visitingTeam.id, homeTeam.id];
+
+        if (updateSuccessiveMatches) {
+            await Promise.all(
+                match.successiveMatches.map(({ matchId: successiveMatchId, type: successiveTeamType, winner }) =>
+                    tx.match.update({
+                        where: { id: successiveMatchId },
+                        data: {
+                            teams: {
+                                upsert: {
+                                    create: { type: successiveTeamType, teamId: winner ? winnerId : looserId },
+                                    where: { type_matchId: { type: successiveTeamType, matchId: successiveMatchId } },
+                                    update: { teamId: winner ? winnerId : looserId },
+                                },
                             },
                         },
+                    }),
+                ),
+            );
+        }
+
+        return expandMatchDetails(
+            await tx.match.update({
+                where: { id },
+                data: {
+                    teams: {
+                        update: [
+                            { where: { teamId_matchId: { matchId: id, teamId: winnerId } }, data: { winner: true } },
+                            { where: { teamId_matchId: { matchId: id, teamId: looserId } }, data: { winner: false } },
+                        ],
                     },
-                }),
-            ),
+                },
+                include,
+            }),
         );
-        return matchDetails;
     });
 }
 
 async function notify(matchId: string) {
     try {
         const match = await getMatch(matchId);
-        if (match.winner) {
+        if (match.home.winner || match.visiting.winner) {
             return;
         }
         await notifyScore({
@@ -411,8 +429,8 @@ async function notify(matchId: string) {
             visiting_team_player_names: match.visiting.team?.players.map(({ name }) => name) || [],
             home_score: match.games.slice(-1)[0]?.score.home.score,
             visiting_score: match.games.slice(-1)[0]?.score.visiting.score,
-            home_games: match.score[0],
-            visiting_games: match.score[1],
+            home_games: match.home.score,
+            visiting_games: match.visiting.score,
             home_team_color: match.games.slice(-1)[0]?.homeTeamColor,
             msg_type: 'score',
         });

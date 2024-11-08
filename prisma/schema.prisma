@@ -170,7 +170,8 @@ model MatchTeam {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    type MatchTeamType
+    type   MatchTeamType
+    winner Boolean?
 
     team    Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
     teamId  String
@@ -179,6 +180,7 @@ model MatchTeam {
 
     @@unique([type, matchId])
     @@unique([teamId, matchId])
+    @@unique([matchId, winner])
 }
 
 enum TeamColor {

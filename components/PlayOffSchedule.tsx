@@ -16,7 +16,7 @@ export default function PlayOffSchedule({ matches, hideTimes }: ScheduleProps) {
                 .sort(({ expectedStart: ta, name: na }, { expectedStart: tb, name: nb }) =>
                     ta && tb ? ta?.getTime() - tb?.getTime() : (na || '') > (nb || '') ? 1 : -1,
                 )
-                .map(({ id, name, home, visiting, games, winner, expectedStart }) => (
+                .map(({ id, name, home, visiting, games, expectedStart }) => (
                     <Fragment key={id}>
                         <div className="sm:col-span-5 flex flex-row gap-x-1 sm:justify-between">
                             <div>{name}</div>
@@ -25,9 +25,7 @@ export default function PlayOffSchedule({ matches, hideTimes }: ScheduleProps) {
                             )}
                         </div>
                         <div className="sm:col-span-2 flex sm:justify-end items-center gap-1">
-                            {home.team?.id && home.team.id === winner?.id && (
-                                <TrophyIcon className="text-kfc-teal h-6" />
-                            )}
+                            {home.winner && <TrophyIcon className="text-kfc-teal h-6" />}
                             {home.team?.abbrev || (
                                 <span className="italic">
                                     {home.source?.type === 'match' &&
@@ -58,9 +56,7 @@ export default function PlayOffSchedule({ matches, hideTimes }: ScheduleProps) {
                                         `${visiting.source.standing} of ${visiting.source.sourceGroup.name}`}
                                 </span>
                             )}
-                            {visiting.team?.id && visiting.team.id === winner?.id && (
-                                <TrophyIcon className="text-kfc-teal h-6" />
-                            )}
+                            {visiting.winner && <TrophyIcon className="text-kfc-teal h-6" />}
                         </div>
                     </Fragment>
                 ))}

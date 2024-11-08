@@ -17,13 +17,11 @@ function GroupMatchesCard({ group: { id: groupId, name }, matches }: GroupMatche
             <div className="pt-6">
                 <table className="table-auto w-full whitespace-nowrap">
                     <tbody>
-                        {matches.map(({ id: matchId, home, visiting, games, winner }) => (
+                        {matches.map(({ id: matchId, home, visiting, games }) => (
                             <tr key={matchId} className="line">
                                 <td className="text-right p-1">
                                     <div className="flex justify-end items-center gap-1">
-                                        {home.team?.id && home.team.id === winner?.id && (
-                                            <TrophyIcon className="text-kfc-teal h-6" />
-                                        )}
+                                        {home.winner && <TrophyIcon className="text-kfc-teal h-6" />}
                                         <span>{home.team?.abbrev}</span>
                                     </div>
                                 </td>
@@ -42,9 +40,7 @@ function GroupMatchesCard({ group: { id: groupId, name }, matches }: GroupMatche
                                 <td className="p-1">
                                     <div className="flex justify-start items-center gap-1">
                                         <span>{visiting.team?.abbrev}</span>
-                                        {visiting.team?.id && visiting.team.id === winner?.id && (
-                                            <TrophyIcon className="text-kfc-teal h-6" />
-                                        )}
+                                        {visiting.winner && <TrophyIcon className="text-kfc-teal h-6" />}
                                     </div>
                                 </td>
                             </tr>

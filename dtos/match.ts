@@ -76,14 +76,16 @@ export const MatchDetailedGetDtoSchema = MatchGetDtoSchema.extend({
     home: z.object({
         team: TeamGetDtoSchema.nullable(),
         source: TeamSourceGetDtoSchema.nullable(),
+        score: z.number(),
+        winner: z.boolean().nullable(),
     }),
     visiting: z.object({
         team: TeamGetDtoSchema.nullable(),
         source: TeamSourceGetDtoSchema.nullable(),
+        score: z.number(),
+        winner: z.boolean().nullable(),
     }),
     games: z.array(MatchGameGetDtoSchema),
-    score: z.tuple([z.number(), z.number()]),
-    winner: TeamGetDtoSchema.nullable(),
 });
 export type MatchDetailedGetDto = z.infer<typeof MatchDetailedGetDtoSchema>;
 
