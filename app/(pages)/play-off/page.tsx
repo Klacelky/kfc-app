@@ -37,50 +37,56 @@ export default async function PlayOffPage() {
                 <>
                     <section>
                         <h2>
-                            <T sk="Cena Bc. Petra Burdu" en="Bc. Peter Burda Award" />
+                            <T sk="1. blok" en="1st section" />
                         </h2>
-                        <PlayOffSchedule matches={matches.filter(({ playoffLayer }) => playoffLayer === 5)} />
-                    </section>
-                    <section>
-                        <h2>
-                            <T sk="Baráž" en="Promotion and relegation" />
-                        </h2>
-                        <PlayOffSchedule matches={matches.filter(({ playoffLayer }) => playoffLayer === 4)} />
+                        <PlayOffSchedule matches={matches.filter(({ playoffLayer }) => playoffLayer === 1)} />
                         <p>
-                            <T sk="(30 min. prestávka na dobehnutie)" en="(30 min. catch-up break)" />
+                            <T sk="(10 min. prestávka na dobehnutie)" en="(10 min. catch-up break)" />
                         </p>
                     </section>
                     <section>
                         <h2>
-                            <T sk="Štrťfinále" en="Quarter-finals" />
-                        </h2>
-                        <PlayOffSchedule matches={matches.filter(({ playoffLayer }) => playoffLayer === 3)} />
-                        <p>
-                            <T sk="(30 min. prestávka na dobehnutie)" en="(30 min. catch-up break)" />
-                        </p>
-                    </section>
-                    <section>
-                        <h2>
-                            <T sk="Seminfinále" en="Semi-finals" />
+                            <T sk="2. blok" en="2nd section" />
                         </h2>
                         <PlayOffSchedule matches={matches.filter(({ playoffLayer }) => playoffLayer === 2)} />
                         <p>
-                            <T sk="(30 min. prestávka na dobehnutie)" en="(30 min. catch-up break)" />
+                            <T sk="(10 min. prestávka na dobehnutie)" en="(10 min. catch-up break)" />
                         </p>
                     </section>
                     <section>
                         <h2>
-                            <T sk="Finále" en="Finals" />
+                            <T sk="3. blok" en="3rd section" />
                         </h2>
-                        <PlayOffSchedule matches={matches.filter(({ playoffLayer }) => playoffLayer === 1)} />
+                        <PlayOffSchedule matches={matches.filter(({ playoffLayer }) => playoffLayer === 3)} />
+                        <p>
+                            <T sk="(10 min. prestávka na dobehnutie)" en="(10 min. catch-up break)" />
+                        </p>
+                    </section>
+                    <section>
+                        <h2>
+                            <T sk="4. blok" en="4th section" />
+                        </h2>
+                        <PlayOffSchedule matches={matches.filter(({ playoffLayer }) => playoffLayer === 4)} />
+                        <p>
+                            <T sk="(10 min. prestávka na dobehnutie)" en="(10 min. catch-up break)" />
+                        </p>
+                    </section>
+                    <section>
+                        <h2>
+                            <T sk="Finálový blok" en="Finals section" />
+                        </h2>
+                        <PlayOffSchedule matches={matches.filter(({ playoffLayer }) => playoffLayer === 5)} />
+                        <p>
+                            <T sk="*Opakovaný zápas, ak WQ vyhral prvý" en="*Rematch if WQ wins first time" />
+                        </p>
                     </section>
                     <section>
                         <h2>
                             <T sk="Vyhodnotenie" en="Award Ceremony" />
                         </h2>
-                        {/* <p> */}
-                        {/*     <TDateTime datetime={new Date(2024, 10, 9, 18, 0, 0)} type="time" /> */}
-                        {/* </p> */}
+                        <p>
+                            <TDateTime datetime={new Date(2024, 10, 9, 17, 0, 0)} type="time" />
+                        </p>
                     </section>
                 </>
             )}
