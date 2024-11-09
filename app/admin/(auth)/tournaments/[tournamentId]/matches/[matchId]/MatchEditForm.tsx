@@ -46,12 +46,7 @@ function TeamSourceInputs({
     groups: GroupGetDto[];
     matches: MatchGetDto[];
 }) {
-    const {
-        register,
-        formState: { errors },
-        getValues,
-    } = form;
-    console.log(errors);
+    const { register, getValues } = form;
 
     return (
         <div className="flex flex-col gap-4 flex-grow">
@@ -168,7 +163,7 @@ export default function MatchEditForm({ tournamentId, teams, groups, matches, ma
     const {
         register,
         handleSubmit,
-        formState: { isValid, errors, defaultValues },
+        formState: { isValid, errors },
         setError,
     } = form;
 

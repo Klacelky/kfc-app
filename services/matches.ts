@@ -367,11 +367,6 @@ export async function finishMatch(
             score: countGameScore(homeTeam, visitingTeam, goals),
         }));
         const { home: homeScore, visiting: visitingScore } = countMatchScore(scoredGames);
-        console.log(
-            homeScore,
-            visitingScore,
-            scoredGames.map(({ score, finishedAt }) => ({ score, finishedAt })),
-        );
         if (homeScore === visitingScore) {
             throw new BadRequestError('Cannot declare winner with a tie');
         }
