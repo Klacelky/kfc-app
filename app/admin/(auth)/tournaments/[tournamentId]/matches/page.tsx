@@ -5,6 +5,7 @@ import { ReactNode } from 'react';
 import { RouteParams as ParentRouteParams } from '../page';
 
 import Alert from '@/components/Alert';
+import DateTime from '@/components/DateTime';
 import Button from '@/components/admin/Button';
 import Table from '@/components/admin/Table';
 import { TeamSourceGetDto } from '@/dtos/match';
@@ -51,7 +52,7 @@ export default async function MatchesPage({ params: { tournamentId } }: PagePara
                 columnNames={['Name', 'Expected start', 'Playoff Level', 'Home Team', 'Visiting Team', 'Score']}
                 getCols={({ name, expectedStart, playoffLayer, home, visiting, games }) => [
                     name,
-                    expectedStart?.toLocaleString(),
+                    <DateTime key="expectedStart" datetime={expectedStart} />,
                     playoffLayer,
                     <div key="winner" className="flex flex-row items-center">
                         {home.winner && <TrophyIcon className="text-kfc-teal h-6" />}

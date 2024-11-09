@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { RouteParams as ParentRouteParams } from '../page';
 
 import Alert from '@/components/Alert';
+import DateTime from '@/components/DateTime';
 import Loading from '@/components/Loading';
 import Button from '@/components/admin/Button';
 import Table from '@/components/admin/Table';
@@ -52,8 +53,8 @@ export default function MatchGamesPage({ params: { matchId, tournamentId } }: Pa
                         visiting: { score: visitingScore, out: visitingOut },
                     },
                 }) => [
-                    startedAt.toLocaleString(),
-                    finishedAt?.toLocaleString(),
+                    <DateTime key="startedAt" datetime={startedAt} />,
+                    <DateTime key="finishedAt" datetime={finishedAt} />,
                     homeTeamColor,
                     `${homeScore}(${homeOut}):${visitingScore}(${visitingOut})`,
                 ]}
