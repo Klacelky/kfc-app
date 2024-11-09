@@ -1,4 +1,4 @@
-import { ClipboardDocumentListIcon, PencilSquareIcon } from '@heroicons/react/16/solid';
+import { ClipboardDocumentListIcon, PencilSquareIcon, TrophyIcon } from '@heroicons/react/16/solid';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
@@ -53,8 +53,14 @@ export default async function MatchesPage({ params: { tournamentId } }: PagePara
                     name,
                     expectedStart?.toLocaleString(),
                     playoffLayer,
-                    home.team?.abbrev || formatTeamSource(home.source),
-                    visiting.team?.abbrev || formatTeamSource(visiting.source),
+                    <div key="winner" className="flex flex-row items-center">
+                        {home.winner && <TrophyIcon className="text-kfc-teal h-6" />}
+                        {home.team?.abbrev || formatTeamSource(home.source)}
+                    </div>,
+                    <div key="looser" className="flex flex-row items-center">
+                        {visiting.winner && <TrophyIcon className="text-kfc-teal h-6" />}
+                        {visiting.team?.abbrev || formatTeamSource(visiting.source)}
+                    </div>,
                     games
                         .map(
                             ({
