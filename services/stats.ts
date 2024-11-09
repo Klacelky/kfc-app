@@ -66,6 +66,18 @@ export async function playerGoalStats(tournamentId: string): Promise<PlayerGoalS
 
 export async function playerPhotoStats(tournamentId: string): Promise<PlayerPhotosStats[]> {
     const playersWithPhotos = await prisma.player.findMany({
+        where: {
+            goals: {
+                some: {
+                    game: {
+                        match: {
+                            tournamentId,
+                        },
+                    },
+                    photo: true,
+                },
+            },
+        },
         include: {
             goals: {
                 where: {
@@ -143,7 +155,7 @@ export async function goalkeeperStats(tournamentId: string): Promise<GoalkeeperS
             const goal = goals[j];
             const goalkeeper = findGoalkeeper(goal, playerPositions);
             if (!goalkeeper) {
-                console.error('Cannot attribute goal to goalkeeper', goal);
+                console.error('Cannot attribute goal to goalkeeper', goal.id);
                 continue;
             }
             goalkeeperGoals[goalkeeper.id] = (goalkeeperGoals[goalkeeper.id] || 0) + 1;
@@ -171,7 +183,7 @@ export async function goalkeeperStats(tournamentId: string): Promise<GoalkeeperS
             {},
         );
         if (!finishedAt) {
-            console.error('Unfinished game', games[i]);
+            console.error('Unfinished game', games[i].id);
             continue;
         }
         Object.entries(acc).map(([playerId, { timestamp, type }]) => {
