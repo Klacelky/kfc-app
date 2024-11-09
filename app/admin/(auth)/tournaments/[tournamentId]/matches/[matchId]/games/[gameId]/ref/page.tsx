@@ -4,7 +4,7 @@ import { ArrowsRightLeftIcon, ArrowsUpDownIcon } from '@heroicons/react/16/solid
 import { zodResolver } from '@hookform/resolvers/zod';
 import classNames from 'classnames';
 import { useRouter } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { RouteParams as ParentRouteParams } from '../page';
@@ -298,6 +298,7 @@ function PendingGoalModal({
 interface ActionLogItem {
     type: 'playerPositions' | 'goal';
     id: string;
+    timestamp: Date;
 }
 
 export default function MatchGameRefPage({ params: { tournamentId, matchId, gameId } }: PageParams<RouteParams>) {
@@ -322,6 +323,23 @@ export default function MatchGameRefPage({ params: { tournamentId, matchId, game
     const [undoLoading, setUndoLoading] = useState(false);
 
     const [pendingGoal, setPendingGoal] = useState<{ team: TeamGetDto; player: PlayerGetDto } | undefined>();
+
+    useEffect(() => {
+        if (!game) {
+            return;
+        }
+        setActionLog(
+            [
+                ...game?.goals.map(
+                    ({ id, createdAt }) => ({ type: 'goal', id, timestamp: createdAt }) as ActionLogItem,
+                ),
+                ...game.playerPositions.map(
+                    ({ id, createdAt }) => ({ type: 'playerPositions', id, timestamp: createdAt }) as ActionLogItem,
+                ),
+            ].sort(({ timestamp: ta }, { timestamp: tb }) => tb.getTime() - ta.getTime()),
+        );
+    }, [game]);
+
     if (error) {
         return <Alert>{getErrorMessage(error)}</Alert>;
     }
@@ -344,7 +362,6 @@ export default function MatchGameRefPage({ params: { tournamentId, matchId, game
                     try {
                         const response = await api.post<MatchItemCreatedDto>(`${prefix}/game/${gameId}/goal`, data);
                         mutate();
-                        setActionLog([{ type: 'goal', id: response.data.id }, ...actionLog]);
                         setPendingGoal(undefined);
                     } catch (error) {
                         alert(getErrorMessage(error));
@@ -396,7 +413,6 @@ export default function MatchGameRefPage({ params: { tournamentId, matchId, game
                             } as PlayerPositionsCreateDto,
                         );
                         mutate();
-                        setActionLog([{ type: 'playerPositions', id: response.data.id }, ...actionLog]);
                     } catch (error) {
                         alert(getErrorMessage(error));
                     }
@@ -410,7 +426,6 @@ export default function MatchGameRefPage({ params: { tournamentId, matchId, game
                         try {
                             const [{ type: lastAction, id }, ...actions] = actionLog;
                             await api.delete(`${prefix}/game/${gameId}/${lastAction}/${id}`);
-                            setActionLog(actions);
                             mutate();
                         } catch (error) {
                             alert(getErrorMessage(error));
