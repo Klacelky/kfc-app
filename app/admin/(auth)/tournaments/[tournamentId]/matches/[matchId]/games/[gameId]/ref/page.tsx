@@ -249,7 +249,7 @@ function PendingGoalModal({
     const {
         register,
         handleSubmit,
-        formState: { errors, isValid, isSubmitting, defaultValues },
+        formState: { errors, isValid, isSubmitting },
         reset,
     } = useForm<GoalCreateDto>({
         mode: 'all',
@@ -260,8 +260,6 @@ function PendingGoalModal({
             timestamp: undefined,
         },
     });
-    console.log(errors, isValid, isSubmitting);
-    console.log(GoalCreateDtoSchema.safeParse(defaultValues));
 
     return (
         <form onSubmit={handleSubmit(submit)}>
@@ -298,6 +296,7 @@ function PendingGoalModal({
 interface ActionLogItem {
     type: 'playerPositions' | 'goal';
     id: string;
+    timestamp: Date;
 }
 
 export default function MatchGameRefPage({ params: { tournamentId, matchId, gameId } }: PageParams<RouteParams>) {
@@ -318,7 +317,17 @@ export default function MatchGameRefPage({ params: { tournamentId, matchId, game
         return reverse ? teams.reverse() : teams;
     }, [data?.home.team, data?.visiting.team, game, reverse]);
 
-    const [actionLog, setActionLog] = useState<ActionLogItem[]>([]);
+    const actionLog = useMemo(() => {
+        if (!game) {
+            return [];
+        }
+        return [
+            ...game.goals.map(({ id, createdAt }) => ({ type: 'goal', id, timestamp: createdAt }) as ActionLogItem),
+            ...game.playerPositions.map(
+                ({ id, createdAt }) => ({ type: 'playerPositions', id, timestamp: createdAt }) as ActionLogItem,
+            ),
+        ].sort(({ timestamp: ta }, { timestamp: tb }) => tb.getTime() - ta.getTime());
+    }, [game]);
     const [undoLoading, setUndoLoading] = useState(false);
 
     const [pendingGoal, setPendingGoal] = useState<{ team: TeamGetDto; player: PlayerGetDto } | undefined>();
@@ -342,9 +351,8 @@ export default function MatchGameRefPage({ params: { tournamentId, matchId, game
                 player={pendingGoal.player}
                 submit={async (data) => {
                     try {
-                        const response = await api.post<MatchItemCreatedDto>(`${prefix}/game/${gameId}/goal`, data);
+                        await api.post<MatchItemCreatedDto>(`${prefix}/game/${gameId}/goal`, data);
                         mutate();
-                        setActionLog([{ type: 'goal', id: response.data.id }, ...actionLog]);
                         setPendingGoal(undefined);
                     } catch (error) {
                         alert(getErrorMessage(error));
@@ -380,23 +388,19 @@ export default function MatchGameRefPage({ params: { tournamentId, matchId, game
                 switchSides={() => setReverse(!reverse)}
                 playerSwitchTrigger={async ({ striker, defender }) => {
                     try {
-                        const response = await api.post<MatchItemCreatedDto>(
-                            `${prefix}/game/${gameId}/playerPositions`,
-                            {
-                                players: [
-                                    {
-                                        type: 'STRIKER',
-                                        playerId: striker!.id,
-                                    },
-                                    {
-                                        type: 'DEFENDER',
-                                        playerId: defender!.id,
-                                    },
-                                ],
-                            } as PlayerPositionsCreateDto,
-                        );
+                        await api.post<MatchItemCreatedDto>(`${prefix}/game/${gameId}/playerPositions`, {
+                            players: [
+                                {
+                                    type: 'STRIKER',
+                                    playerId: striker!.id,
+                                },
+                                {
+                                    type: 'DEFENDER',
+                                    playerId: defender!.id,
+                                },
+                            ],
+                        } as PlayerPositionsCreateDto);
                         mutate();
-                        setActionLog([{ type: 'playerPositions', id: response.data.id }, ...actionLog]);
                     } catch (error) {
                         alert(getErrorMessage(error));
                     }
@@ -408,9 +412,8 @@ export default function MatchGameRefPage({ params: { tournamentId, matchId, game
                     color="danger"
                     onClick={loadingButton(setUndoLoading, async () => {
                         try {
-                            const [{ type: lastAction, id }, ...actions] = actionLog;
+                            const [{ type: lastAction, id }, ..._] = actionLog;
                             await api.delete(`${prefix}/game/${gameId}/${lastAction}/${id}`);
-                            setActionLog(actions);
                             mutate();
                         } catch (error) {
                             alert(getErrorMessage(error));
