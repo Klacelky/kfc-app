@@ -6,8 +6,8 @@ import Alert from '@/components/Alert';
 import { listGroups } from '@/services/groups';
 import { getMatch, listMatches } from '@/services/matches';
 import { listTeams } from '@/services/teams';
+import { PageProps } from '@/utils/common';
 import { handleError } from '@/utils/server/common';
-import { PageParams } from '@/utils/server/pages';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,7 +15,8 @@ export type RouteParams = ParentRouteParams & {
     matchId: string;
 };
 
-export default async function MatchEditPage({ params: { tournamentId, matchId } }: PageParams<RouteParams>) {
+export default async function MatchEditPage({ params }: PageProps<RouteParams>) {
+    const { tournamentId, matchId } = await params;
     const { data, error } = await handleError(async () => ({
         teams: await listTeams(tournamentId, {}),
         groups: await listGroups(tournamentId),

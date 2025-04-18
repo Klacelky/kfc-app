@@ -120,11 +120,11 @@ export default function FormatPage() {
                                 Po rozlosovaní skupín majú tímy týždeň (
                                 <TDateTime datetime={new Date(2024, 10, 4)} type="date" />
                                 {' - '}
-                                <TDateTime datetime={new Date(2024, 10, 8)} type="date" />) na to, aby odohrali
-                                svoje skupinové zápasy. V skupine hrá každý s každým BO3, teda najlepší z troch hier.
-                                Dátumy a časy zápasov si tímy dohodnú individuálne so svojimi skupinovými súpermi.
-                                Každej skupine spravíme na dohadovanie Messenger skupinu v ktorej budeme aj my aby sme
-                                na to dohliadli a vyriešili prípadné problémy.
+                                <TDateTime datetime={new Date(2024, 10, 8)} type="date" />) na to, aby odohrali svoje
+                                skupinové zápasy. V skupine hrá každý s každým BO3, teda najlepší z troch hier. Dátumy a
+                                časy zápasov si tímy dohodnú individuálne so svojimi skupinovými súpermi. Každej skupine
+                                spravíme na dohadovanie Messenger skupinu v ktorej budeme aj my aby sme na to dohliadli
+                                a vyriešili prípadné problémy.
                             </>
                         }
                         en={
@@ -132,10 +132,10 @@ export default function FormatPage() {
                                 After the groups are drawn, teams have one week (
                                 <TDateTime datetime={new Date(2024, 10, 4)} type="date" />
                                 {' - '}
-                                <TDateTime datetime={new Date(2024, 10, 8)} type="date" />) to play their group
-                                matches. In the groups, teams play each other BO3, i.e. best of three games. The teams
-                                will arrange the dates and times of the matches individually with their group opponents.
-                                We will make a messenger group for each group to arrange this, and we will be in it to
+                                <TDateTime datetime={new Date(2024, 10, 8)} type="date" />) to play their group matches.
+                                In the groups, teams play each other BO3, i.e. best of three games. The teams will
+                                arrange the dates and times of the matches individually with their group opponents. We
+                                will make a messenger group for each group to arrange this, and we will be in it to
                                 supervise and solve any problems.
                             </>
                         }
@@ -233,16 +233,15 @@ export default function FormatPage() {
                         sk={
                             <>
                                 Vyraďovacie zápasy sa odohrajú{' '}
-                                <TDateTime datetime={new Date(2024, 10, 9)} type="date" />. Na rozdiel od
-                                skupín si v play-off zahráte BO5 teda najlepší z piatich zápasov. Harmonogram zápasov
-                                nájdeš
+                                <TDateTime datetime={new Date(2024, 10, 9)} type="date" />. Na rozdiel od skupín si v
+                                play-off zahráte BO5 teda najlepší z piatich zápasov. Harmonogram zápasov nájdeš
                             </>
                         }
                         en={
                             <>
-                                Play-off games will be played{' '}
-                                <TDateTime datetime={new Date(2024, 10, 9)} type="date" />. Unlike the groups,
-                                the play-off will be played BO5, i.e. best of five games. You can find the schedule
+                                Play-off games will be played <TDateTime datetime={new Date(2024, 10, 9)} type="date" />
+                                . Unlike the groups, the play-off will be played BO5, i.e. best of five games. You can
+                                find the schedule
                             </>
                         }
                     />{' '}

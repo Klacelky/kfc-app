@@ -456,11 +456,11 @@ export async function updateGame(gameId: string, data: MatchGameUpdateDto): Prom
     return result;
 }
 
-export async function deleteGame(matchId: string, gameId: string): Promise<void> {
-    await prisma.matchGame.delete({
+export async function deleteGame(gameId: string): Promise<void> {
+    const result = await prisma.matchGame.delete({
         where: { id: gameId },
     });
-    await notify(matchId);
+    await notify(result.matchId);
 }
 
 export async function createGoal(matchId: string, gameId: string, data: GoalCreateDto): Promise<MatchItemCreatedDto> {

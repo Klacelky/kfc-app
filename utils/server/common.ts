@@ -1,11 +1,9 @@
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { Prisma } from '@prisma/client';
 import { ZodError } from 'zod';
 
 import { ErrorResponse, Return, ZodErrorResponse } from '../common';
 
-export class BadRequestError extends Error {
-
-}
+export class BadRequestError extends Error {}
 
 export async function handleErrorChain<T>(
     prevError: ErrorResponse | undefined,
@@ -30,7 +28,7 @@ export async function handleError<T>(fn: () => Promise<T>): Promise<Return<T>> {
     try {
         return { data: await fn() };
     } catch (rawError) {
-        if (rawError instanceof PrismaClientKnownRequestError) {
+        if (rawError instanceof Prisma.PrismaClientKnownRequestError) {
             if (rawError.code === 'P2025') {
                 return {
                     error: {
@@ -89,10 +87,10 @@ export async function handleError<T>(fn: () => Promise<T>): Promise<Return<T>> {
                     status: 400,
                     error: 'Bad Request',
                     message: rawError.message,
-                }
-            }
+                },
+            };
         }
-        console.error(rawError);
+        console.log(rawError);
         return {
             error: {
                 status: 500,

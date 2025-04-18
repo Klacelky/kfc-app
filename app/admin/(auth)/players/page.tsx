@@ -36,7 +36,9 @@ export default async function PlayersPage() {
                 )}
             />
             <Link href="players/new">
-                <Button type="button" color='primary'>New Player</Button>
+                <Button type="button" color="primary">
+                    New Player
+                </Button>
             </Link>
         </>
     );

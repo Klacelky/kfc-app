@@ -1,7 +1,8 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, UseFormReturn } from 'react-hook-form';
+import type { UseFormReturn } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { createMatchAction, deleteMatchAction, updateMatchAction } from './actions';
 
@@ -49,7 +50,7 @@ function TeamSourceInputs({
     const { register, getValues } = form;
 
     return (
-        <div className="flex flex-col gap-4 flex-grow">
+        <div className="flex flex-col gap-4 grow">
             <span>{teamType} source</span>
             <Select
                 label="Team source type"
@@ -198,11 +199,11 @@ export default function MatchEditForm({ tournamentId, teams, groups, matches, ma
                     label="Play-off Level"
                     error={errors.playoffLayer?.message}
                 />
-                <div className="flex lg:flex-row flex-col gap-4 flex-grow">
+                <div className="flex lg:flex-row flex-col gap-4 grow">
                     <Select
                         register={() => register('home.teamId', registerOptions({ empty: 'null' }))}
                         label="Home Team"
-                        className="flex-grow"
+                        className="grow"
                         error={errors.home?.teamId?.message}
                     >
                         <TeamSelectOptions teams={teams} />
@@ -210,24 +211,24 @@ export default function MatchEditForm({ tournamentId, teams, groups, matches, ma
                     <Select
                         register={() => register('visiting.teamId', registerOptions({ empty: 'null' }))}
                         label="Visiting Team"
-                        className="flex-grow"
+                        className="grow"
                         error={errors.visiting?.teamId?.message}
                     >
                         <TeamSelectOptions teams={teams} />
                     </Select>
                 </div>
-                <div className="flex lg:flex-row flex-col gap-4 flex-grow">
+                <div className="flex lg:flex-row flex-col gap-4 grow">
                     <TeamSourceInputs form={form} teamType="home" groups={groups} matches={matches} />
                     <TeamSourceInputs form={form} teamType="visiting" groups={groups} matches={matches} />
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
-                    <Button color="primary" disabled={!isValid} className="flex-grow">
+                    <Button color="primary" disabled={!isValid} className="grow">
                         {match ? 'Update Match' : 'Create Match'}
                     </Button>
                     {match && (
                         <Button
                             color="danger"
-                            className="flex-grow"
+                            className="grow"
                             type="button"
                             onClick={async () => {
                                 const response = await deleteMatchAction({ matchId: match.id });

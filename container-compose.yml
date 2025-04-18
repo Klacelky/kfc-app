@@ -1,47 +1,44 @@
 version: 3
 
-
 services:
+    database:
+        image: postgres:16-alpine
+        env_file:
+            - .env.compose
+        volumes:
+            - database-data:/var/lib/postgresql/data
+        ports:
+            - 127.0.0.1:5432:5432
+        networks:
+            - kfc-net
 
-  database:
-    image: postgres:16-alpine
-    env_file:
-      - .env.compose
-    volumes:
-      - database-data:/var/lib/postgresql/data
-    ports:
-      - 127.0.0.1:5432:5432
-    networks:
-      - kfc-net
+    app:
+        build:
+            dockerfile: Containerfile
+            context: .
+        image: registry.jirik.dev/kfc/app:latest
+        env_file:
+            - .env.compose
+        ports:
+            - 3000:3000
+        networks:
+            - kfc-net
 
-  app:
-    build:
-      dockerfile: Containerfile
-      context: .
-    image: registry.jirik.dev/kfc/app:latest
-    env_file:
-      - .env.compose
-    ports:
-      - 3000:3000
-    networks:
-      - kfc-net
-
-  prisma:
-    build:
-      dockerfile: container-prisma/Containerfile
-      context: .
-    image: registry.jirik.dev/kfc/prisma:latest
-    env_file:
-      - .env.compose
-    ports:
-      - 5555:5555
-    networks:
-      - kfc-net
-    command: yarn exec prisma studio
+    prisma:
+        build:
+            dockerfile: container-prisma/Containerfile
+            context: .
+        image: registry.jirik.dev/kfc/prisma:latest
+        env_file:
+            - .env.compose
+        ports:
+            - 5555:5555
+        networks:
+            - kfc-net
+        command: yarn exec prisma studio
 
 networks:
-  kfc-net: 
-
+    kfc-net:
 
 volumes:
-  database-data:
+    database-data:

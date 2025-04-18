@@ -3,7 +3,7 @@
 import { ArrowsRightLeftIcon, ArrowsUpDownIcon } from '@heroicons/react/16/solid';
 import { zodResolver } from '@hookform/resolvers/zod';
 import classNames from 'classnames';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -27,7 +27,6 @@ import { PlayerGetDto } from '@/dtos/player';
 import { TeamGetDto } from '@/dtos/team';
 import { api, getErrorMessage, loadingButton, oppositeColor, useSWRSchema } from '@/utils/client/api';
 import { registerOptions } from '@/utils/client/forms';
-import { PageParams } from '@/utils/server/pages';
 
 export type RouteParams = ParentRouteParams;
 
@@ -210,7 +209,7 @@ function GamePlayers({
     }, [game?.playerPositions, leftTeam, rightTeam]);
 
     return (
-        <div className="flex flex-row flex-grow gap-4">
+        <div className="flex flex-row grow gap-4">
             <PlayerPositions
                 game={game}
                 team={leftTeam}
@@ -218,7 +217,7 @@ function GamePlayers({
                 playerSwitchTrigger={playerSwitchTrigger}
                 goalTrigger={goalTrigger}
             />
-            <div className="flex flex-grow items-center justify-center">
+            <div className="flex grow items-center justify-center">
                 <Button color="danger" onClick={switchSides}>
                     <ArrowsRightLeftIcon className="w-8" />
                 </Button>
@@ -299,7 +298,8 @@ interface ActionLogItem {
     timestamp: Date;
 }
 
-export default function MatchGameRefPage({ params: { tournamentId, matchId, gameId } }: PageParams<RouteParams>) {
+export default function MatchGameRefPage() {
+    const { tournamentId, matchId, gameId } = useParams<RouteParams>();
     const prefix = `/api/tournament/${tournamentId}/match/${matchId}`;
     const { data, error, isLoading, mutate } = useSWRSchema(prefix, MatchDetailedGetDtoSchema);
     const game = useMemo(() => data?.games.find(({ id }) => id === gameId), [data, gameId]);

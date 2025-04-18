@@ -390,7 +390,7 @@ function GroupCard({ name, teams }: GroupData) {
                                 </h3>
                                 <h3>{abbrev}</h3>
                                 <h3>{name}</h3>
-                                <h3 className="flex-grow text-right">
+                                <h3 className="grow text-right">
                                     {points}
                                     <T sk="b" en="pts" />
                                 </h3>

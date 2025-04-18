@@ -8,14 +8,15 @@ import Button from '@/components/admin/Button';
 import Table from '@/components/admin/Table';
 import { TeamQueryDtoSchema } from '@/dtos/team';
 import { listTeams } from '@/services/teams';
+import { PageProps } from '@/utils/common';
 import { handleError } from '@/utils/server/common';
-import { PageParams } from '@/utils/server/pages';
 
 export const dynamic = 'force-dynamic';
 
 export type RouteParams = ParentRouteParams;
 
-export default async function TeamsPage({ params: { tournamentId }, searchParams }: PageParams<RouteParams>) {
+export default async function TeamsPage({ params, searchParams }: PageProps<RouteParams>) {
+    const { tournamentId } = await params;
     const query = await TeamQueryDtoSchema.safeParseAsync(searchParams);
     const { error, data } = await handleError(() => listTeams(tournamentId, query.success ? query.data : {}));
 

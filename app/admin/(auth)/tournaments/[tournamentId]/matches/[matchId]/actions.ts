@@ -12,7 +12,9 @@ import { handleActionWithAnother } from '@/utils/server/actions';
 export const createMatchAction = handleActionWithAnother(
     async ({ tournamentId, match }: CreateMatchActionProps) =>
         await createMatch(tournamentId, await MatchCreateDtoSchema.parseAsync(match)),
-    async ({ id }) => redirect(`${id}`),
+    async ({ id }) => {
+        redirect(`../${id}`);
+    },
     { requireAuth: true },
 );
 
@@ -25,6 +27,6 @@ export const updateMatchAction = handleActionWithAnother(
 
 export const deleteMatchAction = handleActionWithAnother(
     async ({ matchId }: DeleteMatchActionProps) => await deleteMatch(matchId),
-    async () => redirect('.'),
+    async () => redirect('..'),
     { requireAuth: true },
 );

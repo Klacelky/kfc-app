@@ -14,21 +14,21 @@ function BurgerButton({ open, onClick }: { open: boolean; onClick: () => void })
     return (
         <button type="button" className="text-6xl text-kfc-blue p-4" onClick={onClick} aria-label="Navigation Toggle">
             <span
-                className={classNames('block h-1 m-1 w-6 bg-kfc-blue rounded transition-transform', {
+                className={classNames('block h-1 m-1 w-6 bg-kfc-blue rounded-sm transition-transform', {
                     'rotate-45 scale-x-[1.41] translate-y-[.5rem]': open,
                 })}
             >
                 {' '}
             </span>
             <span
-                className={classNames('block h-1 m-1 w-6 bg-kfc-blue rounded transition-opacity', {
+                className={classNames('block h-1 m-1 w-6 bg-kfc-blue rounded-sm transition-opacity', {
                     'opacity-0': open,
                 })}
             >
                 {' '}
             </span>
             <span
-                className={classNames('block h-1 m-1 w-6 bg-kfc-blue rounded transition-transform', {
+                className={classNames('block h-1 m-1 w-6 bg-kfc-blue rounded-sm transition-transform', {
                     'rotate-[-45deg] scale-x-[1.41] translate-y-[-.5rem]': open,
                 })}
             >
@@ -79,7 +79,7 @@ function NavBarSubMenu({ href, title, children }: { href?: string; title: ReactN
                 </div>
             </button>
             <ul
-                className={classNames('flex flex-col gap-4 items-start flex-grow pl-6 overflow-hidden transition-all', {
+                className={classNames('flex flex-col gap-4 items-start grow pl-6 overflow-hidden transition-all', {
                     'max-h-72': menuOpen,
                     'max-h-0': !menuOpen,
                 })}
@@ -98,7 +98,7 @@ export default function Header({ logo }: { logo: boolean }) {
         <header
             className={classNames(
                 'fixed top-0 left-0 right-0 z-50 bg-kfc-teal h-20',
-                { shadow: logo },
+                { 'shadow-sm': logo },
                 // 'lg:h-20',
             )}
         >
@@ -133,7 +133,7 @@ export default function Header({ logo }: { logo: boolean }) {
                     <div className="bg-inherit rotate-45 w-[1.24rem] h-[1.24rem] absolute -top-[0.62rem] right-[0.26rem]" />
                     <ul
                         className={classNames(
-                            'flex flex-col gap-6 items-start flex-grow',
+                            'flex flex-col gap-6 items-start grow',
                             // 'lg:flex-row',
                         )}
                     >

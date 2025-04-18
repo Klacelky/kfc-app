@@ -33,3 +33,11 @@ export type Return<T = void> =
           data?: undefined;
           error: ErrorResponse | ConflictErrorResponse | ZodErrorResponse<T>;
       };
+
+export type RouteProps<TParams = {}> = {
+    params: Promise<TParams>;
+};
+
+export type PageProps<TParams = {}> = RouteProps<TParams> & {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};

@@ -6,14 +6,15 @@ import { createTeamAction, deleteTeamAction, updateTeamAction } from './actions'
 import Alert from '@/components/Alert';
 import { listPlayers } from '@/services/players';
 import { getTeam } from '@/services/teams';
+import { PageProps } from '@/utils/common';
 import { handleError } from '@/utils/server/common';
-import { PageParams } from '@/utils/server/pages';
 
 export type RouteParams = ParentRouteParams & {
     teamId: string;
 };
 
-export default async function TeamPage({ params: { tournamentId, teamId } }: PageParams<RouteParams>) {
+export default async function TeamPage({ params }: PageProps<RouteParams>) {
+    const { tournamentId, teamId } = await params;
     const { data: data, error } = await handleError(async () => {
         return {
             players: await listPlayers(),

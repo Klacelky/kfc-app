@@ -1,5 +1,8 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import useSWR, { SWRResponse } from 'swr';
+import type { AxiosResponse } from 'axios';
+import axios, { AxiosError } from 'axios';
+import { useCallback, useState } from 'react';
+import type { SWRResponse } from 'swr';
+import useSWR from 'swr';
 import { ZodSchema, z } from 'zod';
 
 import { ErrorResponse } from '../common';
@@ -11,6 +14,20 @@ type X<T, D> = {
     response?: AxiosResponse<T, D>;
     error?: ErrorResponse;
 };
+
+export function useLoadingAction<T>(action: () => Promise<T>): [() => Promise<T>, boolean] {
+    const [loading, setLoading] = useState(false);
+    const wrappedAction = useCallback(async () => {
+        try {
+            setLoading(true);
+            return await action();
+        } finally {
+            setLoading(false);
+        }
+    }, [action, setLoading]);
+
+    return [wrappedAction, loading];
+}
 
 export function loadingButton(setState: (state: boolean) => void, handler: () => Promise<void>): () => Promise<void> {
     return async () => {

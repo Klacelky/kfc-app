@@ -68,7 +68,7 @@ export default function TeamEditForm({ tournamentId, players, team }: TeamEditFo
                         label="Players"
                         register={() => register('players.0', registerOptions({ empty: '' }))}
                         error={errors.players && errors.players[0]?.message}
-                        className="flex-grow"
+                        className="grow"
                     >
                         {players.map(({ id: playerId, name: playerName }) => (
                             <option value={playerId} key={playerId}>
@@ -79,7 +79,7 @@ export default function TeamEditForm({ tournamentId, players, team }: TeamEditFo
                     <Select
                         register={() => register('players.1', registerOptions({ empty: '' }))}
                         error={errors.players && (errors.players.message || errors.players[1]?.message)}
-                        className="flex-grow"
+                        className="grow"
                     >
                         {players.map(({ id: playerId, name: playerName }) => (
                             <option value={playerId} key={playerId}>
@@ -89,7 +89,7 @@ export default function TeamEditForm({ tournamentId, players, team }: TeamEditFo
                     </Select>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
-                    <Button color="primary" disabled={!isValid} className="flex-grow">
+                    <Button color="primary" disabled={!isValid} className="grow">
                         {team ? 'Update Team' : 'Create Team'}
                     </Button>
                     {team && (
@@ -102,7 +102,7 @@ export default function TeamEditForm({ tournamentId, players, team }: TeamEditFo
                                     setError('root', { message: response.error.message });
                                 }
                             }}
-                            className="flex-grow"
+                            className="grow"
                         >
                             Delete Team
                         </Button>

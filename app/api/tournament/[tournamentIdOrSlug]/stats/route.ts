@@ -1,12 +1,14 @@
 import { RouteParams as ParentRouteParams } from '../route';
 
 import { tournamentStats } from '@/services/stats';
-import { RouteContext, auth, handle } from '@/utils/server/api';
+import { RouteProps } from '@/utils/common';
+import { auth, handle } from '@/utils/server/api';
 
 export interface RouteParams extends ParentRouteParams {}
 
 export const GET = handle(
-    auth({}, async (request: Request, { params: { tournamentIdOrSlug } }: RouteContext<RouteParams>) => {
+    auth({}, async (_: Request, { params }: RouteProps<RouteParams>) => {
+        const { tournamentIdOrSlug } = await params;
         return Response.json(await tournamentStats(tournamentIdOrSlug));
     }),
 );

@@ -15,18 +15,20 @@ export const GET = handle(
 );
 
 export const POST = handle(async (request: Request) => {
+    const cookieStore = await cookies();
     const data = await AuthLoginDtoSchema.parseAsync(await request.json());
     const jwt = await loginAdmin(data);
     if (jwt === null) {
         return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    cookies().set('jwt', jwt);
+    cookieStore.set('jwt', jwt);
     return Response.json({ jwt }, { status: 201 });
 });
 
 export const DELETE = handle(
     auth({}, async () => {
-        cookies().delete('jwt');
+        const cookieStore = await cookies();
+        cookieStore.delete('jwt');
         return new Response(null, { status: 204 });
     }),
 );

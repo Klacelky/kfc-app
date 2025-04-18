@@ -1,6 +1,14 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+    --font-sans: var(--font-nunito), sans-serif;
+    --font-display: var(--font-rushford), sans-serif;
+    --color-inherit: inherit;
+    --color-kfc-teal: #83b59a;
+    --color-kfc-red: #ad2c40;
+    --color-kfc-blue: #1a2943;
+    --color-kfc-beige: #fffcd7;
+}
 
 body {
     font-size: 16px;
@@ -10,7 +18,7 @@ body {
     h1,
     h2,
     h3 {
-        @apply font-display;
+        font-family: var(--font-rushford), sans-serif;
         @apply translate-y-3;
         @apply uppercase;
     }
@@ -35,12 +43,14 @@ body {
     p {
         @apply my-3;
     }
+}
 
-    .link {
-        @apply text-kfc-red;
-        @apply dark:text-kfc-teal;
-        @apply underline;
-        @apply hover:opacity-50;
-        @apply transition-opacity;
+@utility link {
+    color: #ad2c40;
+    @variant dark {
+        color: #83b59a;
     }
+    @apply underline;
+    @apply hover:opacity-50;
+    @apply transition-opacity;
 }

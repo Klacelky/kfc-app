@@ -10,8 +10,8 @@ import Button from '@/components/admin/Button';
 import Table from '@/components/admin/Table';
 import { TeamSourceGetDto } from '@/dtos/match';
 import { listMatches } from '@/services/matches';
+import { PageProps } from '@/utils/common';
 import { handleError } from '@/utils/server/common';
-import { PageParams } from '@/utils/server/pages';
 
 export const dynamic = 'force-dynamic';
 
@@ -37,7 +37,8 @@ function formatTeamSource(source: TeamSourceGetDto | null): ReactNode {
     }
 }
 
-export default async function MatchesPage({ params: { tournamentId } }: PageParams<RouteParams>) {
+export default async function MatchesPage({ params }: PageProps<RouteParams>) {
+    const { tournamentId } = await params;
     const { data: matches, error } = await handleError(() => listMatches(tournamentId, {}));
 
     if (error) {

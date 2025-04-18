@@ -57,12 +57,12 @@ export default function PlayerEditForm({ player }: PlayerEditFormProps) {
                     error={errors.description?.message}
                 />
                 <div className="flex flex-col sm:flex-row gap-4">
-                    <Button type="submit" className="flex-grow" color="primary" disabled={!isValid}>
+                    <Button type="submit" className="grow" color="primary" disabled={!isValid}>
                         {player ? 'Update Player' : 'Create Player'}
                     </Button>
                     {player && (
                         <Button
-                            className="flex-grow"
+                            className="grow"
                             type="button"
                             color="danger"
                             onClick={async () => {

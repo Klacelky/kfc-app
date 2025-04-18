@@ -11,6 +11,7 @@ import { Return } from '@/utils/common';
 import { handleError } from '@/utils/server/common';
 
 export async function loginAction({ data: rawData }: LoginActionProps): Promise<Return | never> {
+    const cookieStore = await cookies();
     const { data: jwt, error } = await handleError(
         async () => await loginAdmin(await AuthLoginDtoSchema.parseAsync(rawData)),
     );
@@ -26,7 +27,6 @@ export async function loginAction({ data: rawData }: LoginActionProps): Promise<
             },
         };
     }
-    const cookieStore = cookies();
     cookieStore.set('jwt', jwt);
     redirect('/admin');
 }

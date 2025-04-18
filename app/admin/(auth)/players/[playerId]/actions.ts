@@ -11,19 +11,19 @@ import { handleActionWithAnother } from '@/utils/server/actions';
 
 export const createPlayerAction = handleActionWithAnother(
     async ({ player }: CreatePlayerActionProps) => await createPlayer(await PlayerCreateDtoSchema.parseAsync(player)),
-    async ({ id }) => redirect(`${id}`),
+    async ({ id }) => redirect(`../${id}`),
     { requireAuth: true },
 );
 
 export const updatePlayerAction = handleActionWithAnother(
     async ({ playerId, player }: UpdatePlayerActionProps) =>
         await updatePlayer(playerId, await PlayerUpdateDtoSchema.parseAsync(player)),
-    async ({ id }) => revalidatePath(`${id}`),
+    async ({ id }) => revalidatePath(`./${id}`),
     { requireAuth: true },
 );
 
 export const deletePlayerAction = handleActionWithAnother(
     async ({ playerId }: DeletePlayerActionProps) => await deletePlayer(playerId),
-    async () => redirect('.'),
+    async () => redirect('..'),
     { requireAuth: true },
 );

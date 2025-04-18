@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { HTMLInputTypeAttribute, InputHTMLAttributes, ReactNode, SelectHTMLAttributes } from 'react';
-import { FieldPath, FieldValues, UseFormRegisterReturn } from 'react-hook-form';
+import type { FieldPath, FieldValues, UseFormRegisterReturn } from 'react-hook-form';
 
 import { callOptional } from '@/utils/common';
 

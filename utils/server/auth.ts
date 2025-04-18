@@ -12,7 +12,7 @@ export async function getAuth({
     requireAuth,
     requireSu,
 }: ActionAuthOptions): Promise<AuthAdmin | 'nologin' | 'nosu' | undefined> {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const jwt = cookieStore.get('jwt');
     if (!jwt) {
         return requireAuth ? 'nologin' : undefined;

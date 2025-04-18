@@ -6,13 +6,15 @@ import { listGroups } from '@/services/groups';
 import { listMatches } from '@/services/matches';
 import { getTournament } from '@/services/tournaments';
 import T from '@/utils/client/i18n/t';
+import { PageProps } from '@/utils/common';
 import { handleError } from '@/utils/server/common';
 
 export type RouteParams = {
     tournamentBlob: string;
 };
 
-export default async function TournamentArchivePage({ params: { tournamentBlob } }: { params: RouteParams }) {
+export default async function TournamentArchivePage({ params }: PageProps<RouteParams>) {
+    const { tournamentBlob } = await params;
     const { data, error } = await handleError(async () => {
         const tournament = await getTournament(tournamentBlob);
         const groups = await listGroups(tournament.id);
