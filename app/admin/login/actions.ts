@@ -27,6 +27,8 @@ export async function loginAction({ data: rawData }: LoginActionProps): Promise<
             },
         };
     }
-    cookieStore.set('jwt', jwt);
+    const exp = new Date();
+    exp.setDate(exp.getDate() + 2);
+    cookieStore.set({ name: 'jwt', value: jwt, httpOnly: true, secure: true, sameSite: 'strict', expires: exp });
     redirect('/admin');
 }
