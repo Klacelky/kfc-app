@@ -39,8 +39,8 @@ export default async function GroupsPage() {
             </h1>
             <p>
                 <T
-                    sk="V sezóne Podzim 2024 sa pre malú účasť nebudú konať skupinové zápasy. Miesto nich budú hrať všetky tímy priamo v play-off formou double-elimination."
-                    en="Due to low number of teams, there will be no group matches in season Autumn 2024. Instead, all registered teams continue to play-off which will have double-elimination form."
+                    sk="V sezóne Podzim 2025 sa pre malú účasť nebudú konať skupinové zápasy. Miesto nich budú hrať všetky tímy priamo v play-off formou double-elimination."
+                    en="Due to low number of teams, there will be no group matches in season Autumn 2025. Instead, all registered teams continue to play-off which will have double-elimination form."
                 />
             </p>
             {/* <p> */}

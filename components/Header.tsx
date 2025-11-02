@@ -151,6 +151,9 @@ export default function Header({ logo }: { logo: boolean }) {
                         </NavBarItem>
                         <NavBarItem href="/play-off">Play-off</NavBarItem>
                         <NavBarSubMenu href="/archive" title={<T sk="Archív" en="Archive" />}>
+                            <NavBarItem href="/archive/autumn2024">
+                                <T sk="Podzim 2024" en="Autumn 2024" />
+                            </NavBarItem>
                             <NavBarItem href="/archive/spring2024">
                                 <T sk="Jaro 2024" en="Spring 2024" />
                             </NavBarItem>

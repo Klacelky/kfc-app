@@ -10,13 +10,11 @@ import { PageProps } from '@/utils/common';
 import { handleError } from '@/utils/server/common';
 
 export type RouteParams = {
-    tournamentBlob: string;
 };
 
-export default async function TournamentArchivePage({ params }: PageProps<RouteParams>) {
-    const { tournamentBlob } = await params;
+export default async function TournamentArchiveSpring2024Page({ params }: PageProps<RouteParams>) {
     const { data, error } = await handleError(async () => {
-        const tournament = await getTournament(tournamentBlob);
+        const tournament = await getTournament('spring2024');
         const groups = await listGroups(tournament.id);
         const matchesByGroup = await Promise.all(
             groups!.map(async (group) => ({
