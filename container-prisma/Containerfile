@@ -8,7 +8,6 @@ COPY .yarnrc.yml ./
 COPY .yarn ./.yarn
 COPY container-prisma/package.json ./
 COPY container-prisma/yarn.lock ./
+COPY prisma ./prisma
 
 RUN yarn --immutable
-
-COPY prisma ./prisma
