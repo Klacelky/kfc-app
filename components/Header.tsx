@@ -146,9 +146,9 @@ export default function Header({ logo }: { logo: boolean }) {
                         <NavBarItem href="/rules">
                             <T sk="Pravidlá" en="Rules" />
                         </NavBarItem>
-                        <NavBarItem href="/groups">
-                            <T sk="Skupiny" en="Groups" />
-                        </NavBarItem>
+                        {/* <NavBarItem href="/groups"> */}
+                        {/*     <T sk="Skupiny" en="Groups" /> */}
+                        {/* </NavBarItem> */}
                         <NavBarItem href="/play-off">Play-off</NavBarItem>
                         <NavBarSubMenu href="/archive" title={<T sk="Archív" en="Archive" />}>
                             <NavBarItem href="/archive/autumn2024">

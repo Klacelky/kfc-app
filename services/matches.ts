@@ -236,7 +236,7 @@ export async function listMatches(
                 ],
             },
             include,
-            orderBy: { createdAt: 'asc' },
+            orderBy: { expectedStart: 'asc' },
         })
     ).map(expandMatchDetails);
 }

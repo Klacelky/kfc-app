@@ -1,4 +1,5 @@
 // import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 // import Alert from '@/components/Alert';
 // import Groups from '@/components/groups/Groups';
@@ -31,6 +32,8 @@ export default async function GroupsPage() {
     // }
 
     // const { tournament, groups, matchesByGroup } = data;
+    //
+    return redirect("/play-off");
 
     return (
         <>
