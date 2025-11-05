@@ -21,7 +21,7 @@ export default async function PlayOffPage() {
         return <Alert>Failed to load tournanment play-off: {error.message}</Alert>;
     }
     const { tournament, matches } = data;
-    const finalLayer = Math.max(0, ...matches.map(({ playoffLayer }) => playoffLayer).filter((layer) => layer !== null));
+    const finalLayer = Math.max(...matches.map(({ playoffLayer }) => playoffLayer).filter((layer) => layer !== null));
 
     return (
         <>
@@ -30,7 +30,7 @@ export default async function PlayOffPage() {
                 <TDateTime datetime={tournament.endDate} type="date" />{' '}
                 <Link href="https://twitch.tv/kolejeklacelky">https://twitch.tv/kolejeklacelky</Link>
             </p>
-            {tournament.publishedAt && tournament.publishedAt > new Date() ? (
+            {(tournament.publishedAt && tournament.publishedAt > new Date()) || finalLayer < 1 ? (
                 <p>
                     <T sk="Viac o play-off čoskoro..." en="Play-off comming soon..." />
                 </p>
