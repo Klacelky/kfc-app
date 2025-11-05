@@ -21,6 +21,7 @@ export default async function PlayOffPage() {
         return <Alert>Failed to load tournanment play-off: {error.message}</Alert>;
     }
     const { tournament, matches } = data;
+    const finalLayer = Math.max(0, ...matches.map(({ playoffLayer }) => playoffLayer).filter((layer) => layer !== null));
 
     return (
         <>
@@ -35,47 +36,24 @@ export default async function PlayOffPage() {
                 </p>
             ) : (
                 <>
-                    <section>
-                        <h2>
-                            <T sk="1. blok" en="1st section" />
-                        </h2>
-                        <PlayOffSchedule matches={matches.filter(({ playoffLayer }) => playoffLayer === 1)} />
-                        <p>
-                            <T sk="(10 min. prestávka na dobehnutie)" en="(10 min. catch-up break)" />
-                        </p>
-                    </section>
-                    <section>
-                        <h2>
-                            <T sk="2. blok" en="2nd section" />
-                        </h2>
-                        <PlayOffSchedule matches={matches.filter(({ playoffLayer }) => playoffLayer === 2)} />
-                        <p>
-                            <T sk="(10 min. prestávka na dobehnutie)" en="(10 min. catch-up break)" />
-                        </p>
-                    </section>
-                    <section>
-                        <h2>
-                            <T sk="3. blok" en="3rd section" />
-                        </h2>
-                        <PlayOffSchedule matches={matches.filter(({ playoffLayer }) => playoffLayer === 3)} />
-                        <p>
-                            <T sk="(10 min. prestávka na dobehnutie)" en="(10 min. catch-up break)" />
-                        </p>
-                    </section>
-                    <section>
-                        <h2>
-                            <T sk="4. blok" en="4th section" />
-                        </h2>
-                        <PlayOffSchedule matches={matches.filter(({ playoffLayer }) => playoffLayer === 4)} />
-                        <p>
-                            <T sk="(10 min. prestávka na dobehnutie)" en="(10 min. catch-up break)" />
-                        </p>
-                    </section>
+                    {new Array(finalLayer - 1).fill(0).map((_, index) => (
+                        <section key={`playOffSection${index + 1}`}>
+                            <h2>
+                                <T sk={`${index + 1}. blok`} en={`Section ${index + 1}`} />
+                            </h2>
+                            <PlayOffSchedule
+                                matches={matches.filter(({ playoffLayer }) => playoffLayer === index + 1)}
+                            />
+                            <p>
+                                <T sk="(10 min. prestávka na dobehnutie)" en="(10 min. catch-up break)" />
+                            </p>
+                        </section>
+                    ))}
                     <section>
                         <h2>
                             <T sk="Finálový blok" en="Finals section" />
                         </h2>
-                        <PlayOffSchedule matches={matches.filter(({ playoffLayer }) => playoffLayer === 5)} />
+                        <PlayOffSchedule matches={matches.filter(({ playoffLayer }) => playoffLayer === finalLayer)} />
                         <p>
                             <T sk="*Opakovaný zápas, ak WQ vyhral prvý" en="*Rematch if WQ wins first time" />
                         </p>
@@ -85,7 +63,7 @@ export default async function PlayOffPage() {
                             <T sk="Vyhodnotenie" en="Award Ceremony" />
                         </h2>
                         <p>
-                            <TDateTime datetime={new Date(2024, 10, 9, 17, 0, 0)} type="time" />
+                            <TDateTime datetime={new Date(Date.parse("2025-11-08T19:30:00+0100"))} type="time" />
                         </p>
                     </section>
                 </>
