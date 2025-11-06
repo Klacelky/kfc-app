@@ -13,11 +13,11 @@ export default function DateTime({ datetime, type, lang }: DateTimeProps) {
 
     switch (type) {
         case 'date':
-            return datetime.toLocaleDateString(lang);
+            return datetime.toLocaleDateString(lang, { timeZone: 'CET' });
         case 'time':
-            return datetime.toLocaleTimeString(lang);
+            return datetime.toLocaleTimeString(lang, { timeZone: 'CET' });
         case 'datetime':
         case undefined:
-            return datetime.toLocaleString(lang);
+            return datetime.toLocaleString(lang, { timeZone: 'CET' });
     }
 }
