@@ -55,7 +55,7 @@ export default async function PlayOffPage() {
                         </h2>
                         <PlayOffSchedule matches={matches.filter(({ playoffLayer }) => playoffLayer === finalLayer)} />
                         <p>
-                            <T sk="*Opakovaný zápas, ak WQ vyhral prvý" en="*Rematch if WQ wins first time" />
+                            <T sk="*Opakovaný zápas, ak WX vyhral prvý" en="*Rematch if WX wins first time" />
                         </p>
                     </section>
                     <section>
