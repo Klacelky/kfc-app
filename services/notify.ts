@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 import { ScoreData } from '@/dtos/match';
 
@@ -15,7 +15,7 @@ export async function notifyScore(data: ScoreData): Promise<any> {
         await axios.post(`${KFC_LIVE_URL}/score`, data, { auth: { username: KFC_LIVE_USER, password: KFC_LIVE_PASS } });
         return undefined;
     } catch (error) {
-        console.error('KFCLIVE', error);
+        console.error('KFCLIVE', error, JSON.stringify((error as AxiosError).response?.data || {}));
         return error;
     }
 }
@@ -29,7 +29,7 @@ export async function nofityHideScore(): Promise<any> {
         await axios.delete(`${KFC_LIVE_URL}/score`, { auth: { username: KFC_LIVE_USER, password: KFC_LIVE_PASS } });
         return undefined;
     } catch (error) {
-        console.warn('KFCLIVE', error);
+        console.warn('KFCLIVE', error, JSON.stringify((error as AxiosError).response?.data || {}));
         return error;
     }
 }
