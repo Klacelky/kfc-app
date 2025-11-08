@@ -1,10 +1,12 @@
 'use client';
 
+import { TrophyIcon } from '@heroicons/react/16/solid';
 import { useState } from 'react';
 
 import { Select } from '@/components/admin/Input';
 import Table from '@/components/admin/Table';
-import { GoalkeeperStats, PlayerGoalStats, PlayerPhotosStats } from '@/dtos/stats';
+import { GoalkeeperStats, MatchLengthStats, PlayerGoalStats, PlayerPhotosStats } from '@/dtos/stats';
+import { formatDuration } from '@/utils/common';
 
 export function PlayerGoalStatsSection({ stats }: { stats: PlayerGoalStats[] }) {
     const [sort, setSort] = useState('goalsPerGame');
@@ -100,6 +102,40 @@ export function GoalkeeperStatsSection({ stats }: { stats: GoalkeeperStats[] }) 
                     receivedGoalsPerGame,
                     receivedGoalsPerSecond,
                 }) => [goalkeeper.name, games, timeInGoal, receivedGoals, receivedGoalsPerGame, receivedGoalsPerSecond]}
+            />
+        </section>
+    );
+}
+
+export function MatchLengthStatsSection({ stats }: { stats: MatchLengthStats[] }) {
+    return (
+        <section>
+            <h2>Match length</h2>
+            <Table
+                columnNames={['Match', 'Home Team', 'Visiting Team', 'Score', 'Match time']}
+                data={stats.sort((a, b) => b.matchLength - a.matchLength)}
+                getCols={({ matchLength, name, home, visiting, games }) => [
+                    name,
+                    <div key="home-team" className="flex flex-row items-center">
+                        {home.winner && <TrophyIcon className="text-kfc-teal h-6" />}
+                        {home.team?.abbrev || '--'}
+                    </div>,
+                    <div key="visitin-team" className="flex flex-row items-center">
+                        {visiting.winner && <TrophyIcon className="text-kfc-teal h-6" />}
+                        {visiting.team?.abbrev || '--'}
+                    </div>,
+                    games
+                        .map(
+                            ({
+                                score: {
+                                    home: { score: homeScore },
+                                    visiting: { score: visiting },
+                                },
+                            }) => `${homeScore}:${visiting}`,
+                        )
+                        .join('; '),
+                    formatDuration(matchLength),
+                ]}
             />
         </section>
     );

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { MatchDetailedGetDtoSchema } from './match';
 import { PlayerGetDtoSchema } from './player';
 
 export const PlayerGoalStatsSchema = z.object({
@@ -29,9 +30,16 @@ export const GoalkeeperStatsSchema = z.object({
 });
 export type GoalkeeperStats = z.infer<typeof GoalkeeperStatsSchema>;
 
+export const MatchLengthStatsSchema = z.object({
+    ...MatchDetailedGetDtoSchema.shape,
+    matchLength: z.number(),
+});
+export type MatchLengthStats = z.infer<typeof MatchLengthStatsSchema>;
+
 export const TournamentStatsSchema = z.object({
     playerGoals: z.array(PlayerGoalStatsSchema),
     playerPhotos: z.array(PlayerPhotosStatsSchema),
     goalkeeper: z.array(GoalkeeperStatsSchema),
+    matchLength: z.array(MatchLengthStatsSchema),
 });
 export type TournamentStats = z.infer<typeof TournamentStatsSchema>;

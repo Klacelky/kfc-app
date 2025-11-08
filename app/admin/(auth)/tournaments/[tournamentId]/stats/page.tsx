@@ -1,6 +1,6 @@
 import { RouteParams as ParentRouteParams } from '../page';
 
-import { GoalkeeperStatsSection, PlayerGoalStatsSection, PlayerPhotoStatsSection } from './sections';
+import { GoalkeeperStatsSection, MatchLengthStatsSection, PlayerGoalStatsSection, PlayerPhotoStatsSection } from './sections';
 
 import Alert from '@/components/Alert';
 import { tournamentStats } from '@/services/stats';
@@ -22,6 +22,7 @@ export default async function StatsPage({ params }: PageProps<RouteParams>) {
             <PlayerGoalStatsSection stats={data.playerGoals} />
             <PlayerPhotoStatsSection stats={data.playerPhotos} />
             <GoalkeeperStatsSection stats={data.goalkeeper} />
+            <MatchLengthStatsSection stats={data.matchLength} />
         </>
     );
 }

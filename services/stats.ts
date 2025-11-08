@@ -1,6 +1,8 @@
 import { Goal, MatchGame, Player, PlayerPosition, PlayerPositionType, PlayerPositions, Team } from '@prisma/client';
 
-import { GoalkeeperStats, PlayerGoalStats, PlayerPhotosStats, TournamentStats } from '@/dtos/stats';
+import { listMatches } from './matches';
+
+import { GoalkeeperStats, MatchLengthStats, PlayerGoalStats, PlayerPhotosStats, TournamentStats } from '@/dtos/stats';
 import prisma from '@/utils/server/db';
 
 export async function playerGoalStats(tournamentId: string): Promise<PlayerGoalStats[]> {
@@ -211,10 +213,21 @@ export async function goalkeeperStats(tournamentId: string): Promise<GoalkeeperS
         .sort(({ receivedGoals: ra }, { receivedGoals: rb }) => ra - rb);
 }
 
+async function matchLengthStats(tournamentId: string): Promise<MatchLengthStats[]> {
+    return (await listMatches(tournamentId, {})).map((match) => ({
+        ...match,
+        matchLength: match.games
+            .filter(({ finishedAt }) => finishedAt !== null)
+            .map(({ createdAt, finishedAt }) => (finishedAt!.getTime() - createdAt.getTime()) / 1_000)
+            .reduce((a, b) => a + b, 0),
+    }));
+}
+
 export async function tournamentStats(tournamentId: string): Promise<TournamentStats> {
     return {
         playerGoals: await playerGoalStats(tournamentId),
         playerPhotos: await playerPhotoStats(tournamentId),
         goalkeeper: await goalkeeperStats(tournamentId),
+        matchLength: await matchLengthStats(tournamentId),
     };
 }

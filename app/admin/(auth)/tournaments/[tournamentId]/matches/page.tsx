@@ -55,11 +55,11 @@ export default async function MatchesPage({ params }: PageProps<RouteParams>) {
                     name,
                     <DateTime key="expectedStart" datetime={expectedStart} />,
                     playoffLayer,
-                    <div key="winner" className="flex flex-row items-center">
+                    <div key="home-team" className="flex flex-row items-center">
                         {home.winner && <TrophyIcon className="text-kfc-teal h-6" />}
                         {home.team?.abbrev || formatTeamSource(home.source)}
                     </div>,
-                    <div key="looser" className="flex flex-row items-center">
+                    <div key="visitin-team" className="flex flex-row items-center">
                         {visiting.winner && <TrophyIcon className="text-kfc-teal h-6" />}
                         {visiting.team?.abbrev || formatTeamSource(visiting.source)}
                     </div>,
